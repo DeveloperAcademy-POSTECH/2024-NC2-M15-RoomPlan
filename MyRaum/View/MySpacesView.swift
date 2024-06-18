@@ -13,9 +13,12 @@ struct MySpacesView: View {
     
     @Query var spaceData: [SpaceData]
     
+    @State private var selectedSpace: SpaceData? = nil
+    @State private var showMySpaceDetailView = false
+    
     private let columns = [
-        GridItem(.flexible(minimum: 200, maximum: 300), spacing: nil, alignment: .top),
-        GridItem(.flexible(minimum: 200, maximum: 300), spacing: nil, alignment: .top)
+        GridItem(),
+        GridItem()
     ]
     
     var body: some View {
@@ -25,22 +28,17 @@ struct MySpacesView: View {
             ScrollView {
                 LazyVGrid(columns: columns, spacing: 30) {
                     ForEach(spaceData) { space in
-                        //임시뷰
-                        ZStack {
-                            Image(uiImage: UIImage(data: space.background)!)
-                                .resizable()
-                                .aspectRatio(contentMode: .fit)
-                                .frame(width: 150)
-                            
-                            Image(uiImage: UIImage(data: space.model)!)
-                                .resizable()
-                                .aspectRatio(contentMode: .fit)
-                                .frame(width: 150)
-                            
-                            Text(space.comment)
-                        }
+                        Button(action: {
+                            selectedSpace = space
+                            showMySpaceDetailView = true
+                        }, label: {
+                            MySpaceCellView(space: space)
+                        })
                     }
                 }
+            }
+            .sheet(item: $selectedSpace) { space in
+                MySpaceDetailView(space: space)
             }
         }
     }
