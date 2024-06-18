@@ -45,11 +45,11 @@ struct RoomPlanView: View {
                         roomController.stopSession()
                         self.doneScanning = true
                     }, label: {
-                        Text("스캔 끝내기")
-                            .padding(10)
+                        Image("scanfinish")
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(width: 150)
                     })
-                    .buttonStyle(.borderedProminent)
-                    .cornerRadius(30)
                 } else {
                     HStack {
                         Button(action: {
@@ -57,15 +57,17 @@ struct RoomPlanView: View {
                             self.doneScanning = false
                             roomController.startSession()
                         }, label: {
-                            Text("다시 스캔하기")
-                                .padding(10)
+                            Image("scanagain")
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .frame(width: 150)
                         })
-                        .buttonStyle(.borderedProminent)
-                        .cornerRadius(30)
                         
                         PhotosPicker(selection: $selectedItem, matching: .images) {
-                            Text("배경 추가하기")
-                                .padding(10)
+                            Image("addbg")
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .frame(width: 150)
                         }
                         .onChange(of: selectedItem) {
                             Task {
@@ -83,8 +85,6 @@ struct RoomPlanView: View {
                                 currentPage = 1
                             }
                         }
-                        .buttonStyle(.borderedProminent)
-                        .cornerRadius(30)
                     }
                 }
             }
@@ -113,8 +113,10 @@ struct RoomPlanView: View {
                     
                     HStack {
                         PhotosPicker(selection: $selectedItem, matching: .images) {
-                            Text("배경 수정하기")
-                                .padding(10)
+                            Image("editbg")
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .frame(width: 150)
                         }
                         .onChange(of: selectedItem) {
                             Task {
@@ -125,17 +127,15 @@ struct RoomPlanView: View {
                                 }
                             }
                         }
-                        .buttonStyle(.borderedProminent)
-                        .cornerRadius(30)
                         
                         Button(action: {
                             showCommentPopup = true
                         }, label: {
-                            Text("코멘트 추가하기")
-                                .padding(10)
+                            Image("addcomment")
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .frame(width: 150)
                         })
-                        .buttonStyle(.borderedProminent)
-                        .cornerRadius(30)
                     }
                 }
                 
@@ -176,22 +176,22 @@ struct RoomPlanView: View {
                         Button(action: {
                             showCommentPopup = true
                         }, label: {
-                            Text("코멘트 수정하기")
-                                .padding(10)
+                            Image("editcomment")
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .frame(width: 150)
                         })
-                        .buttonStyle(.borderedProminent)
-                        .cornerRadius(30)
                         
                         Button(action: {
                             
                             
                             currentPage = 3
                         }, label: {
-                            Text("음악 추가하기")
-                                .padding(10)
+                            Image("addmusic")
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .frame(width: 150)
                         })
-                        .buttonStyle(.borderedProminent)
-                        .cornerRadius(30)
                     }
                 }
                 
@@ -231,21 +231,21 @@ struct RoomPlanView: View {
                     Button(action: {
                         
                     }, label: {
-                        Text("음악 수정하기")
-                            .padding(10)
+                        Image("editmusic")
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(width: 150)
                     })
-                    .buttonStyle(.borderedProminent)
-                    .cornerRadius(30)
                     
                     Button(action: {
                         addSpace()
                         showSavedAlert = true
                     }, label: {
-                        Text("저장")
-                            .padding(10)
+                        Image("save")
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(width: 150)
                     })
-                    .buttonStyle(.borderedProminent)
-                    .cornerRadius(30)
                     .alert("저장되었습니다.", isPresented: $showSavedAlert) {
                         Button(action: {
                             self.doneScanning = false

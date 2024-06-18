@@ -18,14 +18,9 @@ struct CommentPopupView: View {
     
     var body: some View {
         VStack {
-            HStack {
-                Text("공간에 대한 한줄평을 기록하세요.")
-                    .bold()
-                    .foregroundStyle(Color.black)
-                    .padding(.leading)
-                
-                Spacer()
-            }
+            Text("공간에 대한 한줄평을 기록하세요.")
+                .bold()
+                .foregroundStyle(Color.black)
             
             TextField(text: $typedComment) {
                 Text("코멘트를 입력하세요.")
@@ -43,12 +38,14 @@ struct CommentPopupView: View {
                 currentPage = 2
                 showCommentPopup = false
             }, label: {
-                Text("완료")
+                Image("finish")
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: 150)
             })
-            .buttonStyle(.borderedProminent)
             .padding()
         }
-        .frame(width: 300, height: 200)
+        .frame(width: 300, height: 180)
         .background {
             Rectangle()
                 .foregroundStyle(Color.white)

@@ -13,41 +13,55 @@ struct ContentView: View {
             VStack(spacing: 10) {
                 Spacer()
                 
-                //디자인된 로고 이미지로 대체
-                Text("MY RAUM")
-                    .font(.title)
-                    .bold()
-                    .foregroundStyle(Color.white)
-                    .padding(.bottom, 50)
-                
-                Text("나의 공간과 추억을\n생생하게 기록해보세요.")
-                    .font(.title2)
-                    .bold()
-                    .foregroundStyle(Color.white)
-                    .multilineTextAlignment(.center)
-                    .padding(.bottom, 50)
-                
-                NavigationLink(destination: RoomPlanView()) {
-                    Text("스캔하기")
-                        .padding(10)
+                HStack {
+                    Image("logo")
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: 280)
+                        .padding(.leading, 30)
+                        .padding(.bottom, 30)
+                    
+                    Spacer()
                 }
-                .buttonStyle(.borderedProminent)
-                .cornerRadius(30)
+                
+                HStack {
+                    Text("나의 공간과 추억을\n생생하게 기록해보세요.")
+                        .font(.title2)
+                        .bold()
+                        .foregroundStyle(Color.white)
+                        .multilineTextAlignment(.leading)
+                        .padding(.leading, 30)
+                        .padding(.bottom, 30)
+                    
+                    Spacer()
+                }
+                
+                HStack {
+                    NavigationLink(destination: RoomPlanView()) {
+                        Image("scan")
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(width: 150)
+                    }
+                    .padding(.leading, 30)
+                    
+                    Spacer()
+                }
                 
                 Spacer()
                 
-                NavigationLink(destination: MySpacesView()) {
-                    HStack {
-                        Spacer()
-                        
-                        //디자인된 보관함 버튼 이미지로 대체
-                        Text("보관함")
-                            .foregroundStyle(Color.white)
-                            .padding()
+                HStack {
+                    Spacer()
+                    
+                    NavigationLink(destination: MySpacesView()) {
+                        Image("corner")
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(width: 200)
                     }
-                }
-                .toolbarTitleMenu {
-                    Text("보관함")
+                    .toolbarTitleMenu {
+                        Text("보관함")
+                    }
                 }
             }
             .background(Color.black)
