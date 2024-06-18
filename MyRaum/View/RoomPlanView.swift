@@ -241,7 +241,7 @@ struct RoomPlanView: View {
                         addSpace()
                         showSavedAlert = true
                     }, label: {
-                        Image("save")
+                        Image("save 1")
                             .resizable()
                             .aspectRatio(contentMode: .fit)
                             .frame(width: 150)
@@ -342,8 +342,8 @@ struct RoomPlanView: View {
                     let newSpace = SpaceData(
                         id: UUID(),
                         date: savedDate,
-                        model: model.jpegData(compressionQuality: 1.0)!,
-                        background: background.jpegData(compressionQuality: 1.0)!,
+                        model: model.pngData()!,
+                        background: background.pngData()!,
                         comment: comment,
                         music: ""
                     )
