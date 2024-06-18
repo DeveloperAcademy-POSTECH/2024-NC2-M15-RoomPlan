@@ -31,6 +31,7 @@ struct CommentPopupView: View {
                         focusState = true
                     })
             }
+            .foregroundStyle(Color.black)
             .padding()
             
             Button(action: {
@@ -43,13 +44,12 @@ struct CommentPopupView: View {
                     .aspectRatio(contentMode: .fit)
                     .frame(width: 150)
             })
-            .padding()
         }
         .frame(width: 300, height: 180)
         .background {
             Rectangle()
                 .foregroundStyle(Color.white)
-                .frame(width: 300, height: 200)
+                .frame(width: 300, height: 180)
                 .cornerRadius(30)
         }
     }

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		010280D02C21DF3400D57C73 /* MySpaceCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 010280CF2C21DF3400D57C73 /* MySpaceCardView.swift */; };
 		015CDCA02C1B462800DE28F0 /* SpaceData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 015CDC9F2C1B462700DE28F0 /* SpaceData.swift */; };
 		015CDCA42C1C0A8000DE28F0 /* CommentPopupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 015CDCA32C1C0A8000DE28F0 /* CommentPopupView.swift */; };
 		019062742C1AE0A500D89653 /* MyRaumApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 019062732C1AE0A500D89653 /* MyRaumApp.swift */; };
@@ -22,6 +23,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		010280CF2C21DF3400D57C73 /* MySpaceCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MySpaceCardView.swift; sourceTree = "<group>"; };
 		015CDC9F2C1B462700DE28F0 /* SpaceData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpaceData.swift; sourceTree = "<group>"; };
 		015CDCA32C1C0A8000DE28F0 /* CommentPopupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentPopupView.swift; sourceTree = "<group>"; };
 		019062702C1AE0A500D89653 /* MyRaum.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MyRaum.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -90,6 +92,7 @@
 			children = (
 				019062752C1AE0A500D89653 /* ContentView.swift */,
 				019062852C1AE25E00D89653 /* RoomPlanView.swift */,
+				010280CF2C21DF3400D57C73 /* MySpaceCardView.swift */,
 				0190628C2C1AE6E600D89653 /* MySpacesView.swift */,
 				015CDCA32C1C0A8000DE28F0 /* CommentPopupView.swift */,
 				0190628E2C1AE7DA00D89653 /* MySpaceDetailView.swift */,
@@ -185,6 +188,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				010280D02C21DF3400D57C73 /* MySpaceCardView.swift in Sources */,
 				0190628B2C1AE2E300D89653 /* UnsupportedDeviceView.swift in Sources */,
 				019062862C1AE25E00D89653 /* RoomPlanView.swift in Sources */,
 				0190628F2C1AE7DA00D89653 /* MySpaceDetailView.swift in Sources */,
