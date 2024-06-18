@@ -7,26 +7,23 @@
 
 import SwiftUI
 import SwiftData
+import RoomPlan
 
 @main
 struct MyRaumApp: App {
-    var sharedModelContainer: ModelContainer = {
-        let schema = Schema([
-            Item.self,
-        ])
-        let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
-
-        do {
-            return try ModelContainer(for: schema, configurations: [modelConfiguration])
-        } catch {
-            fatalError("Could not create ModelContainer: \(error)")
-        }
-    }()
-
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            checkDeciveView()
         }
-        .modelContainer(sharedModelContainer)
+        .modelContainer(for: SpaceData.self)
+    }
+}
+
+@ViewBuilder
+func checkDeciveView() -> some View {
+    if RoomCaptureSession.isSupported {
+        ContentView()
+    } else {
+        UnsupportedDeviceView()
     }
 }
