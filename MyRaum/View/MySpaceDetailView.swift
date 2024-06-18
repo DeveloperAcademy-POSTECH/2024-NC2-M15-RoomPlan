@@ -6,80 +6,144 @@
 //
 
 import SwiftUI
-import SwiftData
+import UIKit
 
 struct MySpaceDetailView: View {
-    @Environment(\.modelContext) var modelContext
+    @Environment(\.dismiss) var dismiss
+    @Environment(\.colorScheme) var colorScheme
     
-    @Query var spaceData: [SpaceData]
+    var space: SpaceData
     
-    @State private var comment: String = "체인지업그라운드"
-    @State private var date: String = "2024년 6월 14일"
-    @State private var model: Image = Image(systemName: "plus")
-    @State private var background: Image = Image(systemName: "person")
+    @State var showShare = false
     
     var body: some View {
-        //위에 있는 더미 변수로 카드 만들어주셔용~나중에 데이터 연결은 제가 합니당
-        ZStack {
-            Rectangle()
-                .frame(width: 320, height: 495)
-                .cornerRadius(19)
-                .foregroundColor(.white)
-                .overlay(
-                    ZStack {
-                        Image("bg")
-                            .resizable()
-                            .scaledToFill()
-                            .frame(width: 320, height: 495)
-                            .overlay(Color.black.opacity(0.4))
-                            .cornerRadius(19)
-                            .clipped()
-                        RoundedRectangle(cornerRadius: 19)
-                            .stroke(Color.gray, lineWidth: 2)
-                        
-                        
-                    }
-                        .padding(.bottom, 30)
-                )
-            Image("locationpin")
-                .resizable()
-                .frame(width:17, height:21)
-                .padding(.bottom, 350)
-                .padding(.trailing, 140)
+        VStack {
+            HStack {
+                Spacer()
+                
+                Button(action: {
+                    dismiss()
+                }, label: {
+                    Image(systemName: "x.circle")
+                        .resizable()
+                        .frame(width: 28, height: 28)
+                        .foregroundStyle(colorScheme == .dark ? .white : .black)
+                        .bold()
+                })
+                .padding()
+            }
             
-            Text(comment)
-                .frame(width: 300, height: 200)
-                .font(.system(size: 18, weight: .semibold))
-                .foregroundColor(.white)
-                .padding(.bottom, 350)
-                .padding(.leading, 30)
+            Spacer()
             
-            Image("scanexport") //이 부분 오빠가 위에 함수 만들어둔 것 같은데 model이라고 쓰니까 오류떠서 뭐가 문젠지 모르겠어서 스캔 뜬 사진 에셋에 추가해서 임시로 넣어뒀어!
-                .resizable()
-                .frame(width:300, height:300)
+            ZStack {
+                Rectangle()
+                    .frame(width: 320, height: 495)
+                    .cornerRadius(19)
+                    .foregroundColor(.white)
+                    .overlay(
+                        ZStack {
+                            Image(uiImage: UIImage(data: space.background)!)
+                                .resizable()
+                                .scaledToFill()
+                                .frame(width: 320, height: 495)
+                                .overlay(Color.black.opacity(0.4))
+                                .cornerRadius(19)
+                                .clipped()
+                            
+                            VStack {
+                                Spacer()
+                                
+                                HStack {
+                                    Image("locationpin")
+                                        .resizable()
+                                        .frame(width:17, height:21)
+                                    
+                                    Text(space.comment)
+                                        .font(.system(size: 18, weight: .semibold))
+                                        .foregroundColor(.white)
+                                }
+                                .padding()
+                                
+                                Spacer()
+                                
+                                Image(uiImage: UIImage(data: space.model)!)
+                                    .resizable()
+                                    .scaledToFit()
+                                
+                                Spacer()
+                                
+                                HStack {
+                                    Image("logo")
+                                        .resizable()
+                                        .aspectRatio(contentMode: .fit)
+                                        .frame(height: 30)
+                                        .padding()
+                                        .opacity(0.4)
+                                    
+                                    Spacer()
+                                    
+                                    Text(space.date)
+                                        .font(.system(size: 23, weight: .semibold))
+                                        .foregroundColor(Color.white.opacity(0.8))
+                                        .padding()
+                                }
+                                    
+                                Spacer()
+                            }
+                            
+                            RoundedRectangle(cornerRadius: 19)
+                                .stroke(Color.gray, lineWidth: 2)
+                        }
+                    )
+            }
             
-            Text(date)
-                .frame(width: 300, height: 200)
-                .font(.system(size: 23, weight: .semibold))
-                .foregroundColor(Color.white.opacity(0.8))
-                .padding(.top, 410)
-                .padding(.leading, 120)
+            Spacer()
             
-            Image("saveimage")
-                .resizable()
-                .frame(width:158, height:40)
-                .padding(.top, 600)
-                .padding(.trailing, 140)
+            HStack {
+                Button(action: {
+                    
+                }, label: {
+                    Image("saveimage")
+                        .resizable()
+                        .frame(width:158, height:40)
+                })
+                .padding(.horizontal)
+                
+                Button(action: {
+                    showShare = true
+                }, label: {
+                    Image("share")
+                        .resizable()
+                        .frame(width:105, height:40)
+                })
+                .sheet(isPresented: $showShare, content: {
+                    ActivityViewController(activityItems: [space.model])
+                })
+                .padding(.horizontal)
+            }
             
-            Image("share")
-                .resizable()
-                .frame(width:105, height:40)
-                .padding(.top, 600)
-                .padding(.leading, 180)
+            Spacer()
         }
     }
 }
 
-#Preview {
-    MySpaceDetailView()
+struct ActivityViewController: UIViewControllerRepresentable {
+    var activityItems: [Any]
+    var applicationActivities: [UIActivity]? = nil
+    @Environment(\.presentationMode) var presentationMode
+    
+    func makeUIViewController(context: UIViewControllerRepresentableContext<ActivityViewController>) -> UIActivityViewController {
+        let controller = UIActivityViewController(
+            activityItems: activityItems,
+            applicationActivities: applicationActivities
+        )
+        controller.completionWithItemsHandler = { (activityType, completed, returnedItems, error) in
+            self.presentationMode.wrappedValue.dismiss()
+        }
+        return controller
+    }
+    
+    func updateUIViewController(_ uiViewController: UIActivityViewController, context: UIViewControllerRepresentableContext<ActivityViewController>) {
+        
+    }
 }

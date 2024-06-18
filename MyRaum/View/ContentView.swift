@@ -59,9 +59,6 @@ struct ContentView: View {
                             .aspectRatio(contentMode: .fit)
                             .frame(width: 200)
                     }
-                    .toolbarTitleMenu {
-                        Text("보관함")
-                    }
                 }
             }
             .background(Color.black)
