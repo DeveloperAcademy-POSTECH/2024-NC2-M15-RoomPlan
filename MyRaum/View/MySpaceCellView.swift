@@ -23,7 +23,11 @@ struct MySpaceCellView: View {
                     ZStack {
                         Image("bg")
                             .resizable()
-                            .scaledToFit()
+                            .scaledToFill()
+                            .frame(width: 169, height: 262)
+                            .overlay(Color.black.opacity(0.4))
+                            .cornerRadius(19)
+                            .clipped()
                         RoundedRectangle(cornerRadius: 19)
                             .stroke(Color.gray, lineWidth: 2)
                     }
@@ -37,7 +41,7 @@ struct MySpaceCellView: View {
                 path.addLine (to : CGPoint(x: 55, y : 200))
                 path.addLine (to : CGPoint(x: 100, y : 150))
             }
-            .fill(Color.gray)
+            .fill(Color(.sRGB, white: 0.8, opacity: 1))
             .offset(x: 97, y: 161.5)
         }
         
