@@ -13,7 +13,36 @@ struct MySpaceCellView: View {
     
     var body: some View {
         //위에 있는 더미 변수로 카드 만들어주셔용~나중에 데이터 연결은 제가 합니당
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        
+        ZStack {
+            Rectangle()
+                .frame(width: 169, height: 262)
+                .cornerRadius(19)
+                .foregroundColor(.white)
+                .overlay(
+                    ZStack {
+                        Image("bg")
+                            .resizable()
+                            .scaledToFit()
+                        RoundedRectangle(cornerRadius: 19)
+                            .stroke(Color.gray, lineWidth: 2)
+                    }
+                )
+                .padding(.trailing, 170)
+                .padding(.bottom, 300)
+            
+            Path { path in
+                path.move(to: CGPoint(x : 100, y : 200))
+                path.addLine (to : CGPoint(x: 100, y : 200))
+                path.addLine (to : CGPoint(x: 55, y : 200))
+                path.addLine (to : CGPoint(x: 100, y : 150))
+            }
+            .fill(Color.gray)
+            .offset(x: 97, y: 161.5)
+        }
+        
+        
+        
     }
 }
 
