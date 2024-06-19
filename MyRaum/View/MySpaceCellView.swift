@@ -40,15 +40,6 @@ struct MySpaceCellView: View {
                             .stroke(Color.gray, lineWidth: 2)
                     }
                 )
-            
-            Path { path in
-                path.move(to: CGPoint(x : 100, y : 200))
-                path.addLine (to : CGPoint(x: 100, y : 200))
-                path.addLine (to : CGPoint(x: 55, y : 200))
-                path.addLine (to : CGPoint(x: 100, y : 150))
-            }
-            .fill(Color.gray)
-            .offset(x: 82, y: 63)
         }
     }
 }
