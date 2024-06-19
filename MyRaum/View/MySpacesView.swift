@@ -78,7 +78,12 @@ struct MySpacesView: View {
     }
     
     func deleteSpace(space: SpaceData) {
-        modelContext.delete(space)
+        do {
+            modelContext.delete(space)
+            try modelContext.save()
+        } catch {
+            print("Failed to save data")
+        }
     }
 }
 

@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		010280D02C21DF3400D57C73 /* NewCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 010280CF2C21DF3400D57C73 /* NewCardView.swift */; };
 		0135846E2C22B0E10001889E /* MySpaceCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0135846D2C22B0E10001889E /* MySpaceCardView.swift */; };
+		013584722C2324370001889E /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 013584712C2324370001889E /* LocationManager.swift */; };
 		015CDCA02C1B462800DE28F0 /* SpaceData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 015CDC9F2C1B462700DE28F0 /* SpaceData.swift */; };
 		015CDCA42C1C0A8000DE28F0 /* CommentPopupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 015CDCA32C1C0A8000DE28F0 /* CommentPopupView.swift */; };
 		019062742C1AE0A500D89653 /* MyRaumApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 019062732C1AE0A500D89653 /* MyRaumApp.swift */; };
@@ -27,6 +28,7 @@
 		010280CF2C21DF3400D57C73 /* NewCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewCardView.swift; sourceTree = "<group>"; };
 		0135846D2C22B0E10001889E /* MySpaceCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MySpaceCardView.swift; sourceTree = "<group>"; };
 		0135846F2C230A2C0001889E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		013584712C2324370001889E /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
 		015CDC9F2C1B462700DE28F0 /* SpaceData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpaceData.swift; sourceTree = "<group>"; };
 		015CDCA32C1C0A8000DE28F0 /* CommentPopupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentPopupView.swift; sourceTree = "<group>"; };
 		019062702C1AE0A500D89653 /* MyRaum.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MyRaum.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -53,6 +55,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		013584702C2324230001889E /* Map */ = {
+			isa = PBXGroup;
+			children = (
+				013584712C2324370001889E /* LocationManager.swift */,
+			);
+			path = Map;
+			sourceTree = "<group>";
+		};
 		019062672C1AE0A500D89653 = {
 			isa = PBXGroup;
 			children = (
@@ -74,6 +84,7 @@
 			children = (
 				0135846F2C230A2C0001889E /* Info.plist */,
 				019062732C1AE0A500D89653 /* MyRaumApp.swift */,
+				013584702C2324230001889E /* Map */,
 				019062832C1AE11700D89653 /* View */,
 				019062872C1AE29B00D89653 /* RoomPlan */,
 				019062842C1AE11E00D89653 /* Data */,
@@ -205,6 +216,7 @@
 				019062912C1AF0F400D89653 /* MySpaceCellView.swift in Sources */,
 				0190628D2C1AE6E600D89653 /* MySpacesView.swift in Sources */,
 				019062742C1AE0A500D89653 /* MyRaumApp.swift in Sources */,
+				013584722C2324370001889E /* LocationManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -345,6 +357,9 @@
 				INFOPLIST_KEY_CFBundleDisplayName = "My Raum";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.lifestyle";
 				INFOPLIST_KEY_NSCameraUsageDescription = "This app needs to capture image to show in the app.";
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "This app needs your current location to save cards.";
+				INFOPLIST_KEY_NSLocationUsageDescription = "This app needs your current location to save cards.";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "This app needs your current location to save cards.";
 				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "This app needs to add the image to your album.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -384,6 +399,9 @@
 				INFOPLIST_KEY_CFBundleDisplayName = "My Raum";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.lifestyle";
 				INFOPLIST_KEY_NSCameraUsageDescription = "This app needs to capture image to show in the app.";
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "This app needs your current location to save cards.";
+				INFOPLIST_KEY_NSLocationUsageDescription = "This app needs your current location to save cards.";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "This app needs your current location to save cards.";
 				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "This app needs to add the image to your album.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;

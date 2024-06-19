@@ -32,8 +32,6 @@ struct NewCardView: View {
                         }
                         
                         VStack {
-                            Spacer()
-                            
                             HStack {
                                 if comment != "" {
                                     Image("locationpin")
@@ -45,7 +43,7 @@ struct NewCardView: View {
                                         .foregroundColor(.white)
                                 }
                             }
-                            .padding()
+                            .padding(.top, 30)
                             
                             Spacer()
                             
@@ -77,8 +75,7 @@ struct NewCardView: View {
                                         .frame(height: 30)
                                 }
                             }
-                            
-                            Spacer()
+                            .padding(.bottom, 20)
                         }
                         
                         RoundedRectangle(cornerRadius: 19)

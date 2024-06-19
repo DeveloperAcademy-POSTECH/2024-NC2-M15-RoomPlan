@@ -12,12 +12,15 @@ import PhotosUI
 import UIKit
 import Vision
 import CoreImage.CIFilterBuiltins
+import CoreLocation
 
 struct RoomPlanView: View {
     var roomController = RoomController.instance
     
     @Environment(\.dismiss) var dismiss
     @Environment(\.modelContext) var modelContext
+    
+    @StateObject var locationManager = LocationManager()
     
     @State private var currentPage: Int = 0
     @State private var doneScanning: Bool = false
@@ -29,6 +32,8 @@ struct RoomPlanView: View {
     @State private var comment: String = ""
     @State private var date: Date = Date.now
     @State private var dateString: String?
+    @State private var latitude: Double?
+    @State private var longitude: Double?
     @State private var showSavedAlert: Bool = false
     
     var body: some View {
@@ -61,6 +66,7 @@ struct RoomPlanView: View {
                     HStack {
                         Button(action: {
                             currentPage = 0
+                            
                             self.doneScanning = false
                             roomController.startSession()
                         }, label: {
@@ -128,7 +134,7 @@ struct RoomPlanView: View {
                         Button(action: {
                             showCommentPopup = true
                         }, label: {
-                            Image("addcomment")
+                            Image("addplace")
                                 .resizable()
                                 .aspectRatio(contentMode: .fit)
                                 .frame(height: 56)
@@ -161,7 +167,7 @@ struct RoomPlanView: View {
                         Button(action: {
                             showCommentPopup = true
                         }, label: {
-                            Image("editcomment")
+                            Image("editplace")
                                 .resizable()
                                 .aspectRatio(contentMode: .fit)
                                 .frame(height: 56)
@@ -172,6 +178,15 @@ struct RoomPlanView: View {
                             let formatter = DateFormatter()
                             formatter.dateFormat = "yyyy년 M월 d일"
                             dateString = formatter.string(from: date)
+                            
+                            locationManager.requestLocation()
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+                                if let location = locationManager.location {
+                                    latitude = location.latitude
+                                    longitude = location.longitude
+                                }
+                            }
+                            
                             currentPage = 3
                         }, label: {
                             Image("preview")
@@ -179,6 +194,13 @@ struct RoomPlanView: View {
                                 .aspectRatio(contentMode: .fit)
                                 .frame(height: 56)
                         })
+//                        .onReceive(locationManager.$location) { location in
+//                            if let location = location {
+//                                latitude = location.latitude
+//                                longitude = location.longitude
+//                            }
+//                            currentPage = 3
+//                        }
                     }
                 }
                 
@@ -214,6 +236,7 @@ struct RoomPlanView: View {
                 .alert("저장되었습니다.", isPresented: $showSavedAlert) {
                     Button(action: {
                         self.doneScanning = false
+                        
                         currentPage = 0
                         dismiss()
                     }, label: {
@@ -307,7 +330,9 @@ struct RoomPlanView: View {
                         date: savedDate,
                         comment: comment,
                         model: model.pngData()!,
-                        background: background.pngData()!
+                        background: background.pngData()!,
+                        latitude: latitude ?? 36.013495,
+                        longitude: longitude ?? 129.326246
                     )
                     
                     modelContext.insert(newSpace)
