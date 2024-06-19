@@ -5,28 +5,39 @@
 //  Created by Yune Cho on 6/19/24.
 //
 
+import Foundation
 import CoreLocation
 
-class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
-    let manager = CLLocationManager()
-
-    @Published var location: CLLocationCoordinate2D?
-
-    override init() {
-        super.init()
+final class LocationManager: NSObject, CLLocationManagerDelegate, ObservableObject {
+    @Published var lastKnownLocation: CLLocationCoordinate2D?
+    var manager = CLLocationManager()
+    
+    func checkLocationAuthorization() {
         manager.delegate = self
-        manager.requestWhenInUseAuthorization()
+        manager.startUpdatingLocation()
+        
+        switch manager.authorizationStatus {
+        case .notDetermined:
+            manager.requestWhenInUseAuthorization()
+        case .restricted:
+            print("Location restricted")
+        case .denied:
+            print("Location denied")
+        case .authorizedAlways:
+            print("Location authorizedAlways")
+        case .authorizedWhenInUse:
+            print("Location authorized when in use")
+            lastKnownLocation = manager.location?.coordinate
+        @unknown default:
+            print("Location service disabled")
+        }
     }
-
-    func requestLocation() {
-        manager.requestLocation()
+    
+    func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {//Trigged every time authorization status changes
+        checkLocationAuthorization()
     }
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        location = locations.first?.coordinate
-    }
-    
-    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
-        print("Failed to get user location: \(error.localizedDescription)")
+        lastKnownLocation = locations.first?.coordinate
     }
 }

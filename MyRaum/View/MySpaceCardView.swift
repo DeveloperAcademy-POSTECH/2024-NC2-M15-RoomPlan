@@ -87,7 +87,7 @@ struct MySpaceCardView: View {
                     .foregroundColor(.white)
                     .overlay(
                         ZStack {
-                            Map(bounds: MapCameraBounds(minimumDistance: 400)) {
+                            Map(bounds: MapCameraBounds(minimumDistance: 600)) {
                                 Marker(space.comment, coordinate: CLLocationCoordinate2D(latitude: space.latitude, longitude: space.longitude))
                                     .tint(colorScheme == .dark ? .white : .black)
                             }
@@ -101,9 +101,6 @@ struct MySpaceCardView: View {
                                     .foregroundColor(colorScheme == .dark ? .white : .black)
                                     .padding(.top, 30)
                                 
-                                Spacer()
-                                
-                                Text("\(space.latitude), \(space.longitude)")
                                 Spacer()
                                 
                                 HStack {

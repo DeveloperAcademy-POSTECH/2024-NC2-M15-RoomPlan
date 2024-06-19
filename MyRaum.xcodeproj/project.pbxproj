@@ -357,8 +357,6 @@
 				INFOPLIST_KEY_CFBundleDisplayName = "My Raum";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.lifestyle";
 				INFOPLIST_KEY_NSCameraUsageDescription = "This app needs to capture image to show in the app.";
-				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "This app needs your current location to save cards.";
-				INFOPLIST_KEY_NSLocationUsageDescription = "This app needs your current location to save cards.";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "This app needs your current location to save cards.";
 				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "This app needs to add the image to your album.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -399,8 +397,6 @@
 				INFOPLIST_KEY_CFBundleDisplayName = "My Raum";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.lifestyle";
 				INFOPLIST_KEY_NSCameraUsageDescription = "This app needs to capture image to show in the app.";
-				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "This app needs your current location to save cards.";
-				INFOPLIST_KEY_NSLocationUsageDescription = "This app needs your current location to save cards.";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "This app needs your current location to save cards.";
 				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "This app needs to add the image to your album.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;

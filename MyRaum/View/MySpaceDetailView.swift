@@ -22,6 +22,15 @@ struct MySpaceDetailView: View {
     var body: some View {
         VStack {
             HStack {
+                Picker(selection: $cardFlipped) {
+                    Label(" 카드", systemImage: "square.2.layers.3d.top.filled").tag(false)
+                    Label(" 지도", systemImage: "square.2.layers.3d.bottom.filled").tag(true)
+                } label: {
+                    Text("Card View")
+                }
+                .pickerStyle(.menu)
+                .padding()
+                
                 Spacer()
                 
                 Button(action: {
@@ -38,7 +47,7 @@ struct MySpaceDetailView: View {
             
             MySpaceCardView(space: space, cardFlipped: $cardFlipped)
                 .onAppear(perform: {
-                    let view = MySpaceCardView(space: space, cardFlipped: .constant(false))
+                    let view = MySpaceCardView(space: space, cardFlipped: $cardFlipped)
                     card = view.snapshot()
                 })
             
