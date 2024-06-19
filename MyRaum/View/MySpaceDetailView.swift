@@ -17,6 +17,7 @@ struct MySpaceDetailView: View {
     @State private var card: UIImage = UIImage()
     @State private var showShare = false
     @State private var showSavedAlert = false
+    @State private var cardFlipped = false
     
     var body: some View {
         VStack {
@@ -35,9 +36,9 @@ struct MySpaceDetailView: View {
                 .padding()
             }
             
-            MySpaceCardView(space: space)
+            MySpaceCardView(space: space, cardFlipped: $cardFlipped)
                 .onAppear(perform: {
-                    let view = MySpaceCardView(space: space)
+                    let view = MySpaceCardView(space: space, cardFlipped: .constant(false))
                     card = view.snapshot()
                 })
             

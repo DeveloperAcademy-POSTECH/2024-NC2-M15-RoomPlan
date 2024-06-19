@@ -27,12 +27,15 @@ struct CommentPopupView: View {
                     .foregroundStyle(Color.gray)
                     .padding(.leading)
                     .submitLabel(.done)
-                    .onAppear(perform: {
-                        focusState = true
-                    })
             }
             .foregroundStyle(Color.black)
             .padding()
+            .onAppear(perform: {
+                if comment != "" {
+                    typedComment = comment
+                }
+                focusState = true
+            })
             
             Button(action: {
                 comment = typedComment
