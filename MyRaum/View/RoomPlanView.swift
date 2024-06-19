@@ -20,7 +20,7 @@ struct RoomPlanView: View {
     @Environment(\.dismiss) var dismiss
     @Environment(\.modelContext) var modelContext
     
-    @StateObject var locationManager = LocationManager()
+    @StateObject private var locationManager = LocationManager()
     
     @State private var currentPage: Int = 0
     @State private var doneScanning: Bool = false
@@ -32,8 +32,8 @@ struct RoomPlanView: View {
     @State private var comment: String = ""
     @State private var date: Date = Date.now
     @State private var dateString: String?
-    @State private var latitude: Double?
-    @State private var longitude: Double?
+    @State private var latitude: Double = 0.0
+    @State private var longitude: Double = 0.0
     @State private var showSavedAlert: Bool = false
     
     var body: some View {
@@ -49,6 +49,7 @@ struct RoomPlanView: View {
                 RoomCaptureViewRepresentable()
                     .onAppear(perform: {
                         roomController.startSession()
+                        locationManager.checkLocationAuthorization()
                     })
                     .ignoresSafeArea(.all)
                 
@@ -179,12 +180,9 @@ struct RoomPlanView: View {
                             formatter.dateFormat = "yyyy년 M월 d일"
                             dateString = formatter.string(from: date)
                             
-                            locationManager.requestLocation()
-                            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-                                if let location = locationManager.location {
-                                    latitude = location.latitude
-                                    longitude = location.longitude
-                                }
+                            if let coordinate = locationManager.lastKnownLocation {
+                                latitude = coordinate.latitude
+                                longitude = coordinate.longitude
                             }
                             
                             currentPage = 3
@@ -194,13 +192,6 @@ struct RoomPlanView: View {
                                 .aspectRatio(contentMode: .fit)
                                 .frame(height: 56)
                         })
-//                        .onReceive(locationManager.$location) { location in
-//                            if let location = location {
-//                                latitude = location.latitude
-//                                longitude = location.longitude
-//                            }
-//                            currentPage = 3
-//                        }
                     }
                 }
                 
@@ -331,8 +322,8 @@ struct RoomPlanView: View {
                         comment: comment,
                         model: model.pngData()!,
                         background: background.pngData()!,
-                        latitude: latitude ?? 36.013495,
-                        longitude: longitude ?? 129.326246
+                        latitude: latitude,
+                        longitude: longitude
                     )
                     
                     modelContext.insert(newSpace)
