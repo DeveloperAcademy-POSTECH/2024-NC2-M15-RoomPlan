@@ -13,7 +13,7 @@ struct MySpaceCellView: View {
     var body: some View {
         ZStack {
             Rectangle()
-                .frame(width: 169, height: 262)
+                .frame(width: 153, height: 272)
                 .cornerRadius(19)
                 .foregroundStyle(Color.white)
                 .overlay(
@@ -21,7 +21,7 @@ struct MySpaceCellView: View {
                         Image(uiImage: UIImage(data: space.background)!)
                             .resizable()
                             .scaledToFill()
-                            .frame(width: 169, height: 262)
+                            .frame(width: 153, height: 272)
                             .overlay(Color.black.opacity(0.4))
                             .cornerRadius(19)
                             .clipped()

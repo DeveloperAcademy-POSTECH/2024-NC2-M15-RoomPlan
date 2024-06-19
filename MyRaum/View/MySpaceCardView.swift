@@ -8,41 +8,87 @@
 import SwiftUI
 
 struct MySpaceCardView: View {
-    @Binding var date: String?
-    @Binding var model: UIImage?
-    @Binding var background: UIImage?
-    @Binding var comment: String?
-    @Binding var music: String?
+    var space: SpaceData
     
     var body: some View {
         ZStack {
-            if let background {
-                Image(uiImage: background)
-                    .resizable()
-                    .scaledToFit()
-            }
-            
-            if let model {
-                Image(uiImage: model)
-                    .resizable()
-                    .scaledToFit()
-            } else {
-                Text("모델 없음")
-            }
-            
-            VStack {
-                if let comment {
-                    Text(comment)
-                }
-                
-                if let date {
-                    Text(date)
-                }
-            }
+            Rectangle()
+                .frame(width: 315, height: 560)
+                .cornerRadius(19)
+                .foregroundColor(.white)
+                .overlay(
+                    ZStack {
+                        Image(uiImage: UIImage(data: space.background)!)
+                            .resizable()
+                            .scaledToFill()
+                            .frame(width: 315, height: 560)
+                            .overlay(Color.black.opacity(0.4))
+                            .cornerRadius(19)
+                            .clipped()
+                        
+                        VStack {
+                            Spacer()
+                            
+                            HStack {
+                                Image("locationpin")
+                                    .resizable()
+                                    .frame(width:17, height:21)
+                                
+                                Text(space.comment)
+                                    .font(.system(size: 18, weight: .semibold))
+                                    .foregroundColor(.white)
+                            }
+                            .padding()
+                            
+                            Spacer()
+                            
+                            Image(uiImage: UIImage(data: space.model)!)
+                                .resizable()
+                                .scaledToFit()
+                            
+                            Spacer()
+                            
+                            HStack {
+                                Image("logo")
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fit)
+                                    .frame(height: 30)
+                                    .padding()
+                                    .opacity(0.4)
+                                
+                                Spacer()
+                                
+                                Text(space.date)
+                                    .font(.system(size: 23, weight: .semibold))
+                                    .foregroundColor(Color.white.opacity(0.8))
+                                    .padding()
+                            }
+                            
+                            Spacer()
+                        }
+                        
+                        RoundedRectangle(cornerRadius: 19)
+                            .stroke(Color.gray, lineWidth: 2)
+                    }
+                )
         }
     }
 }
 
-//#Preview {
-//    MySpaceCardView(date: .constant("2024년 6월 14일"), model: , background: .constant(Image("bg")), comment: .constant("체인지업그라운드"), music: .constant(""))
-//}
+extension View {
+    func snapshot() -> UIImage {
+        let controller = UIHostingController(rootView: self.ignoresSafeArea())
+        let view = controller.view
+        
+        let targetSize = controller.view.intrinsicContentSize
+        
+        view?.bounds = CGRect(origin: .zero, size: targetSize)
+        view?.backgroundColor = .clear
+        
+        let renderer = UIGraphicsImageRenderer(size: targetSize)
+        
+        return renderer.image { _ in
+            view?.drawHierarchy(in: controller.view.bounds, afterScreenUpdates: true)
+        }
+    }
+}
