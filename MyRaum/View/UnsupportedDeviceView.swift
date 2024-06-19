@@ -10,6 +10,11 @@ import SwiftUI
 struct UnsupportedDeviceView: View {
     var body: some View {
         VStack {
+            Image(systemName: "iphone.slash")
+                .font(.system(size: 50))
+                .foregroundStyle(Color.red)
+                .padding()
+            
             Text("지원하지 않는 기기입니다.")
                 .font(.title)
                 .bold()
