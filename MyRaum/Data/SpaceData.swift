@@ -12,17 +12,15 @@ import SwiftData
 final class SpaceData: Identifiable {
     var id: UUID
     var date: String
+    var comment: String
     @Attribute(.externalStorage) var model: Data
     @Attribute(.externalStorage) var background: Data
-    var comment: String
-    var music: String
     
-    init(id: UUID, date: String, model: Data, background: Data, comment: String, music: String) {
+    init(id: UUID, date: String, comment: String, model: Data, background: Data) {
         self.id = id
         self.date = date
+        self.comment = comment
         self.model = model
         self.background = background
-        self.comment = comment
-        self.music = music
     }
 }

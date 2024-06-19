@@ -28,12 +28,19 @@ struct RoomPlanView: View {
     @State private var showCommentPopup: Bool = false
     @State private var comment: String = ""
     @State private var date: Date = Date.now
+    @State private var dateString: String?
     @State private var showSavedAlert: Bool = false
     
     var body: some View {
         TabView(selection: $currentPage, content:  {
             //방 캡처 화면 & 캡처 결과 확인 화면
             VStack{
+                if doneScanning == true {
+                    Text("3D 모델의 각도를 조절한 후\n배경을 추가하세요.")
+                        .bold()
+                        .multilineTextAlignment(.center)
+                }
+                
                 RoomCaptureViewRepresentable()
                     .onAppear(perform: {
                         roomController.startSession()
@@ -60,14 +67,14 @@ struct RoomPlanView: View {
                             Image("scanagain")
                                 .resizable()
                                 .aspectRatio(contentMode: .fit)
-                                .frame(width: 150)
+                                .frame(height: 56)
                         })
                         
                         PhotosPicker(selection: $selectedItem, matching: .images) {
                             Image("addbg")
                                 .resizable()
                                 .aspectRatio(contentMode: .fit)
-                                .frame(width: 150)
+                                .frame(height: 56)
                         }
                         .onChange(of: selectedItem) {
                             Task {
@@ -93,21 +100,11 @@ struct RoomPlanView: View {
             //방 모델 이미지 + 배경 이미지 화면
             ZStack {
                 VStack{
-                    ZStack {
-                        if let background {
-                            Image(uiImage: background)
-                                .resizable()
-                                .scaledToFit()
-                        }
-                        
-                        if let model {
-                            Image(uiImage: model)
-                                .resizable()
-                                .scaledToFit()
-                        } else {
-                            Text("모델 없음")
-                        }
-                    }
+                    Text("장소를 입력하세요.")
+                        .bold()
+                        .padding()
+                    
+                    NewCardView(model: $model, background: $background, date: $dateString, comment: $comment)
                     
                     Spacer()
                     
@@ -116,7 +113,7 @@ struct RoomPlanView: View {
                             Image("editbg")
                                 .resizable()
                                 .aspectRatio(contentMode: .fit)
-                                .frame(width: 150)
+                                .frame(height: 56)
                         }
                         .onChange(of: selectedItem) {
                             Task {
@@ -134,7 +131,7 @@ struct RoomPlanView: View {
                             Image("addcomment")
                                 .resizable()
                                 .aspectRatio(contentMode: .fit)
-                                .frame(width: 150)
+                                .frame(height: 56)
                         })
                     }
                 }
@@ -152,23 +149,11 @@ struct RoomPlanView: View {
             //방 모델 이미지 + 배경 이미지 + 코멘트 화면
             ZStack {
                 VStack{
-                    ZStack {
-                        if let background {
-                            Image(uiImage: background)
-                                .resizable()
-                                .scaledToFit()
-                        }
-                        
-                        if let model {
-                            Image(uiImage: model)
-                                .resizable()
-                                .scaledToFit()
-                        } else {
-                            Text("모델 없음")
-                        }
-                        
-                        Text(comment)
-                    }
+                    Text("결과물을 확인하세요.")
+                        .bold()
+                        .padding()
+                    
+                    NewCardView(model: $model, background: $background, date: $dateString, comment: $comment)
                     
                     Spacer()
                     
@@ -179,18 +164,20 @@ struct RoomPlanView: View {
                             Image("editcomment")
                                 .resizable()
                                 .aspectRatio(contentMode: .fit)
-                                .frame(width: 150)
+                                .frame(height: 56)
                         })
                         
                         Button(action: {
-                            
-                            
+                            date = Date.now
+                            let formatter = DateFormatter()
+                            formatter.dateFormat = "yyyy년 M월 d일"
+                            dateString = formatter.string(from: date)
                             currentPage = 3
                         }, label: {
-                            Image("addmusic")
+                            Image("preview")
                                 .resizable()
                                 .aspectRatio(contentMode: .fit)
-                                .frame(width: 150)
+                                .frame(height: 56)
                         })
                     }
                 }
@@ -207,66 +194,42 @@ struct RoomPlanView: View {
             
             //최종 결과 확인 화면
             VStack{
-                ZStack {
-                    if let background {
-                        Image(uiImage: background)
-                            .resizable()
-                            .scaledToFit()
-                    }
-                    
-                    if let model {
-                        Image(uiImage: model)
-                            .resizable()
-                            .scaledToFit()
-                    } else {
-                        Text("모델 없음")
-                    }
-                    
-                    Text(comment)
-                }
+                Text("결과물을 저장해보세요.")
+                    .bold()
+                    .padding()
+                
+                NewCardView(model: $model, background: $background, date: $dateString, comment: $comment)
                 
                 Spacer()
                 
-                HStack {
+                Button(action: {
+                    addSpace()
+                    showSavedAlert = true
+                }, label: {
+                    Image("save")
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(height: 56)
+                })
+                .alert("저장되었습니다.", isPresented: $showSavedAlert) {
                     Button(action: {
-                        
+                        self.doneScanning = false
+                        currentPage = 0
+                        dismiss()
                     }, label: {
-                        Image("editmusic")
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                            .frame(width: 150)
+                        Text("확인")
                     })
-                    
-                    Button(action: {
-                        addSpace()
-                        showSavedAlert = true
-                    }, label: {
-                        Image("save 1")
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                            .frame(width: 150)
-                    })
-                    .alert("저장되었습니다.", isPresented: $showSavedAlert) {
-                        Button(action: {
-                            self.doneScanning = false
-                            currentPage = 0
-                            dismiss()
-                        }, label: {
-                            Text("확인")
-                        })
-                    }
                 }
             }
             .tag(3)
         })
-        .padding(.bottom, 10)
     }
     
     func captureScreen() {
         if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene {
             if let window = windowScene.windows.first(where: { $0.isKeyWindow }) {
                 let rootView = window.rootViewController?.view
-                let topMargin: CGFloat = 50
+                let topMargin: CGFloat = 100
                 let bottomMargin: CGFloat = 300
                 let screenHeight = UIScreen.main.bounds.height
                 let screenWidth = UIScreen.main.bounds.width
@@ -342,10 +305,9 @@ struct RoomPlanView: View {
                     let newSpace = SpaceData(
                         id: UUID(),
                         date: savedDate,
-                        model: model.pngData()!,
-                        background: background.pngData()!,
                         comment: comment,
-                        music: ""
+                        model: model.pngData()!,
+                        background: background.pngData()!
                     )
                     
                     modelContext.insert(newSpace)

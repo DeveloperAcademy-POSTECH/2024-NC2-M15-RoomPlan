@@ -7,7 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		010280D02C21DF3400D57C73 /* MySpaceCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 010280CF2C21DF3400D57C73 /* MySpaceCardView.swift */; };
+		010280D02C21DF3400D57C73 /* NewCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 010280CF2C21DF3400D57C73 /* NewCardView.swift */; };
+		0135846E2C22B0E10001889E /* MySpaceCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0135846D2C22B0E10001889E /* MySpaceCardView.swift */; };
 		015CDCA02C1B462800DE28F0 /* SpaceData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 015CDC9F2C1B462700DE28F0 /* SpaceData.swift */; };
 		015CDCA42C1C0A8000DE28F0 /* CommentPopupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 015CDCA32C1C0A8000DE28F0 /* CommentPopupView.swift */; };
 		019062742C1AE0A500D89653 /* MyRaumApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 019062732C1AE0A500D89653 /* MyRaumApp.swift */; };
@@ -23,7 +24,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		010280CF2C21DF3400D57C73 /* MySpaceCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MySpaceCardView.swift; sourceTree = "<group>"; };
+		010280CF2C21DF3400D57C73 /* NewCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewCardView.swift; sourceTree = "<group>"; };
+		0135846D2C22B0E10001889E /* MySpaceCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MySpaceCardView.swift; sourceTree = "<group>"; };
+		0135846F2C230A2C0001889E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		015CDC9F2C1B462700DE28F0 /* SpaceData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpaceData.swift; sourceTree = "<group>"; };
 		015CDCA32C1C0A8000DE28F0 /* CommentPopupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentPopupView.swift; sourceTree = "<group>"; };
 		019062702C1AE0A500D89653 /* MyRaum.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MyRaum.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -69,6 +72,7 @@
 		019062722C1AE0A500D89653 /* MyRaum */ = {
 			isa = PBXGroup;
 			children = (
+				0135846F2C230A2C0001889E /* Info.plist */,
 				019062732C1AE0A500D89653 /* MyRaumApp.swift */,
 				019062832C1AE11700D89653 /* View */,
 				019062872C1AE29B00D89653 /* RoomPlan */,
@@ -92,8 +96,9 @@
 			children = (
 				019062752C1AE0A500D89653 /* ContentView.swift */,
 				019062852C1AE25E00D89653 /* RoomPlanView.swift */,
-				010280CF2C21DF3400D57C73 /* MySpaceCardView.swift */,
+				010280CF2C21DF3400D57C73 /* NewCardView.swift */,
 				0190628C2C1AE6E600D89653 /* MySpacesView.swift */,
+				0135846D2C22B0E10001889E /* MySpaceCardView.swift */,
 				015CDCA32C1C0A8000DE28F0 /* CommentPopupView.swift */,
 				0190628E2C1AE7DA00D89653 /* MySpaceDetailView.swift */,
 				019062902C1AF0F400D89653 /* MySpaceCellView.swift */,
@@ -188,13 +193,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				010280D02C21DF3400D57C73 /* MySpaceCardView.swift in Sources */,
+				010280D02C21DF3400D57C73 /* NewCardView.swift in Sources */,
 				0190628B2C1AE2E300D89653 /* UnsupportedDeviceView.swift in Sources */,
 				019062862C1AE25E00D89653 /* RoomPlanView.swift in Sources */,
 				0190628F2C1AE7DA00D89653 /* MySpaceDetailView.swift in Sources */,
 				019062762C1AE0A500D89653 /* ContentView.swift in Sources */,
 				015CDCA02C1B462800DE28F0 /* SpaceData.swift in Sources */,
 				015CDCA42C1C0A8000DE28F0 /* CommentPopupView.swift in Sources */,
+				0135846E2C22B0E10001889E /* MySpaceCardView.swift in Sources */,
 				019062892C1AE2B500D89653 /* RoomController.swift in Sources */,
 				019062912C1AF0F400D89653 /* MySpaceCellView.swift in Sources */,
 				0190628D2C1AE6E600D89653 /* MySpacesView.swift in Sources */,
@@ -335,9 +341,11 @@
 				DEVELOPMENT_TEAM = WAC2RPX5HC;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = MyRaum/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "My Raum";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.lifestyle";
 				INFOPLIST_KEY_NSCameraUsageDescription = "This app needs to capture image to show in the app.";
+				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "This app needs to add the image to your album.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -372,9 +380,11 @@
 				DEVELOPMENT_TEAM = WAC2RPX5HC;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = MyRaum/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "My Raum";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.lifestyle";
 				INFOPLIST_KEY_NSCameraUsageDescription = "This app needs to capture image to show in the app.";
+				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "This app needs to add the image to your album.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

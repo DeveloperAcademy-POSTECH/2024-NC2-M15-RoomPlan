@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-import UIKit
+import Vision
 
 struct MySpaceDetailView: View {
     @Environment(\.dismiss) var dismiss
@@ -14,7 +14,9 @@ struct MySpaceDetailView: View {
     
     var space: SpaceData
     
-    @State var showShare = false
+    @State private var card: UIImage = UIImage()
+    @State private var showShare = false
+    @State private var showSavedAlert = false
     
     var body: some View {
         VStack {
@@ -33,92 +35,36 @@ struct MySpaceDetailView: View {
                 .padding()
             }
             
-            Spacer()
-            
-            ZStack {
-                Rectangle()
-                    .frame(width: 320, height: 495)
-                    .cornerRadius(19)
-                    .foregroundColor(.white)
-                    .overlay(
-                        ZStack {
-                            Image(uiImage: UIImage(data: space.background)!)
-                                .resizable()
-                                .scaledToFill()
-                                .frame(width: 320, height: 495)
-                                .overlay(Color.black.opacity(0.4))
-                                .cornerRadius(19)
-                                .clipped()
-                            
-                            VStack {
-                                Spacer()
-                                
-                                HStack {
-                                    Image("locationpin")
-                                        .resizable()
-                                        .frame(width:17, height:21)
-                                    
-                                    Text(space.comment)
-                                        .font(.system(size: 18, weight: .semibold))
-                                        .foregroundColor(.white)
-                                }
-                                .padding()
-                                
-                                Spacer()
-                                
-                                Image(uiImage: UIImage(data: space.model)!)
-                                    .resizable()
-                                    .scaledToFit()
-                                
-                                Spacer()
-                                
-                                HStack {
-                                    Image("logo")
-                                        .resizable()
-                                        .aspectRatio(contentMode: .fit)
-                                        .frame(height: 30)
-                                        .padding()
-                                        .opacity(0.4)
-                                    
-                                    Spacer()
-                                    
-                                    Text(space.date)
-                                        .font(.system(size: 23, weight: .semibold))
-                                        .foregroundColor(Color.white.opacity(0.8))
-                                        .padding()
-                                }
-                                    
-                                Spacer()
-                            }
-                            
-                            RoundedRectangle(cornerRadius: 19)
-                                .stroke(Color.gray, lineWidth: 2)
-                        }
-                    )
-            }
+            MySpaceCardView(space: space)
+                .onAppear(perform: {
+                    let view = MySpaceCardView(space: space)
+                    card = view.snapshot()
+                })
             
             Spacer()
             
             HStack {
                 Button(action: {
-                    
+                    UIImageWriteToSavedPhotosAlbum(card, nil, nil, nil)
+                    showSavedAlert = true
                 }, label: {
                     Image("saveimage")
                         .resizable()
                         .frame(width:158, height:40)
                 })
                 .padding(.horizontal)
+                .alert("이미지가 저장되었습니다.", isPresented: $showSavedAlert) {
+                    Button(action: {
+                    }, label: {
+                        Text("확인")
+                    })
+                }
                 
-                Button(action: {
-                    showShare = true
-                }, label: {
+                ShareLink(item: Image(uiImage: card), preview: SharePreview("공간 카드 공유", icon: "AppIcon")) {
                     Image("share")
                         .resizable()
                         .frame(width:105, height:40)
-                })
-                .sheet(isPresented: $showShare, content: {
-                    ActivityViewController(activityItems: [space.model])
-                })
+                }
                 .padding(.horizontal)
             }
             
@@ -127,23 +73,11 @@ struct MySpaceDetailView: View {
     }
 }
 
-struct ActivityViewController: UIViewControllerRepresentable {
-    var activityItems: [Any]
-    var applicationActivities: [UIActivity]? = nil
-    @Environment(\.presentationMode) var presentationMode
-    
-    func makeUIViewController(context: UIViewControllerRepresentableContext<ActivityViewController>) -> UIActivityViewController {
-        let controller = UIActivityViewController(
-            activityItems: activityItems,
-            applicationActivities: applicationActivities
-        )
-        controller.completionWithItemsHandler = { (activityType, completed, returnedItems, error) in
-            self.presentationMode.wrappedValue.dismiss()
+extension UIImage {
+    func resize(to targetSize: CGSize) -> UIImage? {
+        let renderer = UIGraphicsImageRenderer(size: targetSize)
+        return renderer.image { _ in
+            self.draw(in: CGRect(origin: .zero, size: targetSize))
         }
-        return controller
-    }
-    
-    func updateUIViewController(_ uiViewController: UIActivityViewController, context: UIViewControllerRepresentableContext<ActivityViewController>) {
-        
     }
 }

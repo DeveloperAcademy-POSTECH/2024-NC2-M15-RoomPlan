@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct ContentView: View {
+    @Environment(\.colorScheme) var colorScheme
+    
     var body: some View {
         NavigationStack {
             VStack(spacing: 10) {
@@ -62,7 +64,9 @@ struct ContentView: View {
                 }
             }
             .background(Color.black)
+            .ignoresSafeArea()
         }
+        .tint(colorScheme == .dark ? .white : .black)
     }
 }
 

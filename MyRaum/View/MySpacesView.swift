@@ -15,6 +15,8 @@ struct MySpacesView: View {
     
     @State private var selectedSpace: SpaceData? = nil
     @State private var showMySpaceDetailView = false
+    @State private var spaceToDelete: SpaceData? = nil
+    @State private var showDeleteConfirmation = false
     
     private let columns = [
         GridItem(),
@@ -23,24 +25,60 @@ struct MySpacesView: View {
     
     var body: some View {
         if spaceData.isEmpty {
-            Text("저장된 공간이 없습니다.")
+            VStack {
+                Image("scanexport")
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: 250)
+                    .padding()
+                
+                Text("저장된 공간이 없습니다.")
+                    .font(.title3)
+                    .bold()
+                    .padding(.bottom, 100)
+                    .navigationTitle("보관함")
+                    .navigationBarTitleDisplayMode(.inline)
+            }
         } else {
             ScrollView {
                 LazyVGrid(columns: columns, spacing: 30) {
                     ForEach(spaceData) { space in
-                        Button(action: {
-                            selectedSpace = space
-                            showMySpaceDetailView = true
-                        }, label: {
-                            MySpaceCellView(space: space)
-                        })
+                        MySpaceCellView(space: space)
+                            .onTapGesture {
+                                selectedSpace = space
+                                showMySpaceDetailView = true
+                            }
+                            .onLongPressGesture(minimumDuration: 0.3) {
+                                spaceToDelete = space
+                                showDeleteConfirmation = true
+                            }
                     }
                 }
+                .padding(.horizontal, 20)
             }
+            .navigationTitle("보관함")
+            .navigationBarTitleDisplayMode(.inline)
+            .padding(.top)
             .sheet(item: $selectedSpace) { space in
                 MySpaceDetailView(space: space)
             }
+            .alert(isPresented: $showDeleteConfirmation) {
+                Alert(
+                    title: Text("공간 삭제"),
+                    message: Text("이 공간을 삭제하시겠습니까?"),
+                    primaryButton: .destructive(Text("삭제")) {
+                        if let space = spaceToDelete {
+                            deleteSpace(space: space)
+                        }
+                    },
+                    secondaryButton: .cancel()
+                )
+            }
         }
+    }
+    
+    func deleteSpace(space: SpaceData) {
+        modelContext.delete(space)
     }
 }
 
