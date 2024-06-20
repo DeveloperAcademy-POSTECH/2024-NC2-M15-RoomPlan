@@ -14,6 +14,7 @@ import Vision
 import CoreImage.CIFilterBuiltins
 import CoreLocation
 
+//공간을 캡쳐하고 공간 카드를 만들기까지의 프로세스들을 구현한 뷰
 struct RoomPlanView: View {
     var roomController = RoomController.instance
     
@@ -38,7 +39,7 @@ struct RoomPlanView: View {
     
     var body: some View {
         TabView(selection: $currentPage, content:  {
-            //방 캡처 화면 & 캡처 결과 확인 화면
+            //방 캡쳐 화면 & 캡쳐 결과 확인 화면
             VStack{
                 if doneScanning == true {
                     Text("3D 모델의 각도를 조절한 후\n배경을 추가하세요.")
@@ -49,6 +50,8 @@ struct RoomPlanView: View {
                 RoomCaptureViewRepresentable()
                     .onAppear(perform: {
                         roomController.startSession()
+                        
+                        //캡쳐를 시작할 때 위치 정보 권한을 승인할 것인지 확인
                         locationManager.checkLocationAuthorization()
                     })
                     .ignoresSafeArea(.all)
@@ -85,8 +88,11 @@ struct RoomPlanView: View {
                         }
                         .onChange(of: selectedItem) {
                             Task {
+                                //배경 이미지를 선택할때 3D 모델은 화면 캡쳐 및 배경 제거를 통해 모델만 존재하는 이미지로 변환
+                                //화면 캡쳐
                                 captureScreen()
                                 if let modelImage = capturedView {
+                                    //배경 제거
                                     createSticker(image: modelImage)
                                 }
                                 
@@ -153,7 +159,7 @@ struct RoomPlanView: View {
             }
             .tag(1)
             
-            //방 모델 이미지 + 배경 이미지 + 코멘트 화면
+            //방 모델 이미지 + 배경 이미지 + 장소명 화면
             ZStack {
                 VStack{
                     Text("결과물을 확인하세요.")
@@ -175,11 +181,13 @@ struct RoomPlanView: View {
                         })
                         
                         Button(action: {
+                            //미리보기 버튼을 선택할때 현재의 날짜 정보 입력
                             date = Date.now
                             let formatter = DateFormatter()
                             formatter.dateFormat = "yyyy년 M월 d일"
                             dateString = formatter.string(from: date)
                             
+                            //미리보기 버튼을 선택할때 현재의 위치 정보 입력
                             if let coordinate = locationManager.lastKnownLocation {
                                 latitude = coordinate.latitude
                                 longitude = coordinate.longitude
@@ -239,6 +247,8 @@ struct RoomPlanView: View {
         })
     }
     
+    //캡쳐된 모델이 보이는 뷰를 이미지로 캡쳐하기 위한 함수
+    //3D모델이 존재하는 부분만 캡쳐되도록 영역을 조정해서 이미지로 만듦
     func captureScreen() {
         if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene {
             if let window = windowScene.windows.first(where: { $0.isKeyWindow }) {
@@ -253,6 +263,7 @@ struct RoomPlanView: View {
         }
     }
     
+    //이미지의 배경을 제거하는 함수
     func createSticker(image: UIImage) {
         let processingQueue = DispatchQueue(label: "ProcessingQueue")
         
@@ -275,6 +286,7 @@ struct RoomPlanView: View {
         }
     }
     
+    //이미지의 배경을 제거하기 위한 Mask를 만들어주는 함수
     func subjectMaskImage(from inputImage: CIImage) -> CIImage? {
         let handler = VNImageRequestHandler(ciImage: inputImage, options: [:])
         let request = VNGenerateForegroundInstanceMaskRequest()
@@ -293,6 +305,7 @@ struct RoomPlanView: View {
         }
     }
     
+    //이미지에 Mask를 적용하는 함수
     func apply(mask: CIImage, to image: CIImage) -> CIImage {
         let filter = CIFilter.blendWithMask()
         filter.inputImage = image
@@ -301,6 +314,7 @@ struct RoomPlanView: View {
         return filter.outputImage!
     }
     
+    //이미지에 적용된 Mask에 따라 배경을 제거한 이미지를 리턴하는 함수
     func render(ciImage: CIImage) -> UIImage {
         guard let cgImage = CIContext(options: nil).createCGImage(ciImage, from: ciImage.extent) else {
             fatalError("Failed to render CGImage")
@@ -308,6 +322,7 @@ struct RoomPlanView: View {
         return UIImage(cgImage: cgImage)
     }
     
+    //SwiftData에 공간 정보를 저장하는 함수
     func addSpace() {
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy년 M월 d일"
@@ -336,6 +351,7 @@ struct RoomPlanView: View {
     }
 }
 
+//캡쳐된 모델이 보이는 뷰를 이미지로 변환하기 위한 View Extension
 extension UIView {
     func snapshot(of rect: CGRect) -> UIImage? {
         let renderer = UIGraphicsImageRenderer(bounds: rect)

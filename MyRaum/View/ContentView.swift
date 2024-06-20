@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+//앱 메인화면
 struct ContentView: View {
     @Environment(\.colorScheme) var colorScheme
     
@@ -39,6 +40,7 @@ struct ContentView: View {
                 }
                 
                 HStack {
+                    //공간 스캔 화면으로 이동
                     NavigationLink(destination: RoomPlanView()) {
                         Image("scan")
                             .resizable()
@@ -55,6 +57,7 @@ struct ContentView: View {
                 HStack {
                     Spacer()
                     
+                    //보관함으로 이동
                     NavigationLink(destination: MySpacesView()) {
                         Image("corner")
                             .resizable()

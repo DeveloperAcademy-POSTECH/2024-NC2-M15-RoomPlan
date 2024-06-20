@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+//RoomPlan을 지원하지 않는 기기일 경우 보여주는 화면
 struct UnsupportedDeviceView: View {
     var body: some View {
         VStack {

@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+//장소 입력 팝업창
 struct CommentPopupView: View {
     @Binding var showCommentPopup: Bool
     @Binding var currentPage: Int

@@ -8,6 +8,7 @@
 import Foundation
 import CoreLocation
 
+//MapKit에 표시하기 위한 위치를 가져오는 클래스
 final class LocationManager: NSObject, CLLocationManagerDelegate, ObservableObject {
     @Published var lastKnownLocation: CLLocationCoordinate2D?
     var manager = CLLocationManager()

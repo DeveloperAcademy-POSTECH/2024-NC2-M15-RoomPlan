@@ -8,6 +8,7 @@
 import SwiftUI
 import MapKit
 
+//MySpaceDetailView에 보이는 카드 부분을 그린 뷰
 struct MySpaceCardView: View {
     @Environment(\.colorScheme) var colorScheme
     
@@ -15,6 +16,7 @@ struct MySpaceCardView: View {
     @Binding var cardFlipped: Bool
     
     var body: some View {
+        //카드의 앞면 - 스캔된 모델, 배경이미지, 장소명, 날짜 등이 노출됨
         if cardFlipped == false {
             ZStack {
                 Rectangle()
@@ -79,7 +81,7 @@ struct MySpaceCardView: View {
                         }
                     }
             }
-        } else {
+        } else {    //카드의 뒷부분 - 장소의 위치 정보, 장소명, 날짜 등이 노출됨
             ZStack {
                 Rectangle()
                     .frame(width: 315, height: 560)
@@ -135,6 +137,7 @@ struct MySpaceCardView: View {
     }
 }
 
+//MySpaceCardView를 이미지로 변환하여 저장 및 공유하기 위한 View Extension
 extension View {
     func snapshot() -> UIImage {
         let controller = UIHostingController(rootView: self.ignoresSafeArea())
