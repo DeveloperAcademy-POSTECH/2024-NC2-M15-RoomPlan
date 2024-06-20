@@ -8,6 +8,7 @@
 import SwiftUI
 import SwiftData
 
+//보관함 화면
 struct MySpacesView: View {
     @Environment(\.modelContext) var modelContext
     
@@ -24,12 +25,13 @@ struct MySpacesView: View {
     ]
     
     var body: some View {
+        //저장된 데이터가 없으면 저장된 공간이 없다고 노출되고, 저장된 데이터가 있을 경우 LazyVGrid 방식으로 장소 카드들을 보여줌
         if spaceData.isEmpty {
             VStack {
                 Image("scanexport")
                     .resizable()
                     .aspectRatio(contentMode: .fit)
-                    .frame(width: 250)
+                    .frame(width: 200)
                     .padding()
                 
                 Text("저장된 공간이 없습니다.")
@@ -77,6 +79,7 @@ struct MySpacesView: View {
         }
     }
     
+    //SwiftData에서 데이터를 삭제하는 함수
     func deleteSpace(space: SpaceData) {
         do {
             modelContext.delete(space)

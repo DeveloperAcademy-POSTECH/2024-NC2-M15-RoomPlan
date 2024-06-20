@@ -8,6 +8,7 @@
 import SwiftUI
 import Vision
 
+//저장된 공간의 상세 정보를 확인하고 이미지 저장 및 공유가 가능한 뷰
 struct MySpaceDetailView: View {
     @Environment(\.dismiss) var dismiss
     @Environment(\.colorScheme) var colorScheme
@@ -83,6 +84,7 @@ struct MySpaceDetailView: View {
     }
 }
 
+//이미지를 저장하거나 공유할 때 이미지의 크기를 적당하게 조절하기 위한 extension
 extension UIImage {
     func resize(to targetSize: CGSize) -> UIImage? {
         let renderer = UIGraphicsImageRenderer(size: targetSize)

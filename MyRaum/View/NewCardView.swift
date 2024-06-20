@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+//공간 카드를 생성하는 단계에서 화면에 진행상황을 보여주는 뷰
 struct NewCardView: View {
     @Binding var model: UIImage?
     @Binding var background: UIImage?
