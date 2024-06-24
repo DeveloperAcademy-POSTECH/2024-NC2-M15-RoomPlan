@@ -11,6 +11,8 @@ import SwiftUI
 struct ContentView: View {
     @Environment(\.colorScheme) var colorScheme
     
+    let version: String = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "1.0"
+    
     var body: some View {
         NavigationStack {
             VStack(spacing: 10) {
@@ -55,6 +57,12 @@ struct ContentView: View {
                 Spacer()
                 
                 HStack {
+                    Text("[Version \(version)]")
+                        .font(.caption)
+                        .opacity(0.2)
+                        .padding(.top, 80)
+                        .padding(.leading, 30)
+                    
                     Spacer()
                     
                     //보관함으로 이동
