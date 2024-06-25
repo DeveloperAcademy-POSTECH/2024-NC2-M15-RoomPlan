@@ -72,6 +72,7 @@ struct ContentView: View {
                             .aspectRatio(contentMode: .fit)
                             .frame(width: 200)
                     }
+                    .navigationTitle("")
                 }
             }
             .background(Color.black)
