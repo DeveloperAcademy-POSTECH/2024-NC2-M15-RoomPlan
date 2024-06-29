@@ -1,9 +1,7 @@
 # 2024-NC2-M15-RoomPlan
 
-<img width="800" alt="%E1%84%89%E1%85%B3%E1%84%8F%E1%85%B3%E1%84%85%E1%85%B5%E1%86%AB%E1%84%89%E1%85%A3%E1%86%BA_2024-06-20_%E1%84%8B%E1%85%A9%E1%84%92%E1%85%AE_9 29 15" src="https://github.com/DeveloperAcademy-POSTECH/2024-NC2-M15-RoomPlan/assets/52344592/6f631d09-955f-420c-bd7c-9b06ce0888b5">
-
-<!-- ## 🎥 Youtube Link -->
-<!-- (추후 만들어진 유튜브 링크 추가) -->
+## 🎥 Youtube Link (Click the image)
+[![Video Label](https://github.com/DeveloperAcademy-POSTECH/2024-NC2-M15-RoomPlan/assets/52344592/6f631d09-955f-420c-bd7c-9b06ce0888b5)](https://youtu.be/Ne4yzAaqqkM?si=25OEI2bubSXvJbl4)
 
 ## 💡 About RoomPlan
 
