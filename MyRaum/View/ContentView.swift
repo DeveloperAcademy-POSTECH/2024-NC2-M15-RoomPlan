@@ -58,8 +58,9 @@ struct ContentView: View {
                 
                 HStack {
                     Text("[Version \(version)]")
+                        .foregroundStyle(Color.gray)
+                        .opacity(0.5)
                         .font(.caption)
-                        .opacity(0.2)
                         .padding(.top, 80)
                         .padding(.leading, 30)
                     
@@ -71,6 +72,7 @@ struct ContentView: View {
                             .resizable()
                             .aspectRatio(contentMode: .fit)
                             .frame(width: 150)
+                            .offset(x: 10)
                     }
                     .navigationTitle("")
                 }
