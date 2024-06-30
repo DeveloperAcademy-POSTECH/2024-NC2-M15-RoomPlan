@@ -11,7 +11,7 @@ import SwiftUI
 struct ContentView: View {
     @Environment(\.colorScheme) var colorScheme
     
-    let version: String = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "1.0"
+    let version: String = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "1.0.0"
     
     var body: some View {
         NavigationStack {
@@ -70,7 +70,7 @@ struct ContentView: View {
                         Image("corner")
                             .resizable()
                             .aspectRatio(contentMode: .fit)
-                            .frame(width: 200)
+                            .frame(width: 150)
                     }
                     .navigationTitle("")
                 }

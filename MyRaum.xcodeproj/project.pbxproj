@@ -12,6 +12,9 @@
 		013584722C2324370001889E /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 013584712C2324370001889E /* LocationManager.swift */; };
 		015CDCA02C1B462800DE28F0 /* SpaceData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 015CDC9F2C1B462700DE28F0 /* SpaceData.swift */; };
 		015CDCA42C1C0A8000DE28F0 /* CommentPopupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 015CDCA32C1C0A8000DE28F0 /* CommentPopupView.swift */; };
+		01864F3E2C3198FB00735A7B /* UIView+Snapshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01864F3D2C3198FB00735A7B /* UIView+Snapshot.swift */; };
+		01864F402C31999D00735A7B /* View+Snapshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01864F3F2C31999D00735A7B /* View+Snapshot.swift */; };
+		01864F422C319A8F00735A7B /* UIImage+Resize.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01864F412C319A8F00735A7B /* UIImage+Resize.swift */; };
 		019062742C1AE0A500D89653 /* MyRaumApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 019062732C1AE0A500D89653 /* MyRaumApp.swift */; };
 		019062762C1AE0A500D89653 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 019062752C1AE0A500D89653 /* ContentView.swift */; };
 		0190627A2C1AE0A600D89653 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 019062792C1AE0A600D89653 /* Assets.xcassets */; };
@@ -31,6 +34,9 @@
 		013584712C2324370001889E /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
 		015CDC9F2C1B462700DE28F0 /* SpaceData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpaceData.swift; sourceTree = "<group>"; };
 		015CDCA32C1C0A8000DE28F0 /* CommentPopupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentPopupView.swift; sourceTree = "<group>"; };
+		01864F3D2C3198FB00735A7B /* UIView+Snapshot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Snapshot.swift"; sourceTree = "<group>"; };
+		01864F3F2C31999D00735A7B /* View+Snapshot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Snapshot.swift"; sourceTree = "<group>"; };
+		01864F412C319A8F00735A7B /* UIImage+Resize.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Resize.swift"; sourceTree = "<group>"; };
 		019062702C1AE0A500D89653 /* MyRaum.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MyRaum.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		019062732C1AE0A500D89653 /* MyRaumApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyRaumApp.swift; sourceTree = "<group>"; };
 		019062752C1AE0A500D89653 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -63,6 +69,16 @@
 			path = Map;
 			sourceTree = "<group>";
 		};
+		01864F3C2C3198AA00735A7B /* Extension */ = {
+			isa = PBXGroup;
+			children = (
+				01864F3D2C3198FB00735A7B /* UIView+Snapshot.swift */,
+				01864F3F2C31999D00735A7B /* View+Snapshot.swift */,
+				01864F412C319A8F00735A7B /* UIImage+Resize.swift */,
+			);
+			path = Extension;
+			sourceTree = "<group>";
+		};
 		019062672C1AE0A500D89653 = {
 			isa = PBXGroup;
 			children = (
@@ -84,6 +100,7 @@
 			children = (
 				0135846F2C230A2C0001889E /* Info.plist */,
 				019062732C1AE0A500D89653 /* MyRaumApp.swift */,
+				01864F3C2C3198AA00735A7B /* Extension */,
 				013584702C2324230001889E /* Map */,
 				019062832C1AE11700D89653 /* View */,
 				019062872C1AE29B00D89653 /* RoomPlan */,
@@ -210,11 +227,14 @@
 				0190628F2C1AE7DA00D89653 /* MySpaceDetailView.swift in Sources */,
 				019062762C1AE0A500D89653 /* ContentView.swift in Sources */,
 				015CDCA02C1B462800DE28F0 /* SpaceData.swift in Sources */,
+				01864F3E2C3198FB00735A7B /* UIView+Snapshot.swift in Sources */,
+				01864F402C31999D00735A7B /* View+Snapshot.swift in Sources */,
 				015CDCA42C1C0A8000DE28F0 /* CommentPopupView.swift in Sources */,
 				0135846E2C22B0E10001889E /* MySpaceCardView.swift in Sources */,
 				019062892C1AE2B500D89653 /* RoomController.swift in Sources */,
 				019062912C1AF0F400D89653 /* MySpaceCellView.swift in Sources */,
 				0190628D2C1AE6E600D89653 /* MySpacesView.swift in Sources */,
+				01864F422C319A8F00735A7B /* UIImage+Resize.swift in Sources */,
 				019062742C1AE0A500D89653 /* MyRaumApp.swift in Sources */,
 				013584722C2324370001889E /* LocationManager.swift in Sources */,
 			);
