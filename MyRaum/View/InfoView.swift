@@ -21,6 +21,8 @@ struct InfoView: View {
                 Spacer()
             }
             
+            Spacer()
+            
             ZStack {
                 Capsule()
                     .frame(width: 250, height: 170)
