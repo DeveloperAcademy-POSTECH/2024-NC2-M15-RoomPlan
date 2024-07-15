@@ -16,6 +16,20 @@ struct ContentView: View {
     var body: some View {
         NavigationStack {
             VStack(spacing: 10) {
+                HStack {
+                    Spacer()
+                    
+                    NavigationLink {
+                        InfoView()
+                    } label: {
+                        Image(systemName: "info.circle")
+                            .font(.title2)
+                            .foregroundStyle(Color.gray)
+                            .padding(.top, 50)
+                            .padding(.trailing, 20)
+                    }
+                }
+                
                 Spacer()
                 
                 HStack {
@@ -54,6 +68,7 @@ struct ContentView: View {
                     Spacer()
                 }
                 
+                Spacer()
                 Spacer()
                 
                 HStack {
