@@ -25,8 +25,8 @@ struct ContentView: View {
                         Image(systemName: "info.circle")
                             .font(.title2)
                             .foregroundStyle(Color.gray)
-                            .padding(.top, 50)
-                            .padding(.trailing, 20)
+                            .padding(.top, 80)
+                            .padding(.trailing, 30)
                     }
                 }
                 
