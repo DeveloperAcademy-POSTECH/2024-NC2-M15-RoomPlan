@@ -19,13 +19,11 @@ struct ContentView: View {
                 HStack {
                     Spacer()
                     
-                    NavigationLink {
-                        InfoView()
-                    } label: {
+                    NavigationLink(destination: InfoView()) {
                         Image(systemName: "info.circle")
-                            .font(.title2)
+                            .font(.title)
                             .foregroundStyle(Color.gray)
-                            .padding(.top, 80)
+                            .padding(.top, 70)
                             .padding(.trailing, 30)
                     }
                 }

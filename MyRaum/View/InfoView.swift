@@ -12,15 +12,6 @@ struct InfoView: View {
     
     var body: some View {
         VStack {
-            HStack {
-                Text("My Raum을 만든 사람들")
-                    .font(.title)
-                    .bold()
-                    .padding()
-                
-                Spacer()
-            }
-            
             Spacer()
             
             ZStack {
@@ -75,11 +66,14 @@ struct InfoView: View {
             Text("iOS Developer")
             
             Spacer()
+            Spacer()
             
             Text(" Apple Developer Academy @ POSTECH")
                 .foregroundStyle(Color.gray)
                 .font(.caption)
         }
+        .navigationTitle("My Raum을 만든 사람들")
+        .navigationBarTitleDisplayMode(.inline)
     }
 }
 
