@@ -380,9 +380,9 @@
 				INFOPLIST_FILE = MyRaum/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "My Raum";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.lifestyle";
-				INFOPLIST_KEY_NSCameraUsageDescription = "This app needs to capture image to show in the app.";
-				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "This app needs your current location to save cards.";
-				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "This app needs to add the image to your album.";
+				INFOPLIST_KEY_NSCameraUsageDescription = "앱에서 공간을 스캔하기 위해 카메라에 접근합니다. 카메라는 사용자가 공간을 스캔할 때만 사용됩니다.";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "앱에서 스캔한 공간의 위치 정보를 함께 저장하기 위해 사용자의 위치 데이터를 필요로 합니다. 위치 데이터는 사용자만이 볼 수 있습니다.";
+				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "앱에서 스캔한 공간 모델과 함께 저장할 배경 이미지를 불러오기 위해 사용자의 앨범에 접근합니다. 이미지는 사용자만이 볼 수 있으며 공간 카드를 공유할 경우에만 타인이 이미지를 볼 수 있습니다.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -420,9 +420,9 @@
 				INFOPLIST_FILE = MyRaum/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "My Raum";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.lifestyle";
-				INFOPLIST_KEY_NSCameraUsageDescription = "This app needs to capture image to show in the app.";
-				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "This app needs your current location to save cards.";
-				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "This app needs to add the image to your album.";
+				INFOPLIST_KEY_NSCameraUsageDescription = "앱에서 공간을 스캔하기 위해 카메라에 접근합니다. 카메라는 사용자가 공간을 스캔할 때만 사용됩니다.";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "앱에서 스캔한 공간의 위치 정보를 함께 저장하기 위해 사용자의 위치 데이터를 필요로 합니다. 위치 데이터는 사용자만이 볼 수 있습니다.";
+				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "앱에서 스캔한 공간 모델과 함께 저장할 배경 이미지를 불러오기 위해 사용자의 앨범에 접근합니다. 이미지는 사용자만이 볼 수 있으며 공간 카드를 공유할 경우에만 타인이 이미지를 볼 수 있습니다.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
