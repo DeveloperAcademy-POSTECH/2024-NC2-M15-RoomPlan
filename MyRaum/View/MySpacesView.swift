@@ -50,10 +50,10 @@ struct MySpacesView: View {
                                 selectedSpace = space
                                 showMySpaceDetailView = true
                             }
-                            .onLongPressGesture(minimumDuration: 0.3) {
+                            .onLongPressGesture(minimumDuration: 0.3, perform: {
                                 spaceToDelete = space
                                 showDeleteConfirmation = true
-                            }
+                            })
                     }
                 }
                 .padding(.horizontal, 20)

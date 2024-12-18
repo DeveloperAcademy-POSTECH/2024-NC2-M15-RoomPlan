@@ -13,6 +13,22 @@ struct ContentView: View {
     
     let version: String = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "1.0.0"
     
+    @State private var isDragging = false
+    @State private var shouldNavigate = false
+    
+    private var dragGesture: some Gesture {
+        DragGesture(minimumDistance: 50)
+            .onChanged { _ in
+                self.isDragging = true
+            }
+            .onEnded { gesture in
+                self.isDragging = false
+                if gesture.translation.width < -50 && gesture.translation.height < -50 {
+                    self.shouldNavigate = true
+                }
+            }
+    }
+    
     var body: some View {
         NavigationStack {
             VStack(spacing: 10) {
@@ -80,14 +96,19 @@ struct ContentView: View {
                     Spacer()
                     
                     //보관함으로 이동
-                    NavigationLink(destination: MySpacesView()) {
-                        Image("corner")
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                            .frame(width: 150)
-                            .offset(x: 10)
-                    }
-                    .navigationTitle("")
+                    Image("corner")
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: 150)
+                        .offset(x: 10)
+                        .navigationDestination(isPresented: $shouldNavigate, destination: {
+                            MySpacesView()
+                        })
+                        .navigationTitle("")
+                        .onTapGesture {
+                            self.shouldNavigate = true
+                        }
+                        .gesture(dragGesture)
                 }
             }
             .background(Color.black)
