@@ -16,11 +16,10 @@ import CoreLocation
 
 //공간을 캡쳐하고 공간 카드를 만들기까지의 프로세스들을 구현한 뷰
 struct RoomPlanView: View {
-    var roomController = RoomController.instance
-    
     @Environment(\.dismiss) var dismiss
     @Environment(\.modelContext) var modelContext
     
+    @StateObject private var roomPlanManager = RoomPlanManager()
     @StateObject private var locationManager = LocationManager()
     
     @State private var currentPage: Int = 0
@@ -47,9 +46,9 @@ struct RoomPlanView: View {
                         .multilineTextAlignment(.center)
                 }
                 
-                RoomCaptureViewRepresentable()
+                RoomCaptureViewRepresentable(manager: roomPlanManager)
                     .onAppear(perform: {
-                        roomController.startSession()
+                        roomPlanManager.startSession()
                         
                         //캡쳐를 시작할 때 위치 정보 권한을 승인할 것인지 확인
                         locationManager.checkLocationAuthorization()
@@ -58,7 +57,7 @@ struct RoomPlanView: View {
                 
                 if doneScanning == false {
                     Button(action: {
-                        roomController.stopSession()
+                        roomPlanManager.stopSession()
                         self.doneScanning = true
                     }, label: {
                         Image("scanfinish")
@@ -72,7 +71,7 @@ struct RoomPlanView: View {
                             currentPage = 0
                             
                             self.doneScanning = false
-                            roomController.startSession()
+                            roomPlanManager.startSession()
                         }, label: {
                             Image("scanagain")
                                 .resizable()

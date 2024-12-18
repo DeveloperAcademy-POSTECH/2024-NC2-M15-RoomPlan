@@ -60,7 +60,6 @@ struct MySpacesView: View {
             }
             .navigationTitle("보관함")
             .navigationBarTitleDisplayMode(.inline)
-            .defaultScrollAnchor(.bottom)
             .padding(.top)
             .sheet(item: $selectedSpace) { space in
                 MySpaceDetailView(space: space)

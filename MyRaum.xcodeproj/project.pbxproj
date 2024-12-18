@@ -20,7 +20,7 @@
 		0190627A2C1AE0A600D89653 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 019062792C1AE0A600D89653 /* Assets.xcassets */; };
 		0190627D2C1AE0A600D89653 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0190627C2C1AE0A600D89653 /* Preview Assets.xcassets */; };
 		019062862C1AE25E00D89653 /* RoomPlanView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 019062852C1AE25E00D89653 /* RoomPlanView.swift */; };
-		019062892C1AE2B500D89653 /* RoomController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 019062882C1AE2B500D89653 /* RoomController.swift */; };
+		019062892C1AE2B500D89653 /* RoomPlanManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 019062882C1AE2B500D89653 /* RoomPlanManager.swift */; };
 		0190628B2C1AE2E300D89653 /* UnsupportedDeviceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0190628A2C1AE2E300D89653 /* UnsupportedDeviceView.swift */; };
 		0190628D2C1AE6E600D89653 /* MySpacesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0190628C2C1AE6E600D89653 /* MySpacesView.swift */; };
 		0190628F2C1AE7DA00D89653 /* MySpaceDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0190628E2C1AE7DA00D89653 /* MySpaceDetailView.swift */; };
@@ -44,7 +44,7 @@
 		019062792C1AE0A600D89653 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		0190627C2C1AE0A600D89653 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		019062852C1AE25E00D89653 /* RoomPlanView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomPlanView.swift; sourceTree = "<group>"; };
-		019062882C1AE2B500D89653 /* RoomController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomController.swift; sourceTree = "<group>"; };
+		019062882C1AE2B500D89653 /* RoomPlanManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomPlanManager.swift; sourceTree = "<group>"; };
 		0190628A2C1AE2E300D89653 /* UnsupportedDeviceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnsupportedDeviceView.swift; sourceTree = "<group>"; };
 		0190628C2C1AE6E600D89653 /* MySpacesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MySpacesView.swift; sourceTree = "<group>"; };
 		0190628E2C1AE7DA00D89653 /* MySpaceDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MySpaceDetailView.swift; sourceTree = "<group>"; };
@@ -149,7 +149,7 @@
 		019062872C1AE29B00D89653 /* RoomPlan */ = {
 			isa = PBXGroup;
 			children = (
-				019062882C1AE2B500D89653 /* RoomController.swift */,
+				019062882C1AE2B500D89653 /* RoomPlanManager.swift */,
 			);
 			path = RoomPlan;
 			sourceTree = "<group>";
@@ -235,7 +235,7 @@
 				01864F402C31999D00735A7B /* View+Snapshot.swift in Sources */,
 				015CDCA42C1C0A8000DE28F0 /* CommentPopupView.swift in Sources */,
 				0135846E2C22B0E10001889E /* MySpaceCardView.swift in Sources */,
-				019062892C1AE2B500D89653 /* RoomController.swift in Sources */,
+				019062892C1AE2B500D89653 /* RoomPlanManager.swift in Sources */,
 				019062912C1AF0F400D89653 /* MySpaceCellView.swift in Sources */,
 				0190628D2C1AE6E600D89653 /* MySpacesView.swift in Sources */,
 				01864F422C319A8F00735A7B /* UIImage+Resize.swift in Sources */,
