@@ -31,7 +31,7 @@ struct ContentView: View {
     
     var body: some View {
         NavigationStack {
-            VStack(spacing: 10) {
+            VStack(alignment: .leading, spacing: 10) {
                 HStack {
                     Spacer()
                     
@@ -46,41 +46,29 @@ struct ContentView: View {
                 
                 Spacer()
                 
-                HStack {
-                    Image("logo")
+                Image("logo")
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: 280)
+                    .padding(.leading, 30)
+                    .padding(.bottom, 30)
+                
+                Text("나의 공간과 추억을\n생생하게 기록해보세요.")
+                    .font(.title2)
+                    .bold()
+                    .foregroundStyle(Color.white)
+                    .multilineTextAlignment(.leading)
+                    .padding(.leading, 30)
+                    .padding(.bottom, 30)
+                
+                //공간 스캔 화면으로 이동
+                NavigationLink(destination: RoomPlanView()) {
+                    Image("scan")
                         .resizable()
                         .aspectRatio(contentMode: .fit)
-                        .frame(width: 280)
-                        .padding(.leading, 30)
-                        .padding(.bottom, 30)
-                    
-                    Spacer()
+                        .frame(width: 150)
                 }
-                
-                HStack {
-                    Text("나의 공간과 추억을\n생생하게 기록해보세요.")
-                        .font(.title2)
-                        .bold()
-                        .foregroundStyle(Color.white)
-                        .multilineTextAlignment(.leading)
-                        .padding(.leading, 30)
-                        .padding(.bottom, 30)
-                    
-                    Spacer()
-                }
-                
-                HStack {
-                    //공간 스캔 화면으로 이동
-                    NavigationLink(destination: RoomPlanView()) {
-                        Image("scan")
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                            .frame(width: 150)
-                    }
-                    .padding(.leading, 30)
-                    
-                    Spacer()
-                }
+                .padding(.leading, 30)
                 
                 Spacer()
                 Spacer()

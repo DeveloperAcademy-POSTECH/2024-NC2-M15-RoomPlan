@@ -52,10 +52,9 @@ struct CommentPopupView: View {
         }
         .frame(width: 350, height: 180)
         .background {
-            Rectangle()
+            RoundedRectangle(cornerRadius: 30)
                 .foregroundStyle(Color.white)
                 .frame(width: 350, height: 180)
-                .cornerRadius(30)
         }
     }
 }

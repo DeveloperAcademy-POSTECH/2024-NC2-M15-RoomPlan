@@ -56,6 +56,7 @@ struct MySpacesView: View {
                             })
                     }
                 }
+                .padding(.top, 4)
                 .padding(.horizontal, 20)
             }
             .navigationTitle("보관함")
