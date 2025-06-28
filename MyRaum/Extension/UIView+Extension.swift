@@ -1,5 +1,5 @@
 //
-//  UIView+Snapshot.swift
+//  UIView+Extension.swift
 //  MyRaum
 //
 //  Created by Yune Cho on 6/30/24.

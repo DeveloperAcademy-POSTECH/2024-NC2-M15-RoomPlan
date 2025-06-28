@@ -6,22 +6,16 @@
 //
 
 import SwiftUI
-import SwiftData
-import RoomPlan
 import PhotosUI
-import UIKit
-import Vision
-import CoreImage.CIFilterBuiltins
-import CoreLocation
 
 //공간을 캡쳐하고 공간 카드를 만들기까지의 프로세스들을 구현한 뷰
 struct RoomPlanView: View {
     @Environment(\.dismiss) var dismiss
     @Environment(\.modelContext) var modelContext
     
-    @StateObject private var roomPlanManager = RoomPlanManager()
-    @StateObject private var locationManager = LocationManager()
-    
+    @State private var roomPlanManager = RoomPlanManager()
+    @State private var locationManager = LocationManager()
+    @State private var modelCaptureManager = ModelCaptureManager()
     @State private var currentPage: Int = 0
     @State private var doneScanning: Bool = false
     @State private var selectedItem: PhotosPickerItem?
@@ -34,7 +28,8 @@ struct RoomPlanView: View {
     @State private var dateString: String?
     @State private var latitude: Double = 0.0
     @State private var longitude: Double = 0.0
-    @State private var showSavedAlert: Bool = false
+    @State private var showSavedSuccessAlert: Bool = false
+    @State private var showSavedFailureAlert: Bool = false
     
     var body: some View {
         TabView(selection: $currentPage, content:  {
@@ -58,7 +53,7 @@ struct RoomPlanView: View {
                 if doneScanning == false {
                     Button(action: {
                         roomPlanManager.stopSession()
-                        self.doneScanning = true
+                        doneScanning = true
                     }, label: {
                         Image("scanfinish")
                             .resizable()
@@ -70,7 +65,7 @@ struct RoomPlanView: View {
                         Button(action: {
                             currentPage = 0
                             
-                            self.doneScanning = false
+                            doneScanning = false
                             roomPlanManager.startSession()
                         }, label: {
                             Image("scanagain")
@@ -89,10 +84,12 @@ struct RoomPlanView: View {
                             Task {
                                 //배경 이미지를 선택할때 3D 모델은 화면 캡쳐 및 배경 제거를 통해 모델만 존재하는 이미지로 변환
                                 //화면 캡쳐
-                                captureScreen()
+                                capturedView = modelCaptureManager.captureScreen()
                                 if let modelImage = capturedView {
                                     //배경 제거
-                                    createSticker(image: modelImage)
+                                    Task {
+                                        model = await modelCaptureManager.createSticker(image: modelImage)
+                                    }
                                 }
                                 
                                 if let data = try? await selectedItem?.loadTransferable(type: Data.self) {
@@ -223,130 +220,39 @@ struct RoomPlanView: View {
                 Spacer()
                 
                 Button(action: {
-                    addSpace()
-                    showSavedAlert = true
+                    let result = modelContext.addSpace(date: date, comment: comment, model: model, background: background, latitude: latitude, longitude: longitude)
+                    if result {
+                        showSavedSuccessAlert = true
+                    } else {
+                        showSavedFailureAlert = true
+                    }
                 }, label: {
                     Image("save")
                         .resizable()
                         .aspectRatio(contentMode: .fit)
                         .frame(height: 56)
                 })
-                .alert("저장되었습니다.", isPresented: $showSavedAlert) {
-                    Button(action: {
-                        self.doneScanning = false
-                        
+                .alert("저장되었습니다.", isPresented: $showSavedSuccessAlert) {
+                    Button {
+                        doneScanning = false
                         currentPage = 0
                         dismiss()
-                    }, label: {
+                    } label: {
                         Text("확인")
-                    })
+                    }
+                }
+                .alert("저장하지 못했습니다.", isPresented: $showSavedFailureAlert) {
+                    Button {
+                        doneScanning = false
+                        currentPage = 0
+                        dismiss()
+                    } label: {
+                        Text("확인")
+                    }
                 }
             }
             .tag(3)
         })
-    }
-    
-    //캡쳐된 모델이 보이는 뷰를 이미지로 캡쳐하기 위한 함수
-    //3D모델이 존재하는 부분만 캡쳐되도록 영역을 조정해서 이미지로 만듦
-    func captureScreen() {
-        if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene {
-            if let window = windowScene.windows.first(where: { $0.isKeyWindow }) {
-                let rootView = window.rootViewController?.view
-                let topMargin: CGFloat = 100
-                let bottomMargin: CGFloat = 300
-                let screenHeight = UIScreen.main.bounds.height
-                let screenWidth = UIScreen.main.bounds.width
-                let rect = CGRect(x: 0, y: topMargin, width: screenWidth, height: screenHeight - topMargin - bottomMargin)
-                capturedView = rootView?.snapshot(of: rect)
-            }
-        }
-    }
-    
-    //이미지의 배경을 제거하는 함수
-    func createSticker(image: UIImage) {
-        let processingQueue = DispatchQueue(label: "ProcessingQueue")
-        
-        guard let inputImage = CIImage(image: image) else {
-            print("Failed to create CIImage")
-            return
-        }
-        processingQueue.async {
-            guard let maskImage = subjectMaskImage(from: inputImage) else {
-                print("Failed to create mask image")
-                DispatchQueue.main.async {
-                }
-                return
-            }
-            let outputImage = apply(mask: maskImage, to: inputImage)
-            let image = render(ciImage: outputImage)
-            DispatchQueue.main.async {
-                self.model = image
-            }
-        }
-    }
-    
-    //이미지의 배경을 제거하기 위한 Mask를 만들어주는 함수
-    func subjectMaskImage(from inputImage: CIImage) -> CIImage? {
-        let handler = VNImageRequestHandler(ciImage: inputImage, options: [:])
-        let request = VNGenerateForegroundInstanceMaskRequest()
-        
-        do {
-            try handler.perform([request])
-            guard let result = request.results?.first else {
-                print("No observations found")
-                return nil
-            }
-            let maskPixelBuffer = try result.generateScaledMaskForImage(forInstances: result.allInstances, from: handler)
-            return CIImage(cvPixelBuffer: maskPixelBuffer)
-        } catch {
-            print(error)
-            return nil
-        }
-    }
-    
-    //이미지에 Mask를 적용하는 함수
-    func apply(mask: CIImage, to image: CIImage) -> CIImage {
-        let filter = CIFilter.blendWithMask()
-        filter.inputImage = image
-        filter.maskImage = mask
-        filter.backgroundImage = CIImage.empty()
-        return filter.outputImage!
-    }
-    
-    //이미지에 적용된 Mask에 따라 배경을 제거한 이미지를 리턴하는 함수
-    func render(ciImage: CIImage) -> UIImage {
-        guard let cgImage = CIContext(options: nil).createCGImage(ciImage, from: ciImage.extent) else {
-            fatalError("Failed to render CGImage")
-        }
-        return UIImage(cgImage: cgImage)
-    }
-    
-    //SwiftData에 공간 정보를 저장하는 함수
-    func addSpace() {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy년 M월 d일"
-        let savedDate = formatter.string(from: date)
-        
-        do {
-            if let model {
-                if let background {
-                    let newSpace = SpaceData(
-                        id: UUID(),
-                        date: savedDate,
-                        comment: comment,
-                        model: model.pngData()!,
-                        background: background.pngData()!,
-                        latitude: latitude,
-                        longitude: longitude
-                    )
-                    
-                    modelContext.insert(newSpace)
-                    try modelContext.save()
-                }
-            }
-        } catch {
-            print("Failed to save data")
-        }
     }
 }
 

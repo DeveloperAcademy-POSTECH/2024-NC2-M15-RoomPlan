@@ -9,7 +9,8 @@ import SwiftUI
 import RoomPlan
 
 //방 캡쳐를 담당하는 클래스
-class RoomPlanManager: RoomCaptureViewDelegate, ObservableObject {
+@Observable
+final class RoomPlanManager: RoomCaptureViewDelegate {
     func encode(with coder: NSCoder) {
         fatalError("Not Needed")
     }
@@ -19,8 +20,8 @@ class RoomPlanManager: RoomCaptureViewDelegate, ObservableObject {
     }
     
     var captureView: RoomCaptureView
-    var sessionConfig: RoomCaptureSession.Configuration
-    var finalResult: CapturedRoom?
+    private var sessionConfig: RoomCaptureSession.Configuration
+    private var finalResult: CapturedRoom?
     
     init() {
         captureView = RoomCaptureView(frame: .zero)

@@ -1,5 +1,5 @@
 //
-//  UIImage+Resize.swift
+//  UIImage+Extension.swift
 //  MyRaum
 //
 //  Created by Yune Cho on 6/30/24.

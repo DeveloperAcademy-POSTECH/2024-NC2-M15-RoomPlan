@@ -6,12 +6,14 @@
 //
 
 import Foundation
+import SwiftUI
 import CoreLocation
 
 //MapKit에 표시하기 위한 위치를 가져오는 클래스
-final class LocationManager: NSObject, CLLocationManagerDelegate, ObservableObject {
-    @Published var lastKnownLocation: CLLocationCoordinate2D?
-    var manager = CLLocationManager()
+@Observable
+final class LocationManager: NSObject, CLLocationManagerDelegate {
+    var lastKnownLocation: CLLocationCoordinate2D?
+    private var manager = CLLocationManager()
     
     func checkLocationAuthorization() {
         manager.delegate = self
@@ -34,7 +36,7 @@ final class LocationManager: NSObject, CLLocationManagerDelegate, ObservableObje
         }
     }
     
-    func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {//Trigged every time authorization status changes
+    func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
         checkLocationAuthorization()
     }
     

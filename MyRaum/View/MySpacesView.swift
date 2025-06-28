@@ -71,22 +71,12 @@ struct MySpacesView: View {
                     message: Text("이 공간을 삭제하시겠습니까?"),
                     primaryButton: .destructive(Text("삭제")) {
                         if let space = spaceToDelete {
-                            deleteSpace(space: space)
+                            modelContext.deleteSpace(space: space)
                         }
                     },
                     secondaryButton: .cancel()
                 )
             }
-        }
-    }
-    
-    //SwiftData에서 데이터를 삭제하는 함수
-    func deleteSpace(space: SpaceData) {
-        do {
-            modelContext.delete(space)
-            try modelContext.save()
-        } catch {
-            print("Failed to save data")
         }
     }
 }

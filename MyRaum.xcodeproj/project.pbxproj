@@ -3,54 +3,31 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 56;
+	objectVersion = 70;
 	objects = {
 
 /* Begin PBXBuildFile section */
-		010280D02C21DF3400D57C73 /* NewCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 010280CF2C21DF3400D57C73 /* NewCardView.swift */; };
-		0135846E2C22B0E10001889E /* MySpaceCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0135846D2C22B0E10001889E /* MySpaceCardView.swift */; };
-		013584722C2324370001889E /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 013584712C2324370001889E /* LocationManager.swift */; };
-		015CDCA02C1B462800DE28F0 /* SpaceData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 015CDC9F2C1B462700DE28F0 /* SpaceData.swift */; };
-		015CDCA42C1C0A8000DE28F0 /* CommentPopupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 015CDCA32C1C0A8000DE28F0 /* CommentPopupView.swift */; };
-		01864F3E2C3198FB00735A7B /* UIView+Snapshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01864F3D2C3198FB00735A7B /* UIView+Snapshot.swift */; };
-		01864F402C31999D00735A7B /* View+Snapshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01864F3F2C31999D00735A7B /* View+Snapshot.swift */; };
-		01864F422C319A8F00735A7B /* UIImage+Resize.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01864F412C319A8F00735A7B /* UIImage+Resize.swift */; };
+		0156E25E2E0FD0B30040C06F /* AppEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0156E25D2E0FD0AA0040C06F /* AppEnvironment.swift */; };
 		019062742C1AE0A500D89653 /* MyRaumApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 019062732C1AE0A500D89653 /* MyRaumApp.swift */; };
-		019062762C1AE0A500D89653 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 019062752C1AE0A500D89653 /* ContentView.swift */; };
 		0190627A2C1AE0A600D89653 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 019062792C1AE0A600D89653 /* Assets.xcassets */; };
 		0190627D2C1AE0A600D89653 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0190627C2C1AE0A600D89653 /* Preview Assets.xcassets */; };
-		019062862C1AE25E00D89653 /* RoomPlanView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 019062852C1AE25E00D89653 /* RoomPlanView.swift */; };
-		019062892C1AE2B500D89653 /* RoomPlanManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 019062882C1AE2B500D89653 /* RoomPlanManager.swift */; };
-		0190628B2C1AE2E300D89653 /* UnsupportedDeviceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0190628A2C1AE2E300D89653 /* UnsupportedDeviceView.swift */; };
-		0190628D2C1AE6E600D89653 /* MySpacesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0190628C2C1AE6E600D89653 /* MySpacesView.swift */; };
-		0190628F2C1AE7DA00D89653 /* MySpaceDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0190628E2C1AE7DA00D89653 /* MySpaceDetailView.swift */; };
-		019062912C1AF0F400D89653 /* MySpaceCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 019062902C1AF0F400D89653 /* MySpaceCellView.swift */; };
-		01D9022A2C44F13F00BF4264 /* InfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01D902292C44F13F00BF4264 /* InfoView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		010280CF2C21DF3400D57C73 /* NewCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewCardView.swift; sourceTree = "<group>"; };
-		0135846D2C22B0E10001889E /* MySpaceCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MySpaceCardView.swift; sourceTree = "<group>"; };
-		0135846F2C230A2C0001889E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
-		013584712C2324370001889E /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
-		015CDC9F2C1B462700DE28F0 /* SpaceData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpaceData.swift; sourceTree = "<group>"; };
-		015CDCA32C1C0A8000DE28F0 /* CommentPopupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentPopupView.swift; sourceTree = "<group>"; };
-		01864F3D2C3198FB00735A7B /* UIView+Snapshot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Snapshot.swift"; sourceTree = "<group>"; };
-		01864F3F2C31999D00735A7B /* View+Snapshot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Snapshot.swift"; sourceTree = "<group>"; };
-		01864F412C319A8F00735A7B /* UIImage+Resize.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Resize.swift"; sourceTree = "<group>"; };
+		0135846F2C230A2C0001889E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		0156E25D2E0FD0AA0040C06F /* AppEnvironment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppEnvironment.swift; sourceTree = "<group>"; };
 		019062702C1AE0A500D89653 /* MyRaum.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MyRaum.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		019062732C1AE0A500D89653 /* MyRaumApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyRaumApp.swift; sourceTree = "<group>"; };
-		019062752C1AE0A500D89653 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		019062792C1AE0A600D89653 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		0190627C2C1AE0A600D89653 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
-		019062852C1AE25E00D89653 /* RoomPlanView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomPlanView.swift; sourceTree = "<group>"; };
-		019062882C1AE2B500D89653 /* RoomPlanManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomPlanManager.swift; sourceTree = "<group>"; };
-		0190628A2C1AE2E300D89653 /* UnsupportedDeviceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnsupportedDeviceView.swift; sourceTree = "<group>"; };
-		0190628C2C1AE6E600D89653 /* MySpacesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MySpacesView.swift; sourceTree = "<group>"; };
-		0190628E2C1AE7DA00D89653 /* MySpaceDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MySpaceDetailView.swift; sourceTree = "<group>"; };
-		019062902C1AF0F400D89653 /* MySpaceCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MySpaceCellView.swift; sourceTree = "<group>"; };
-		01D902292C44F13F00BF4264 /* InfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		0156E2572E0FC9990040C06F /* Model */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Model; sourceTree = "<group>"; };
+		0156E2582E0FC9C50040C06F /* View */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = View; sourceTree = "<group>"; };
+		0156E2592E0FC9C90040C06F /* Extension */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Extension; sourceTree = "<group>"; };
+		01B1E91B2E0FC78B00479464 /* Manager */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Manager; sourceTree = "<group>"; };
+/* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		0190626D2C1AE0A500D89653 /* Frameworks */ = {
@@ -63,24 +40,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		013584702C2324230001889E /* Map */ = {
-			isa = PBXGroup;
-			children = (
-				013584712C2324370001889E /* LocationManager.swift */,
-			);
-			path = Map;
-			sourceTree = "<group>";
-		};
-		01864F3C2C3198AA00735A7B /* Extension */ = {
-			isa = PBXGroup;
-			children = (
-				01864F3D2C3198FB00735A7B /* UIView+Snapshot.swift */,
-				01864F3F2C31999D00735A7B /* View+Snapshot.swift */,
-				01864F412C319A8F00735A7B /* UIImage+Resize.swift */,
-			);
-			path = Extension;
-			sourceTree = "<group>";
-		};
 		019062672C1AE0A500D89653 = {
 			isa = PBXGroup;
 			children = (
@@ -100,14 +59,14 @@
 		019062722C1AE0A500D89653 /* MyRaum */ = {
 			isa = PBXGroup;
 			children = (
-				0135846F2C230A2C0001889E /* Info.plist */,
 				019062732C1AE0A500D89653 /* MyRaumApp.swift */,
-				01864F3C2C3198AA00735A7B /* Extension */,
-				013584702C2324230001889E /* Map */,
-				019062832C1AE11700D89653 /* View */,
-				019062872C1AE29B00D89653 /* RoomPlan */,
-				019062842C1AE11E00D89653 /* Data */,
+				0156E25D2E0FD0AA0040C06F /* AppEnvironment.swift */,
+				0135846F2C230A2C0001889E /* Info.plist */,
 				019062792C1AE0A600D89653 /* Assets.xcassets */,
+				0156E2592E0FC9C90040C06F /* Extension */,
+				0156E2582E0FC9C50040C06F /* View */,
+				01B1E91B2E0FC78B00479464 /* Manager */,
+				0156E2572E0FC9990040C06F /* Model */,
 				0190627B2C1AE0A600D89653 /* Preview Content */,
 			);
 			path = MyRaum;
@@ -119,39 +78,6 @@
 				0190627C2C1AE0A600D89653 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
-			sourceTree = "<group>";
-		};
-		019062832C1AE11700D89653 /* View */ = {
-			isa = PBXGroup;
-			children = (
-				019062752C1AE0A500D89653 /* ContentView.swift */,
-				019062852C1AE25E00D89653 /* RoomPlanView.swift */,
-				010280CF2C21DF3400D57C73 /* NewCardView.swift */,
-				0190628C2C1AE6E600D89653 /* MySpacesView.swift */,
-				0135846D2C22B0E10001889E /* MySpaceCardView.swift */,
-				01D902292C44F13F00BF4264 /* InfoView.swift */,
-				015CDCA32C1C0A8000DE28F0 /* CommentPopupView.swift */,
-				0190628E2C1AE7DA00D89653 /* MySpaceDetailView.swift */,
-				019062902C1AF0F400D89653 /* MySpaceCellView.swift */,
-				0190628A2C1AE2E300D89653 /* UnsupportedDeviceView.swift */,
-			);
-			path = View;
-			sourceTree = "<group>";
-		};
-		019062842C1AE11E00D89653 /* Data */ = {
-			isa = PBXGroup;
-			children = (
-				015CDC9F2C1B462700DE28F0 /* SpaceData.swift */,
-			);
-			path = Data;
-			sourceTree = "<group>";
-		};
-		019062872C1AE29B00D89653 /* RoomPlan */ = {
-			isa = PBXGroup;
-			children = (
-				019062882C1AE2B500D89653 /* RoomPlanManager.swift */,
-			);
-			path = RoomPlan;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -169,6 +95,12 @@
 			);
 			dependencies = (
 			);
+			fileSystemSynchronizedGroups = (
+				0156E2572E0FC9990040C06F /* Model */,
+				0156E2582E0FC9C50040C06F /* View */,
+				0156E2592E0FC9C90040C06F /* Extension */,
+				01B1E91B2E0FC78B00479464 /* Manager */,
+			);
 			name = MyRaum;
 			productName = MyRaum;
 			productReference = 019062702C1AE0A500D89653 /* MyRaum.app */;
@@ -182,7 +114,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1540;
-				LastUpgradeCheck = 1540;
+				LastUpgradeCheck = 1640;
 				TargetAttributes = {
 					0190626F2C1AE0A500D89653 = {
 						CreatedOnToolsVersion = 15.4;
@@ -224,23 +156,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				010280D02C21DF3400D57C73 /* NewCardView.swift in Sources */,
-				0190628B2C1AE2E300D89653 /* UnsupportedDeviceView.swift in Sources */,
-				019062862C1AE25E00D89653 /* RoomPlanView.swift in Sources */,
-				0190628F2C1AE7DA00D89653 /* MySpaceDetailView.swift in Sources */,
-				01D9022A2C44F13F00BF4264 /* InfoView.swift in Sources */,
-				019062762C1AE0A500D89653 /* ContentView.swift in Sources */,
-				015CDCA02C1B462800DE28F0 /* SpaceData.swift in Sources */,
-				01864F3E2C3198FB00735A7B /* UIView+Snapshot.swift in Sources */,
-				01864F402C31999D00735A7B /* View+Snapshot.swift in Sources */,
-				015CDCA42C1C0A8000DE28F0 /* CommentPopupView.swift in Sources */,
-				0135846E2C22B0E10001889E /* MySpaceCardView.swift in Sources */,
-				019062892C1AE2B500D89653 /* RoomPlanManager.swift in Sources */,
-				019062912C1AF0F400D89653 /* MySpaceCellView.swift in Sources */,
-				0190628D2C1AE6E600D89653 /* MySpacesView.swift in Sources */,
-				01864F422C319A8F00735A7B /* UIImage+Resize.swift in Sources */,
 				019062742C1AE0A500D89653 /* MyRaumApp.swift in Sources */,
-				013584722C2324370001889E /* LocationManager.swift in Sources */,
+				0156E25E2E0FD0B30040C06F /* AppEnvironment.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -282,6 +199,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = WAC2RPX5HC;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
@@ -345,6 +263,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = WAC2RPX5HC;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
@@ -374,7 +293,6 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"MyRaum/Preview Content\"";
-				DEVELOPMENT_TEAM = WAC2RPX5HC;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = MyRaum/Info.plist;
@@ -393,7 +311,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.1;
+				MARKETING_VERSION = 1.0.2;
 				PRODUCT_BUNDLE_IDENTIFIER = io.github.picturehouse.MyRaum;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -414,7 +332,6 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"MyRaum/Preview Content\"";
-				DEVELOPMENT_TEAM = WAC2RPX5HC;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = MyRaum/Info.plist;
@@ -433,7 +350,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.1;
+				MARKETING_VERSION = 1.0.2;
 				PRODUCT_BUNDLE_IDENTIFIER = io.github.picturehouse.MyRaum;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";

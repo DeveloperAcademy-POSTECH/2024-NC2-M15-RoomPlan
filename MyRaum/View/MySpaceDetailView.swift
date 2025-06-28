@@ -13,7 +13,7 @@ struct MySpaceDetailView: View {
     @Environment(\.dismiss) var dismiss
     @Environment(\.colorScheme) var colorScheme
     
-    var space: SpaceData
+    let space: SpaceData
     
     @State private var card: UIImage = UIImage()
     @State private var showShare = false

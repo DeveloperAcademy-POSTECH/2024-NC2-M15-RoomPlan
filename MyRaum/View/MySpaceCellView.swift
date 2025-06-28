@@ -9,7 +9,7 @@ import SwiftUI
 
 //보관함 목록에서 보여지는 간략한 정보를 담은 공간 카드 뷰
 struct MySpaceCellView: View {
-    var space: SpaceData
+    let space: SpaceData
     
     var body: some View {
         RoundedRectangle(cornerRadius: 19)

@@ -11,23 +11,8 @@ import SwiftUI
 struct ContentView: View {
     @Environment(\.colorScheme) var colorScheme
     
-    let version: String = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "1.0.0"
-    
     @State private var isDragging = false
     @State private var shouldNavigate = false
-    
-    private var dragGesture: some Gesture {
-        DragGesture(minimumDistance: 50)
-            .onChanged { _ in
-                self.isDragging = true
-            }
-            .onEnded { gesture in
-                self.isDragging = false
-                if gesture.translation.width < -50 && gesture.translation.height < -50 {
-                    self.shouldNavigate = true
-                }
-            }
-    }
     
     var body: some View {
         NavigationStack {
@@ -74,7 +59,7 @@ struct ContentView: View {
                 Spacer()
                 
                 HStack {
-                    Text("[Version \(version)]")
+                    Text("[Version \(AppEnvironment.version)]")
                         .foregroundStyle(Color.gray)
                         .opacity(0.5)
                         .font(.caption)
@@ -103,6 +88,21 @@ struct ContentView: View {
             .ignoresSafeArea()
         }
         .tint(colorScheme == .dark ? .white : .black)
+    }
+}
+
+private extension ContentView {
+    var dragGesture: some Gesture {
+        DragGesture(minimumDistance: 50)
+            .onChanged { _ in
+                self.isDragging = true
+            }
+            .onEnded { gesture in
+                self.isDragging = false
+                if gesture.translation.width < -50 && gesture.translation.height < -50 {
+                    self.shouldNavigate = true
+                }
+            }
     }
 }
 
