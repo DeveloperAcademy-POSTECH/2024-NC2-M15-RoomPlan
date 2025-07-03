@@ -220,12 +220,7 @@ struct RoomPlanView: View {
                 Spacer()
                 
                 Button(action: {
-                    let result = modelContext.addSpace(date: date, comment: comment, model: model, background: background, latitude: latitude, longitude: longitude)
-                    if result {
-                        showSavedSuccessAlert = true
-                    } else {
-                        showSavedFailureAlert = true
-                    }
+                    saveSpaceData()
                 }, label: {
                     Image("save")
                         .resizable()
@@ -253,6 +248,36 @@ struct RoomPlanView: View {
             }
             .tag(3)
         })
+    }
+}
+
+private extension RoomPlanView {
+    func saveSpaceData() {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy년 M월 d일"
+        let savedDate = formatter.string(from: date)
+        
+        if let model, let background {
+            let newSpace = SpaceData(
+                id: UUID(),
+                date: savedDate,
+                comment: comment,
+                model: model.pngData()!,
+                background: background.pngData()!,
+                latitude: latitude,
+                longitude: longitude
+            )
+            
+            let result = modelContext.addSpace(space: newSpace)
+            
+            if result {
+                showSavedSuccessAlert = true
+            } else {
+                showSavedFailureAlert = true
+            }
+        } else {
+            showSavedFailureAlert = true
+        }
     }
 }
 

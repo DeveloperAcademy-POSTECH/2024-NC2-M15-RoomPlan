@@ -31,33 +31,15 @@ final class SpaceData: Identifiable {
 
 extension ModelContext {
     //SwiftData에 공간 정보를 저장하는 함수
-    func addSpace(date: Date, comment: String, model: UIImage? = nil, background: UIImage? = nil, latitude: Double, longitude: Double) -> Bool {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy년 M월 d일"
-        let savedDate = formatter.string(from: date)
-        
-        if let model, let background {
-            let newSpace = SpaceData(
-                id: UUID(),
-                date: savedDate,
-                comment: comment,
-                model: model.pngData()!,
-                background: background.pngData()!,
-                latitude: latitude,
-                longitude: longitude
-            )
-                
-            do {
-                self.insert(newSpace)
-                try self.save()
-            } catch {
-                print("Failed to save data")
-            }
-            
-            return true
-        } else {
+    func addSpace(space: SpaceData) -> Bool {
+        do {
+            self.insert(space)
+            try self.save()
+        } catch {
+            print("Failed to save data")
             return false
         }
+        return true
     }
     
     //SwiftData에서 데이터를 삭제하는 함수
