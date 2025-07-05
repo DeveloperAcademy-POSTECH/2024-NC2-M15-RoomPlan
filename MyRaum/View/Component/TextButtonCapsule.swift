@@ -1,5 +1,5 @@
 //
-//  WhiteTextButton.swift
+//  TextButtonCapsule.swift
 //  MyRaum
 //
 //  Created by Yune Cho on 7/4/25.
@@ -7,8 +7,9 @@
 
 import SwiftUI
 
-struct WhiteTextButton: View {
+struct TextButtonCapsule: View {
     let text: String
+    let color: ButtonColor
     let action: () -> Void
     
     var body: some View {
@@ -16,21 +17,17 @@ struct WhiteTextButton: View {
             action()
         } label: {
             RoundedRectangle(cornerRadius: 20)
-                .foregroundStyle(Color.white)
-                .frame(width: 142, height: 40)
+                .foregroundStyle(color.color())
+                .frame(width: 145, height: 40)
                 .overlay {
                     Text(text)
                         .font(.system(size: 18))
-                        .foregroundStyle(Color.black)
+                        .foregroundStyle(color.color() == .white ? Color.black : Color.white)
                 }
         }
     }
 }
 
 #Preview {
-    ZStack {
-        Color.black
-        
-        WhiteTextButton(text: "스캔하기", action: {})
-    }
+    TextButtonCapsule(text: "스캔하기", color: .gray, action: {})
 }

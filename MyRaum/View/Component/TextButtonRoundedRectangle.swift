@@ -1,5 +1,5 @@
 //
-//  GrayLabelButton.swift
+//  TextButtonRoundedRectangle.swift
 //  MyRaum
 //
 //  Created by Yune Cho on 7/4/25.
@@ -7,24 +7,23 @@
 
 import SwiftUI
 
-struct GrayLabelButton: View {
+struct TextButtonRoundedRectangle: View {
     let text: String
-    let image: String
     let action: () -> Void
     
     var body: some View {
         Button {
             action()
         } label: {
-            RoundedRectangle(cornerRadius: 8)
+            RoundedRectangle(cornerRadius: 16)
                 .stroke(style: StrokeStyle(lineWidth: 1))
                 .foregroundStyle(Color.grayButtonStroke)
-                .frame(height: 40)
+                .frame(height: 60)
                 .overlay {
-                    RoundedRectangle(cornerRadius: 8)
+                    RoundedRectangle(cornerRadius: 16)
                         .foregroundStyle(Color.grayButton)
                     
-                    Label(text, systemImage: image)
+                    Text(text)
                         .font(.system(size: 18))
                         .foregroundStyle(Color.white)
                 }
@@ -33,6 +32,6 @@ struct GrayLabelButton: View {
 }
 
 #Preview {
-    GrayLabelButton(text: "공유", image: "square.and.arrow.up", action: {})
+    TextButtonRoundedRectangle(text: "저장하기", action: {})
         .padding()
 }
