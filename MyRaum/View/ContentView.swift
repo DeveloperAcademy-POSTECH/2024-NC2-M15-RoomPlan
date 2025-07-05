@@ -11,8 +11,9 @@ import SwiftUI
 struct ContentView: View {
     @Environment(\.colorScheme) var colorScheme
     
-    @State private var isDragging = false
-    @State private var shouldNavigate = false
+    @State private var navigateToRoomPlanView: Bool = false
+    @State private var navigateToMySpaceView: Bool = false
+    @State private var isDragging: Bool = false
     
     var body: some View {
         NavigationStack {
@@ -47,15 +48,14 @@ struct ContentView: View {
                     .padding(.bottom, 30)
                 
                 //공간 스캔 화면으로 이동
-                NavigationLink(destination: RoomPlanView()) {
-                    Image("scan")
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(width: 150)
+                TextButtonCapsule(text: "스캔하기", color: .white) {
+                    navigateToRoomPlanView = true
                 }
                 .padding(.leading, 30)
+                .navigationDestination(isPresented: $navigateToRoomPlanView) {
+                    RoomPlanView()
+                }
                 
-                Spacer()
                 Spacer()
                 
                 HStack {
@@ -74,12 +74,12 @@ struct ContentView: View {
                         .aspectRatio(contentMode: .fit)
                         .frame(width: 150)
                         .offset(x: 10)
-                        .navigationDestination(isPresented: $shouldNavigate, destination: {
+                        .navigationDestination(isPresented: $navigateToMySpaceView, destination: {
                             MySpacesView()
                         })
                         .navigationTitle("")
                         .onTapGesture {
-                            self.shouldNavigate = true
+                            navigateToMySpaceView = true
                         }
                         .gesture(dragGesture)
                 }
@@ -100,7 +100,7 @@ private extension ContentView {
             .onEnded { gesture in
                 self.isDragging = false
                 if gesture.translation.width < -50 && gesture.translation.height < -50 {
-                    self.shouldNavigate = true
+                    navigateToMySpaceView = true
                 }
             }
     }

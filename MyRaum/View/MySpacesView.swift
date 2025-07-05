@@ -15,9 +15,9 @@ struct MySpacesView: View {
     @Query var spaceData: [SpaceData]
     
     @State private var selectedSpace: SpaceData? = nil
-    @State private var showMySpaceDetailView = false
+    @State private var showMySpaceDetailView: Bool = false
     @State private var spaceToDelete: SpaceData? = nil
-    @State private var showDeleteConfirmation = false
+    @State private var showDeleteConfirmation: Bool = false
     
     private let columns = [
         GridItem(),

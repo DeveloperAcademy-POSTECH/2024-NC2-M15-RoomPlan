@@ -21,7 +21,6 @@ struct InfoView: View {
             infoCell(name: "조윤", role: "iOS Developer", image: "raum")
             
             Spacer()
-            Spacer()
             
             Text(" Apple Developer Academy @ POSTECH")
                 .foregroundStyle(Color.gray)

@@ -38,17 +38,11 @@ struct CommentPopupView: View {
                 focusState = true
             })
             
-            Button(action: {
+            TextButtonCapsule(text: "완료", color: .gray) {
                 comment = typedComment
                 currentPage = 2
                 showCommentPopup = false
-            }, label: {
-                Image("finish")
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .frame(width: 160)
-            })
-            .padding(.top)
+            }
         }
         .frame(width: 350, height: 180)
         .background {

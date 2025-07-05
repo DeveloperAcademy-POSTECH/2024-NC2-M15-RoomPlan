@@ -51,34 +51,32 @@ struct RoomPlanView: View {
                     .ignoresSafeArea(.all)
                 
                 if doneScanning == false {
-                    Button(action: {
+                    TextButtonCapsule(text: "스캔 끝내기", color: .gray) {
                         roomPlanManager.stopSession()
                         doneScanning = true
-                    }, label: {
-                        Image("scanfinish")
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                            .frame(width: 150)
-                    })
+                    }
                 } else {
-                    HStack {
-                        Button(action: {
+                    HStack(spacing: 16) {
+                        TextButtonRoundedRectangle(text: "다시 스캔하기") {
                             currentPage = 0
                             
                             doneScanning = false
                             roomPlanManager.startSession()
-                        }, label: {
-                            Image("scanagain")
-                                .resizable()
-                                .aspectRatio(contentMode: .fit)
-                                .frame(height: 56)
-                        })
+                        }
                         
                         PhotosPicker(selection: $selectedItem, matching: .images) {
-                            Image("addbg")
-                                .resizable()
-                                .aspectRatio(contentMode: .fit)
-                                .frame(height: 56)
+                            RoundedRectangle(cornerRadius: 16)
+                                .stroke(style: StrokeStyle(lineWidth: 1))
+                                .foregroundStyle(Color.grayButtonStroke)
+                                .frame(height: 60)
+                                .overlay {
+                                    RoundedRectangle(cornerRadius: 16)
+                                        .foregroundStyle(Color.grayButton)
+                                    
+                                    Text("배경 추가하기")
+                                        .font(.system(size: 18))
+                                        .foregroundStyle(Color.white)
+                                }
                         }
                         .onChange(of: selectedItem) {
                             Task {
@@ -102,6 +100,7 @@ struct RoomPlanView: View {
                             }
                         }
                     }
+                    .padding(.horizontal, 16)
                 }
             }
             .tag(0)
@@ -117,12 +116,20 @@ struct RoomPlanView: View {
                     
                     Spacer()
                     
-                    HStack {
+                    HStack(spacing: 16) {
                         PhotosPicker(selection: $selectedItem, matching: .images) {
-                            Image("editbg")
-                                .resizable()
-                                .aspectRatio(contentMode: .fit)
-                                .frame(height: 56)
+                            RoundedRectangle(cornerRadius: 16)
+                                .stroke(style: StrokeStyle(lineWidth: 1))
+                                .foregroundStyle(Color.grayButtonStroke)
+                                .frame(height: 60)
+                                .overlay {
+                                    RoundedRectangle(cornerRadius: 16)
+                                        .foregroundStyle(Color.grayButton)
+                                    
+                                    Text("배경 수정하기")
+                                        .font(.system(size: 18))
+                                        .foregroundStyle(Color.white)
+                                }
                         }
                         .onChange(of: selectedItem) {
                             Task {
@@ -134,15 +141,11 @@ struct RoomPlanView: View {
                             }
                         }
                         
-                        Button(action: {
+                        TextButtonRoundedRectangle(text: "장소 입력하기") {
                             showCommentPopup = true
-                        }, label: {
-                            Image("addplace")
-                                .resizable()
-                                .aspectRatio(contentMode: .fit)
-                                .frame(height: 56)
-                        })
+                        }
                     }
+                    .padding(.horizontal, 16)
                 }
                 
                 if showCommentPopup {
@@ -166,17 +169,12 @@ struct RoomPlanView: View {
                     
                     Spacer()
                     
-                    HStack {
-                        Button(action: {
+                    HStack(spacing: 16) {
+                        TextButtonRoundedRectangle(text: "장소 수정하기") {
                             showCommentPopup = true
-                        }, label: {
-                            Image("editplace")
-                                .resizable()
-                                .aspectRatio(contentMode: .fit)
-                                .frame(height: 56)
-                        })
+                        }
                         
-                        Button(action: {
+                        TextButtonRoundedRectangle(text: "미리보기") {
                             //미리보기 버튼을 선택할때 현재의 날짜 정보 입력
                             date = Date.now
                             let formatter = DateFormatter()
@@ -190,13 +188,9 @@ struct RoomPlanView: View {
                             }
                             
                             currentPage = 3
-                        }, label: {
-                            Image("preview")
-                                .resizable()
-                                .aspectRatio(contentMode: .fit)
-                                .frame(height: 56)
-                        })
+                        }
                     }
+                    .padding(.horizontal, 16)
                 }
                 
                 if showCommentPopup {
@@ -219,14 +213,10 @@ struct RoomPlanView: View {
                 
                 Spacer()
                 
-                Button(action: {
+                TextButtonRoundedRectangle(text: "저장") {
                     saveSpaceData()
-                }, label: {
-                    Image("save")
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(height: 56)
-                })
+                }
+                .padding(.horizontal, 16)
                 .alert("저장되었습니다.", isPresented: $showSavedSuccessAlert) {
                     Button {
                         doneScanning = false

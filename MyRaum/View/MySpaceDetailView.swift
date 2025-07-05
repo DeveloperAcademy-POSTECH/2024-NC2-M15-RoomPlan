@@ -16,9 +16,9 @@ struct MySpaceDetailView: View {
     let space: SpaceData
     
     @State private var card: UIImage = UIImage()
-    @State private var showShare = false
-    @State private var showSavedAlert = false
-    @State private var cardFlipped = false
+    @State private var showShare: Bool = false
+    @State private var showSavedAlert: Bool = false
+    @State private var cardFlipped: Bool = false
     
     var body: some View {
         VStack {
@@ -34,15 +34,15 @@ struct MySpaceDetailView: View {
                 
                 Spacer()
                 
-                Button(action: {
+                Button {
                     dismiss()
-                }, label: {
+                } label: {
                     Image(systemName: "x.circle")
                         .resizable()
                         .frame(width: 28, height: 28)
                         .foregroundStyle(colorScheme == .dark ? .white : .black)
                         .bold()
-                })
+                }
                 .padding()
             }
             
@@ -54,30 +54,35 @@ struct MySpaceDetailView: View {
             
             Spacer()
             
-            HStack {
-                Button(action: {
+            HStack(spacing: 16) {
+                LabelButtonRoundedRectangle(text: "이미지 저장", image: "photo.badge.arrow.down") {
                     UIImageWriteToSavedPhotosAlbum(card, nil, nil, nil)
                     showSavedAlert = true
-                }, label: {
-                    Image("saveimage")
-                        .resizable()
-                        .frame(width:158, height:40)
-                })
-                .padding(.horizontal)
+                }
+                .frame(width: 150)
                 .alert("이미지가 저장되었습니다.", isPresented: $showSavedAlert) {
-                    Button(action: {
-                    }, label: {
+                    Button {
+                    } label: {
                         Text("확인")
-                    })
+                    }
                 }
                 
                 ShareLink(item: Image(uiImage: card), preview: SharePreview("공간 카드 공유", icon: "AppIcon")) {
-                    Image("share")
-                        .resizable()
-                        .frame(width:105, height:40)
+                    RoundedRectangle(cornerRadius: 8)
+                        .stroke(style: StrokeStyle(lineWidth: 1))
+                        .foregroundStyle(Color.grayButtonStroke)
+                        .frame(width: 150, height: 40)
+                        .overlay {
+                            RoundedRectangle(cornerRadius: 8)
+                                .foregroundStyle(Color.grayButton)
+                            
+                            Label("공유", systemImage: "square.and.arrow.up")
+                                .font(.system(size: 18))
+                                .foregroundStyle(Color.white)
+                        }
                 }
-                .padding(.horizontal)
             }
+            .padding(.horizontal, 30)
             
             Spacer()
         }
