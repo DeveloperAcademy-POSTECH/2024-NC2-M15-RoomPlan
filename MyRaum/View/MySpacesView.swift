@@ -65,18 +65,22 @@ struct MySpacesView: View {
             .sheet(item: $selectedSpace) { space in
                 MySpaceDetailView(space: space)
             }
-            .alert(isPresented: $showDeleteConfirmation) {
-                Alert(
-                    title: Text("공간 삭제"),
-                    message: Text("이 공간을 삭제하시겠습니까?"),
-                    primaryButton: .destructive(Text("삭제")) {
-                        if let space = spaceToDelete {
-                            modelContext.deleteSpace(space: space)
-                        }
-                    },
-                    secondaryButton: .cancel()
-                )
-            }
+            .alert("공간 삭제", isPresented: $showDeleteConfirmation, actions: {
+                Button(role: .cancel) {
+                } label: {
+                    Text("취소")
+                }
+                
+                Button(role: .destructive) {
+                    if let space = spaceToDelete {
+                        modelContext.deleteSpace(space: space)
+                    }
+                } label: {
+                    Text("삭제")
+                }
+            }, message: {
+                Text("이 공간을 삭제하시겠습니까?")
+            })
         }
     }
 }
