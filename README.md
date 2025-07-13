@@ -100,49 +100,45 @@ struct RoomCaptureViewRepresentable : UIViewRepresentable {
 ```swift
 //캡쳐된 모델이 보이는 뷰를 이미지로 캡쳐하기 위한 함수
 //3D모델이 존재하는 부분만 캡쳐되도록 영역을 조정해서 이미지로 만듦
-func captureScreen() {
-    if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene {
-        if let window = windowScene.windows.first(where: { $0.isKeyWindow }) {
-            let rootView = window.rootViewController?.view
-            let topMargin: CGFloat = 100
-            let bottomMargin: CGFloat = 300
-            let screenHeight = UIScreen.main.bounds.height
-            let screenWidth = UIScreen.main.bounds.width
-            let rect = CGRect(x: 0, y: topMargin, width: screenWidth, height: screenHeight - topMargin - bottomMargin)
-            capturedView = rootView?.snapshot(of: rect)
-        }
+func captureScreen() -> UIImage? {
+    guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene else {
+        fatalError("Failed to get UIWindowScene")
     }
+    guard let window = windowScene.windows.first(where: { $0.isKeyWindow }) else {
+        fatalError("Failed to get key window")
+    }
+    let rootView = window.rootViewController?.view
+    let topMargin: CGFloat = 100
+    let bottomMargin: CGFloat = 300
+    let screenHeight = UIScreen.main.bounds.height
+    let screenWidth = UIScreen.main.bounds.width
+    let rect = CGRect(x: 0, y: topMargin, width: screenWidth, height: screenHeight - topMargin - bottomMargin)
+    return rootView?.snapshot(of: rect)
 }
 ```
 
 ```swift
 //이미지의 배경을 제거하는 함수
-func createSticker(image: UIImage) {
-    let processingQueue = DispatchQueue(label: "ProcessingQueue")
-        
+func createSticker(image: UIImage) async -> UIImage? {
     guard let inputImage = CIImage(image: image) else {
-        print("Failed to create CIImage")
-        return
+        fatalError("Failed to create CIImage")
     }
-    processingQueue.async {
-        guard let maskImage = subjectMaskImage(from: inputImage) else {
+        
+    return await Task.detached(priority: .userInitiated) {
+        guard let maskImage = self.subjectMaskImage(from: inputImage) else {
             print("Failed to create mask image")
-            DispatchQueue.main.async {
-            }
-            return
+            return nil
         }
-        let outputImage = apply(mask: maskImage, to: inputImage)
-        let image = render(ciImage: outputImage)
-        DispatchQueue.main.async {
-            self.model = image
-        }
-    }
+        let outputImage = self.apply(mask: maskImage, to: inputImage)
+        let image = self.render(ciImage: outputImage)
+        return image
+    }.value
 }
 ```
 
 ```swift
 //이미지의 배경을 제거하기 위한 Mask를 만들어주는 함수
-func subjectMaskImage(from inputImage: CIImage) -> CIImage? {
+private func subjectMaskImage(from inputImage: CIImage) -> CIImage? {
     let handler = VNImageRequestHandler(ciImage: inputImage, options: [:])
     let request = VNGenerateForegroundInstanceMaskRequest()
         
@@ -155,7 +151,7 @@ func subjectMaskImage(from inputImage: CIImage) -> CIImage? {
         let maskPixelBuffer = try result.generateScaledMaskForImage(forInstances: result.allInstances, from: handler)
         return CIImage(cvPixelBuffer: maskPixelBuffer)
     } catch {
-        print(error)
+        print(error.localizedDescription)
         return nil
     }
 }
@@ -163,7 +159,7 @@ func subjectMaskImage(from inputImage: CIImage) -> CIImage? {
 
 ```swift
 //이미지에 Mask를 적용하는 함수
-func apply(mask: CIImage, to image: CIImage) -> CIImage {
+private func apply(mask: CIImage, to image: CIImage) -> CIImage {
     let filter = CIFilter.blendWithMask()
     filter.inputImage = image
     filter.maskImage = mask
@@ -174,7 +170,7 @@ func apply(mask: CIImage, to image: CIImage) -> CIImage {
 
 ```swift
 //이미지에 적용된 Mask에 따라 배경을 제거한 이미지를 리턴하는 함수
-func render(ciImage: CIImage) -> UIImage {
+private func render(ciImage: CIImage) -> UIImage {
     guard let cgImage = CIContext(options: nil).createCGImage(ciImage, from: ciImage.extent) else {
         fatalError("Failed to render CGImage")
     }
@@ -209,31 +205,15 @@ final class SpaceData: Identifiable {
 
 ```swift
 //SwiftData에 공간 정보를 저장하는 함수
-func addSpace() {
-    let formatter = DateFormatter()
-    formatter.dateFormat = "yyyy년 M월 d일"
-    let savedDate = formatter.string(from: date)
-        
+func addSpace(space: SpaceData) -> Bool {
     do {
-        if let model {
-            if let background {
-                let newSpace = SpaceData(
-                    id: UUID(),
-                    date: savedDate,
-                    comment: comment,
-                    model: model.pngData()!,
-                    background: background.pngData()!,
-                    latitude: latitude,
-                    longitude: longitude
-                )
-                    
-                modelContext.insert(newSpace)
-                try modelContext.save()
-            }
-        }
+        self.insert(space)
+        try self.save()
     } catch {
         print("Failed to save data")
+        return false
     }
+    return true
 }
 ```
 
@@ -241,8 +221,8 @@ func addSpace() {
 //SwiftData에서 데이터를 삭제하는 함수
 func deleteSpace(space: SpaceData) {
     do {
-        modelContext.delete(space)
-        try modelContext.save()
+        self.delete(space)
+        try self.save()
     } catch {
         print("Failed to save data")
     }
