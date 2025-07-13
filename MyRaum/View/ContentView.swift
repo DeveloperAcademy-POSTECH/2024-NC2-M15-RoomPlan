@@ -73,7 +73,12 @@ struct ContentView: View {
                         .resizable()
                         .aspectRatio(contentMode: .fit)
                         .frame(width: 150)
-                        .offset(x: 10)
+                        .overlay(alignment: .bottomTrailing, content: {
+                            Text("보관함")
+                                .font(.title3)
+                                .foregroundStyle(Color.black)
+                                .padding(24)
+                        })
                         .navigationDestination(isPresented: $navigateToMySpaceView, destination: {
                             MySpacesView()
                         })
