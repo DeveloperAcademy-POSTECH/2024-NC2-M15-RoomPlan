@@ -32,7 +32,7 @@ struct InfoView: View {
 }
 
 private extension InfoView {
-    func infoCell(name: String, role: String, image: String) -> some View {
+    func infoCell(name: LocalizedStringKey, role: LocalizedStringKey, image: String) -> some View {
         VStack {
             ZStack {
                 Capsule()

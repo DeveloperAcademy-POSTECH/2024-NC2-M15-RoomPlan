@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct TextButtonCapsule: View {
-    let text: String
+    let text: LocalizedStringKey
     let color: ButtonColor
     let action: () -> Void
     

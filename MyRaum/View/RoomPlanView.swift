@@ -178,7 +178,7 @@ struct RoomPlanView: View {
                             //미리보기 버튼을 선택할때 현재의 날짜 정보 입력
                             date = Date.now
                             let formatter = DateFormatter()
-                            formatter.dateFormat = "yyyy년 M월 d일"
+                            formatter.dateFormat = "yyyy.MM.dd"
                             dateString = formatter.string(from: date)
                             
                             //미리보기 버튼을 선택할때 현재의 위치 정보 입력
@@ -244,7 +244,7 @@ struct RoomPlanView: View {
 private extension RoomPlanView {
     func saveSpaceData() {
         let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy년 M월 d일"
+        formatter.dateFormat = "yyyy.MM.dd"
         let savedDate = formatter.string(from: date)
         
         if let model, let background {

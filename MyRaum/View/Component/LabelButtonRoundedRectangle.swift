@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct LabelButtonRoundedRectangle: View {
-    let text: String
+    let text: LocalizedStringKey
     let image: String
     let action: () -> Void
     

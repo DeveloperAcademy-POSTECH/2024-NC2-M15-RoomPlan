@@ -11,6 +11,7 @@
 		019062742C1AE0A500D89653 /* MyRaumApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 019062732C1AE0A500D89653 /* MyRaumApp.swift */; };
 		0190627A2C1AE0A600D89653 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 019062792C1AE0A600D89653 /* Assets.xcassets */; };
 		0190627D2C1AE0A600D89653 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0190627C2C1AE0A600D89653 /* Preview Assets.xcassets */; };
+		01A7A92B2E2A20A800A5EBBF /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 01A7A92A2E2A20A800A5EBBF /* Localizable.xcstrings */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -20,6 +21,7 @@
 		019062732C1AE0A500D89653 /* MyRaumApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyRaumApp.swift; sourceTree = "<group>"; };
 		019062792C1AE0A600D89653 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		0190627C2C1AE0A600D89653 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		01A7A92A2E2A20A800A5EBBF /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -63,6 +65,7 @@
 				0156E25D2E0FD0AA0040C06F /* AppEnvironment.swift */,
 				0135846F2C230A2C0001889E /* Info.plist */,
 				019062792C1AE0A600D89653 /* Assets.xcassets */,
+				01A7A92A2E2A20A800A5EBBF /* Localizable.xcstrings */,
 				0156E2592E0FC9C90040C06F /* Extension */,
 				0156E2582E0FC9C50040C06F /* View */,
 				01B1E91B2E0FC78B00479464 /* Manager */,
@@ -128,6 +131,7 @@
 			knownRegions = (
 				en,
 				Base,
+				ko,
 			);
 			mainGroup = 019062672C1AE0A500D89653;
 			productRefGroup = 019062712C1AE0A500D89653 /* Products */;
@@ -146,6 +150,7 @@
 			files = (
 				0190627D2C1AE0A600D89653 /* Preview Assets.xcassets in Resources */,
 				0190627A2C1AE0A600D89653 /* Assets.xcassets in Resources */,
+				01A7A92B2E2A20A800A5EBBF /* Localizable.xcstrings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -224,6 +229,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
@@ -281,6 +287,7 @@
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_EMIT_LOC_STRINGS = YES;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
@@ -311,7 +318,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.2;
+				MARKETING_VERSION = 1.0.3;
 				PRODUCT_BUNDLE_IDENTIFIER = io.github.picturehouse.MyRaum;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -350,7 +357,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.2;
+				MARKETING_VERSION = 1.0.3;
 				PRODUCT_BUNDLE_IDENTIFIER = io.github.picturehouse.MyRaum;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";

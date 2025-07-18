@@ -39,7 +39,7 @@ struct ContentView: View {
                     .padding(.leading, 30)
                     .padding(.bottom, 30)
                 
-                Text("나의 공간과 추억을\n생생하게 기록해보세요.")
+                Text("나의 공간을 기록해보세요.")
                     .font(.title2)
                     .bold()
                     .foregroundStyle(Color.white)
@@ -82,7 +82,6 @@ struct ContentView: View {
                         .navigationDestination(isPresented: $navigateToMySpaceView, destination: {
                             MySpacesView()
                         })
-                        .navigationTitle("")
                         .onTapGesture {
                             navigateToMySpaceView = true
                         }

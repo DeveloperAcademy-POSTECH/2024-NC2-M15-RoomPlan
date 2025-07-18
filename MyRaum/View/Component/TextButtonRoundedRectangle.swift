@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct TextButtonRoundedRectangle: View {
-    let text: String
+    let text: LocalizedStringKey
     let action: () -> Void
     
     var body: some View {
