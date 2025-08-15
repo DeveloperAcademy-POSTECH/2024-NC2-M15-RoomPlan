@@ -10,8 +10,10 @@ import SwiftUI
 struct SettingsView: View {
     var body: some View {
         VStack(alignment: .center, spacing: 8) {
-            navigationCell(title: "My Raum을 만든 사람들") {
-                InfoView()
+            ScrollView {
+                navigationCell(title: "My Raum을 만든 사람들") {
+                    InfoView()
+                }
             }
             
             Spacer()
@@ -39,6 +41,7 @@ private extension SettingsView {
                     
                     Image(systemName: "chevron.right")
                 }
+                .bold()
                 .padding(.vertical, 16)
                 
                 Divider()
