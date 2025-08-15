@@ -355,6 +355,22 @@
         }
       }
     },
+    "설정" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Settings"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "설정"
+          }
+        }
+      }
+    },
     "스캔 끝내기" : {
       "localizations" : {
         "en" : {

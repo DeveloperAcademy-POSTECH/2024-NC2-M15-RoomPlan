@@ -21,12 +21,23 @@ struct ContentView: View {
                 HStack {
                     Spacer()
                     
-                    NavigationLink(destination: InfoView()) {
-                        Image(systemName: "info.circle")
-                            .font(.title)
-                            .foregroundStyle(Color.gray)
-                            .padding(.top, 70)
-                            .padding(.trailing, 30)
+                    NavigationLink {
+                        SettingsView()
+                    } label: {
+                        if #available(iOS 18.0, *) {
+                            Image(systemName: "gearshape")
+                                .font(.title)
+                                .foregroundStyle(Color.gray)
+                                .padding(.top, 70)
+                                .padding(.trailing, 16)
+                                .symbolEffect(.rotate, options: .nonRepeating)
+                        } else {
+                            Image(systemName: "gearshape")
+                                .font(.title)
+                                .foregroundStyle(Color.gray)
+                                .padding(.top, 70)
+                                .padding(.trailing, 16)
+                        }
                     }
                 }
                 
@@ -59,13 +70,6 @@ struct ContentView: View {
                 Spacer()
                 
                 HStack {
-                    Text("[Version \(AppEnvironment.version)]")
-                        .foregroundStyle(Color.gray)
-                        .opacity(0.5)
-                        .font(.caption)
-                        .padding(.top, 80)
-                        .padding(.leading, 30)
-                    
                     Spacer()
                     
                     //보관함으로 이동
