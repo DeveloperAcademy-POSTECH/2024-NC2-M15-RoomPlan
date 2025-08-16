@@ -259,6 +259,22 @@
         }
       }
     },
+    "내 정보" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "My Page"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "내 정보"
+          }
+        }
+      }
+    },
     "다시 스캔하기" : {
       "localizations" : {
         "en" : {
@@ -400,6 +416,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "스캔하기"
+          }
+        }
+      }
+    },
+    "앱 정보" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "App Information"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "앱 정보"
           }
         }
       }

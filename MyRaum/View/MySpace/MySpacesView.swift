@@ -10,6 +10,7 @@ import SwiftData
 
 //보관함 화면
 struct MySpacesView: View {
+    @Environment(\.dismiss) private var dismiss
     @Environment(\.modelContext) var modelContext
     
     @Query var spaceData: [SpaceData]
@@ -59,8 +60,22 @@ struct MySpacesView: View {
                 .padding(.top, 4)
                 .padding(.horizontal, 20)
             }
-            .navigationTitle("보관함")
-            .navigationBarTitleDisplayMode(.inline)
+            .navigationBarBackButtonHidden()
+            .toolbar {
+                ToolbarItem(placement: .topBarLeading) {
+                    Button {
+                        dismiss()
+                    } label: {
+                        Image(systemName: "chevron.left")
+                            .bold()
+                    }
+                }
+                
+                ToolbarItem(placement: .principal) {
+                    Text("보관함")
+                        .bold()
+                }
+            }
             .padding(.top)
             .sheet(item: $selectedSpace) { space in
                 MySpaceDetailView(space: space)
@@ -86,5 +101,7 @@ struct MySpacesView: View {
 }
 
 #Preview {
-    MySpacesView()
+    NavigationStack {
+        MySpacesView()
+    }
 }

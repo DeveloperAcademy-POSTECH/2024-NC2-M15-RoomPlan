@@ -8,6 +8,7 @@
 import Foundation
 import SwiftUI
 
+//앱 설정을 관리하는 클래스
 @Observable
 final class AppSettingsManager {
     var language: AppLanguage {

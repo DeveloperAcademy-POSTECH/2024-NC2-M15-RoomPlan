@@ -22,17 +22,17 @@ struct ContentView: View {
                     Spacer()
                     
                     NavigationLink {
-                        SettingsView()
+                        MyPageView()
                     } label: {
                         if #available(iOS 18.0, *) {
-                            Image(systemName: "gearshape")
+                            Image(systemName: "person.crop.circle")
                                 .font(.title)
                                 .foregroundStyle(Color.gray)
                                 .padding(.top, 70)
                                 .padding(.trailing, 16)
-                                .symbolEffect(.rotate, options: .nonRepeating)
+                                .symbolEffect(.breathe, options: .nonRepeating)
                         } else {
-                            Image(systemName: "gearshape")
+                            Image(systemName: "person.crop.circle")
                                 .font(.title)
                                 .foregroundStyle(Color.gray)
                                 .padding(.top, 70)
