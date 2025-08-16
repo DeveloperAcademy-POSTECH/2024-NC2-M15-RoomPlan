@@ -28,6 +28,7 @@
 		0156E2572E0FC9990040C06F /* Model */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Model; sourceTree = "<group>"; };
 		0156E2582E0FC9C50040C06F /* View */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = View; sourceTree = "<group>"; };
 		0156E2592E0FC9C90040C06F /* Extension */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Extension; sourceTree = "<group>"; };
+		019638222E50581900ABECCC /* Enum */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Enum; sourceTree = "<group>"; };
 		01B1E91B2E0FC78B00479464 /* Manager */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Manager; sourceTree = "<group>"; };
 /* End PBXFileSystemSynchronizedRootGroup section */
 
@@ -66,6 +67,7 @@
 				0135846F2C230A2C0001889E /* Info.plist */,
 				019062792C1AE0A600D89653 /* Assets.xcassets */,
 				01A7A92A2E2A20A800A5EBBF /* Localizable.xcstrings */,
+				019638222E50581900ABECCC /* Enum */,
 				0156E2592E0FC9C90040C06F /* Extension */,
 				0156E2582E0FC9C50040C06F /* View */,
 				01B1E91B2E0FC78B00479464 /* Manager */,
@@ -102,6 +104,7 @@
 				0156E2572E0FC9990040C06F /* Model */,
 				0156E2582E0FC9C50040C06F /* View */,
 				0156E2592E0FC9C90040C06F /* Extension */,
+				019638222E50581900ABECCC /* Enum */,
 				01B1E91B2E0FC78B00479464 /* Manager */,
 			);
 			name = MyRaum;

@@ -8,9 +8,15 @@
 import SwiftUI
 
 struct SettingsView: View {
+    @Environment(\.dismiss) private var dismiss
+    
     var body: some View {
         VStack(alignment: .center, spacing: 8) {
             ScrollView {
+                navigationCell(title: "언어 설정") {
+                    LanguageSettingView()
+                }
+                
                 navigationCell(title: "My Raum을 만든 사람들") {
                     InfoView()
                 }
@@ -23,13 +29,27 @@ struct SettingsView: View {
                 .font(.caption)
         }
         .padding(.horizontal, 16)
-        .navigationTitle("설정")
-        .navigationBarTitleDisplayMode(.inline)
+        .navigationBarBackButtonHidden()
+        .toolbar {
+            ToolbarItem(placement: .topBarLeading) {
+                Button {
+                    dismiss()
+                } label: {
+                    Image(systemName: "chevron.left")
+                        .bold()
+                }
+            }
+            
+            ToolbarItem(placement: .principal) {
+                Text("설정")
+                    .bold()
+            }
+        }
     }
 }
 
 private extension SettingsView {
-    func navigationCell<T: View>(title: String, @ViewBuilder destination: @escaping () -> T) -> some View {
+    func navigationCell<T: View>(title: LocalizedStringKey, @ViewBuilder destination: @escaping () -> T) -> some View {
         NavigationLink {
             destination()
         } label: {

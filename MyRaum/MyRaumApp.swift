@@ -11,11 +11,15 @@ import RoomPlan
 
 @main
 struct MyRaumApp: App {
+    @State private var appSettingsManager = AppSettingsManager()
+    
     var body: some Scene {
         WindowGroup {
             checkDeciveView()
         }
         .modelContainer(for: SpaceData.self)
+        .environment(appSettingsManager)
+        .environment(\.locale, appSettingsManager.effectiveLocale)
     }
 }
 
