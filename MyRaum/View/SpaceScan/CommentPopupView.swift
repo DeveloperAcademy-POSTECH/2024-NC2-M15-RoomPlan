@@ -10,7 +10,7 @@ import SwiftUI
 //장소 입력 팝업창
 struct CommentPopupView: View {
     @Binding var showCommentPopup: Bool
-    @Binding var currentPage: Int
+    @Binding var currentPage: RoomPlanPage
     @Binding var comment: String
     
     @State private var typedComment: String = ""
@@ -40,7 +40,7 @@ struct CommentPopupView: View {
             
             TextButtonCapsule(text: "완료", color: .gray) {
                 comment = typedComment
-                currentPage = 2
+                currentPage = .addInfo
                 showCommentPopup = false
             }
         }
@@ -54,5 +54,5 @@ struct CommentPopupView: View {
 }
 
 #Preview {
-    CommentPopupView(showCommentPopup: .constant(true), currentPage: .constant(1), comment: .constant(""))
+    CommentPopupView(showCommentPopup: .constant(true), currentPage: .constant(.scanResult), comment: .constant(""))
 }
