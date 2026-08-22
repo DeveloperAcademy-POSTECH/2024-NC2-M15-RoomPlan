@@ -101,3 +101,6 @@ iOSInjectionProject/
 **/._.DS_Store
 
 *.xcuserstate
+
+# Supabase 접속 정보 (docs/supabase-setup.md 참고)
+MyRaum/App/Supabase-Info.plist

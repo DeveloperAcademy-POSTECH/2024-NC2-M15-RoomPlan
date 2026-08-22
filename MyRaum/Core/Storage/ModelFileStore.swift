@@ -12,6 +12,8 @@ import RoomPlan
 protocol ModelFileStoring {
     //스캔 결과를 USDZ로 내보내고 저장된 파일 이름을 리턴
     func export(_ room: CapturedRoom, id: UUID) throws -> String
+    //내려받은 USDZ 데이터를 저장하고 파일 이름을 리턴
+    func write(_ data: Data, id: UUID) throws -> String
     //파일 이름으로 실제 경로를 구함
     func url(forFileName fileName: String) -> URL?
     //모델 파일을 삭제
@@ -48,6 +50,16 @@ final class ModelFileStore: ModelFileStoring {
         let destination = try modelsDirectory().appending(path: fileName)
         
         try room.export(to: destination, exportOptions: .parametric)
+        
+        return fileName
+    }
+    
+    //서버에서 내려받은 모델을 저장하는 함수
+    func write(_ data: Data, id: UUID) throws -> String {
+        let fileName = "\(id.uuidString).usdz"
+        let destination = try modelsDirectory().appending(path: fileName)
+        
+        try data.write(to: destination, options: .atomic)
         
         return fileName
     }

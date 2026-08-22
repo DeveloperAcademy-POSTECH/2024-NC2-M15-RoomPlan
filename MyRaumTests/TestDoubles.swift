@@ -37,14 +37,22 @@ final class FakeLocationService: LocationProviding {
 final class FakeModelFileStore: ModelFileStoring {
     var exportedFileName: String? = "test.usdz"
     var exportError: Error?
+    //url(forFileName:)이 돌려줄 값. nil이면 파일이 없는 상황을 뜻한다
+    var urlForAnyFile: URL?
     private(set) var deletedFileNames: [String] = []
+    private(set) var writtenIDs: [UUID] = []
     
     func export(_ room: CapturedRoom, id: UUID) throws -> String {
         if let exportError { throw exportError }
         return exportedFileName ?? "\(id.uuidString).usdz"
     }
     
-    func url(forFileName fileName: String) -> URL? { nil }
+    func write(_ data: Data, id: UUID) throws -> String {
+        writtenIDs.append(id)
+        return "\(id.uuidString).usdz"
+    }
+    
+    func url(forFileName fileName: String) -> URL? { urlForAnyFile }
     
     func delete(fileName: String) { deletedFileNames.append(fileName) }
 }
@@ -107,6 +115,7 @@ func makeFurniture(category: String, confidence: String = "high") -> CapturedFur
 final class InMemorySpaceRepository: SpaceRepository {
     private(set) var spaces: [SpaceData] = []
     var shouldFailToSave = false
+    private(set) var saveChangesCallCount = 0
     
     @discardableResult
     func save(_ space: SpaceData) -> Bool {
@@ -120,6 +129,89 @@ final class InMemorySpaceRepository: SpaceRepository {
     }
     
     func fetchAll() -> [SpaceData] { spaces }
+    
+    func count(of kind: SpaceStorageKind) -> Int {
+        spaces.filter { $0.kind == kind }.count
+    }
+    
+    func fetchPendingUpload() -> [SpaceData] {
+        spaces.filter { $0.kind == .usdz && ($0.sync == .pending || $0.sync == .failed) }
+    }
+    
+    func saveChanges() {
+        saveChangesCallCount += 1
+    }
+}
+
+//로그인 상태를 흉내내는 테스트용 인증 서비스
+@MainActor
+final class FakeAuthService: AuthProviding {
+    private(set) var currentUserID: String?
+    var signInError: Error?
+    private(set) var signOutCallCount = 0
+    private(set) var deleteAccountCallCount = 0
+    
+    init(currentUserID: String? = nil) {
+        self.currentUserID = currentUserID
+    }
+    
+    func restoreSession() async {}
+    
+    func signInWithApple(idToken: String, nonce: String) async throws {
+        if let signInError { throw signInError }
+        currentUserID = "test-user"
+    }
+    
+    func signOut() async throws {
+        signOutCallCount += 1
+        currentUserID = nil
+    }
+    
+    func deleteAccount() async throws {
+        deleteAccountCallCount += 1
+        currentUserID = nil
+    }
+}
+
+//온보딩 완료 여부를 메모리에 두는 테스트용 저장소
+final class InMemoryOnboardingStore: OnboardingStateStoring {
+    var hasCompletedOnboarding: Bool
+    
+    init(hasCompletedOnboarding: Bool = false) {
+        self.hasCompletedOnboarding = hasCompletedOnboarding
+    }
+}
+
+//업로드 호출을 기록하는 테스트용 원격 저장소
+final class FakeRemoteSpaceRepository: RemoteSpaceRepositoryProtocol, @unchecked Sendable {
+    var uploadError: Error?
+    var remoteSpaces: [RemoteSpace] = []
+    private(set) var uploadedIDs: [UUID] = []
+    private(set) var visibilityUpdates: [(String, Bool)] = []
+    //처음 몇 번은 실패하게 만들어 재시도를 확인한다
+    var failuresBeforeSuccess = 0
+    
+    func upload(_ payload: RemoteUploadPayload) async throws -> String {
+        if failuresBeforeSuccess > 0 {
+            failuresBeforeSuccess -= 1
+            throw RemoteSpaceError.notConfigured
+        }
+        if let uploadError { throw uploadError }
+        uploadedIDs.append(payload.id)
+        return payload.id.uuidString
+    }
+    
+    func updateIsPublic(remoteID: String, isPublic: Bool) async throws {
+        visibilityUpdates.append((remoteID, isPublic))
+    }
+    
+    func delete(remoteID: String) async throws {}
+    
+    func fetchMySpaces() async throws -> [RemoteSpace] { remoteSpaces }
+    
+    func downloadModel(storagePath: String) async throws -> Data { Data([0x55, 0x53, 0x44, 0x5A]) }
+    
+    func downloadThumbnail(thumbnailPath: String) async throws -> Data { Data([0x50, 0x4E, 0x47]) }
 }
 
 //테스트용 더미 공간 데이터를 만드는 함수

@@ -11,6 +11,7 @@
 		0190627A2C1AE0A600D89653 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 019062792C1AE0A600D89653 /* Assets.xcassets */; };
 		0190627D2C1AE0A600D89653 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0190627C2C1AE0A600D89653 /* Preview Assets.xcassets */; };
 		01A7A92B2E2A20A800A5EBBF /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 01A7A92A2E2A20A800A5EBBF /* Localizable.xcstrings */; };
+		0AF0000000000000000000C3 /* Supabase in Frameworks */ = {isa = PBXBuildFile; productRef = 0AF0000000000000000000C2 /* Supabase */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -46,6 +47,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0AF0000000000000000000C3 /* Supabase in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -123,6 +125,9 @@
 				0AF0000000000000000000A4 /* Shared */,
 			);
 			name = MyRaum;
+			packageProductDependencies = (
+				0AF0000000000000000000C2 /* Supabase */,
+			);
 			productName = MyRaum;
 			productReference = 019062702C1AE0A500D89653 /* MyRaum.app */;
 			productType = "com.apple.product-type.application";
@@ -177,6 +182,9 @@
 				ko,
 			);
 			mainGroup = 019062672C1AE0A500D89653;
+			packageReferences = (
+				0AF0000000000000000000C1 /* XCRemoteSwiftPackageReference "supabase-swift" */,
+			);
 			productRefGroup = 019062712C1AE0A500D89653 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -362,6 +370,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = MyRaum/MyRaum.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"MyRaum/Preview Content\"";
@@ -371,7 +380,7 @@
 				INFOPLIST_KEY_CFBundleDisplayName = "My Raum";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.lifestyle";
 				INFOPLIST_KEY_NSCameraUsageDescription = "앱에서 공간을 스캔하기 위해 카메라에 접근합니다. 카메라는 사용자가 공간을 스캔할 때만 사용됩니다.";
-				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "앱에서 스캔한 공간의 위치 정보를 함께 저장하기 위해 사용자의 위치 데이터를 필요로 합니다. 위치 데이터는 사용자만이 볼 수 있습니다.";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "앱에서 스캔한 공간의 위치 정보를 함께 저장하기 위해 사용자의 위치 데이터를 필요로 합니다. 스캔한 공간은 위치 정보와 함께 계정에 저장되며, 공간을 공개로 설정하면 위치가 다른 사용자에게도 보입니다.";
 				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "앱에서 스캔한 공간 모델과 함께 저장할 배경 이미지를 불러오기 위해 사용자의 앨범에 접근합니다. 이미지는 사용자만이 볼 수 있으며 공간 카드를 공유할 경우에만 타인이 이미지를 볼 수 있습니다.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -383,7 +392,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.4;
+				MARKETING_VERSION = 2.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = io.github.picturehouse.MyRaum;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -401,6 +410,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = MyRaum/MyRaum.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"MyRaum/Preview Content\"";
@@ -410,7 +420,7 @@
 				INFOPLIST_KEY_CFBundleDisplayName = "My Raum";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.lifestyle";
 				INFOPLIST_KEY_NSCameraUsageDescription = "앱에서 공간을 스캔하기 위해 카메라에 접근합니다. 카메라는 사용자가 공간을 스캔할 때만 사용됩니다.";
-				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "앱에서 스캔한 공간의 위치 정보를 함께 저장하기 위해 사용자의 위치 데이터를 필요로 합니다. 위치 데이터는 사용자만이 볼 수 있습니다.";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "앱에서 스캔한 공간의 위치 정보를 함께 저장하기 위해 사용자의 위치 데이터를 필요로 합니다. 스캔한 공간은 위치 정보와 함께 계정에 저장되며, 공간을 공개로 설정하면 위치가 다른 사용자에게도 보입니다.";
 				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "앱에서 스캔한 공간 모델과 함께 저장할 배경 이미지를 불러오기 위해 사용자의 앨범에 접근합니다. 이미지는 사용자만이 볼 수 있으며 공간 카드를 공유할 경우에만 타인이 이미지를 볼 수 있습니다.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -422,7 +432,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.4;
+				MARKETING_VERSION = 2.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = io.github.picturehouse.MyRaum;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -502,6 +512,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+/* Begin XCRemoteSwiftPackageReference section */
+		0AF0000000000000000000C1 /* XCRemoteSwiftPackageReference "supabase-swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/supabase/supabase-swift.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.55.1;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		0AF0000000000000000000C2 /* Supabase */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 0AF0000000000000000000C1 /* XCRemoteSwiftPackageReference "supabase-swift" */;
+			productName = Supabase;
+		};
+/* End XCSwiftPackageProductDependency section */
+
 	};
 	rootObject = 019062682C1AE0A500D89653 /* Project object */;
 }

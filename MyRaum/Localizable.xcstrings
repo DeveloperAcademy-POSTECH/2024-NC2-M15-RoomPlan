@@ -33,6 +33,22 @@
         }
       }
     },
+    "2.0에서 스캔한 모든 공간은 계정에 함께 저장되어 기기를 바꿔도 복원됩니다. 위치 정보도 함께 저장됩니다.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Every space you scan in 2.0 is saved to your account and restored when you change devices. Location data is saved along with it."
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "2.0에서 스캔한 모든 공간은 계정에 함께 저장되어 기기를 바꿔도 복원됩니다. 위치 정보도 함께 저장됩니다."
+          }
+        }
+      }
+    },
     "3D 모델을 저장하지 못했습니다.": {
       "localizations": {
         "en": {
@@ -61,6 +77,22 @@
           "stringUnit": {
             "state": "translated",
             "value": "3D 모델의 각도를 조절한 후\n배경을 추가하세요."
+          }
+        }
+      }
+    },
+    "Apple 로그인 정보를 받지 못했습니다.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Could not get your Apple sign-in details."
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Apple 로그인 정보를 받지 못했습니다."
           }
         }
       }
@@ -194,6 +226,70 @@
         }
       }
     },
+    "계정": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Account"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "계정"
+          }
+        }
+      }
+    },
+    "계정 삭제": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Delete account"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "계정 삭제"
+          }
+        }
+      }
+    },
+    "계정을 삭제하시겠습니까?": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Delete your account?"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "계정을 삭제하시겠습니까?"
+          }
+        }
+      }
+    },
+    "계정을 삭제하지 못했습니다.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Could not delete your account."
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "계정을 삭제하지 못했습니다."
+          }
+        }
+      }
+    },
     "공간": {
       "extractionState": "stale",
       "localizations": {
@@ -259,6 +355,22 @@
         }
       }
     },
+    "공간을 3D 모델로 남깁니다": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Keep your space as a 3D model"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "공간을 3D 모델로 남깁니다"
+          }
+        }
+      }
+    },
     "공간을 천천히 둘러보며 벽과 가구를 비춰주세요.": {
       "localizations": {
         "en": {
@@ -275,6 +387,54 @@
         }
       }
     },
+    "공개": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Public"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "공개"
+          }
+        }
+      }
+    },
+    "공개 여부는 직접 정합니다": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "You decide what is public"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "공개 여부는 직접 정합니다"
+          }
+        }
+      }
+    },
+    "공개하면 이 공간의 위치가 다른 사용자에게 함께 보입니다.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Making it public also shows this space's location to other people."
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "공개하면 이 공간의 위치가 다른 사용자에게 함께 보입니다."
+          }
+        }
+      }
+    },
     "공유": {
       "localizations": {
         "en": {
@@ -287,6 +447,22 @@
           "stringUnit": {
             "state": "translated",
             "value": "공유"
+          }
+        }
+      }
+    },
+    "기존 데이터 보기": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "View my existing data"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "기존 데이터 보기"
           }
         }
       }
@@ -357,6 +533,22 @@
         }
       }
     },
+    "다음": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Next"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "다음"
+          }
+        }
+      }
+    },
     "닫기": {
       "localizations": {
         "en": {
@@ -369,6 +561,70 @@
           "stringUnit": {
             "state": "translated",
             "value": "닫기"
+          }
+        }
+      }
+    },
+    "로그아웃": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sign out"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "로그아웃"
+          }
+        }
+      }
+    },
+    "로그아웃하시겠습니까?": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sign out?"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "로그아웃하시겠습니까?"
+          }
+        }
+      }
+    },
+    "로그인": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sign in"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "로그인"
+          }
+        }
+      }
+    },
+    "로그인이 필요합니다.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sign-in required."
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "로그인이 필요합니다."
           }
         }
       }
@@ -453,6 +709,54 @@
         }
       }
     },
+    "서버 설정이 없어 로그인할 수 없습니다.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sign-in is unavailable because the server is not configured."
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "서버 설정이 없어 로그인할 수 없습니다."
+          }
+        }
+      }
+    },
+    "서버 설정이 없어 업로드할 수 없습니다.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Upload is unavailable because the server is not configured."
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "서버 설정이 없어 업로드할 수 없습니다."
+          }
+        }
+      }
+    },
+    "서버에 저장된 공간이 모두 삭제되며 되돌릴 수 없습니다. 이 기기의 이전 카드는 남습니다.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "All spaces saved on the server will be deleted and cannot be recovered. Older cards on this device remain."
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "서버에 저장된 공간이 모두 삭제되며 되돌릴 수 없습니다. 이 기기의 이전 카드는 남습니다."
+          }
+        }
+      }
+    },
     "설정": {
       "localizations": {
         "en": {
@@ -485,6 +789,22 @@
         }
       }
     },
+    "스캔과 지도를 사용하려면 로그인이 필요합니다.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sign in to use scanning and the map."
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "스캔과 지도를 사용하려면 로그인이 필요합니다."
+          }
+        }
+      }
+    },
     "스캔하기": {
       "extractionState": "manual",
       "localizations": {
@@ -498,6 +818,54 @@
           "stringUnit": {
             "state": "translated",
             "value": "스캔하기"
+          }
+        }
+      }
+    },
+    "스캔한 공간은 서버에 저장됩니다": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scanned spaces are saved to the server"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "스캔한 공간은 서버에 저장됩니다"
+          }
+        }
+      }
+    },
+    "스캔한 공간이 이미지가 아니라 3D 모델로 저장되어, 카드에서 직접 돌려볼 수 있습니다.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scanned spaces are saved as 3D models instead of images, so you can turn them right on the card."
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "스캔한 공간이 이미지가 아니라 3D 모델로 저장되어, 카드에서 직접 돌려볼 수 있습니다."
+          }
+        }
+      }
+    },
+    "시작하기": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Get started"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "시작하기"
           }
         }
       }
@@ -534,6 +902,54 @@
         }
       }
     },
+    "업로드 대기 중": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Waiting to upload"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "업로드 대기 중"
+          }
+        }
+      }
+    },
+    "업로드 실패": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Upload failed"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "업로드 실패"
+          }
+        }
+      }
+    },
+    "업로드 완료": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Uploaded"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "업로드 완료"
+          }
+        }
+      }
+    },
     "완료": {
       "localizations": {
         "en": {
@@ -563,6 +979,22 @@
           "stringUnit": {
             "state": "translated",
             "value": "욕실"
+          }
+        }
+      }
+    },
+    "이 공간을 공개하시겠습니까?": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Make this space public?"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "이 공간을 공개하시겠습니까?"
           }
         }
       }
@@ -679,6 +1111,22 @@
         }
       }
     },
+    "이전 카드 보기 모드": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Older cards only"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "이전 카드 보기 모드"
+          }
+        }
+      }
+    },
     "이전 카드가 없습니다.": {
       "localizations": {
         "en": {
@@ -787,6 +1235,22 @@
           "stringUnit": {
             "state": "translated",
             "value": "저장되었습니다."
+          }
+        }
+      }
+    },
+    "저장된 공간은 기본적으로 나만 볼 수 있습니다. 공개로 바꾸면 위치를 포함한 정보가 다른 사람에게도 보입니다.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Saved spaces are private by default. Making one public shows its details, including location, to other people."
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "저장된 공간은 기본적으로 나만 볼 수 있습니다. 공개로 바꾸면 위치를 포함한 정보가 다른 사람에게도 보입니다."
           }
         }
       }

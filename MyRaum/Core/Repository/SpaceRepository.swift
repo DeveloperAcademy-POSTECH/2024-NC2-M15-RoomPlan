@@ -15,4 +15,10 @@ protocol SpaceRepository {
     func save(_ space: SpaceData) -> Bool
     func delete(_ space: SpaceData)
     func fetchAll() -> [SpaceData]
+    //저장 방식별 개수. 레거시 카드 존재 여부 판단에 사용한다
+    func count(of kind: SpaceStorageKind) -> Int
+    //동기화가 필요한 공간 목록
+    func fetchPendingUpload() -> [SpaceData]
+    //이미 저장된 객체의 변경 사항만 반영한다
+    func saveChanges()
 }
