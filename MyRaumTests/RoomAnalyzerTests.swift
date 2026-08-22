@@ -88,3 +88,18 @@ struct CapturedFurnitureTests {
         #expect([CapturedFurniture].decoded(from: "not json").isEmpty)
     }
 }
+
+//3D 카드의 모델 크기 맞춤 계산을 확인하는 테스트
+struct Space3DViewTests {
+    @Test("가장 긴 변이 기준 크기에 맞도록 배율을 계산한다")
+    func fitsLongestEdgeToTarget() {
+        let scale = Space3DView.fittingScale(extents: SIMD3<Float>(4, 2, 1), targetExtent: 1.0)
+        
+        #expect(abs(scale - 0.25) < 0.0001)
+    }
+    
+    @Test("크기가 0이면 배율을 1로 둔다")
+    func returnsOneForEmptyBounds() {
+        #expect(Space3DView.fittingScale(extents: SIMD3<Float>(0, 0, 0)) == 1)
+    }
+}

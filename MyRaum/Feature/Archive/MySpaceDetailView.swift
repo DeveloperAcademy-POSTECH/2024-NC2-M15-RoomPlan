@@ -6,19 +6,24 @@
 //
 
 import SwiftUI
-import Vision
 
 //저장된 공간의 상세 정보를 확인하고 이미지 저장 및 공유가 가능한 뷰
 struct MySpaceDetailView: View {
     @Environment(\.dismiss) var dismiss
     @Environment(\.colorScheme) var colorScheme
+    @Environment(AppContainer.self) private var container
     
     let space: SpaceData
     
     @State private var card: UIImage = UIImage()
-    @State private var showShare: Bool = false
     @State private var showSavedAlert: Bool = false
     @State private var cardFlipped: Bool = false
+    
+    //Documents/Models 아래에 저장된 USDZ 경로
+    private var modelURL: URL? {
+        guard let modelFileName = space.modelFileName else { return nil }
+        return container.modelFileStore.url(forFileName: modelFileName)
+    }
     
     var body: some View {
         VStack {
@@ -46,11 +51,13 @@ struct MySpaceDetailView: View {
                 .padding()
             }
             
-            MySpaceCardView(space: space, cardFlipped: $cardFlipped)
+            MySpaceCardView(space: space, modelURL: modelURL, cardFlipped: $cardFlipped)
                 .onAppear(perform: {
-                    let view = MySpaceCardView(space: space, cardFlipped: $cardFlipped)
-                    card = view.snapshot()
+                    //3D 뷰는 이미지로 캡쳐되지 않으므로 공유용 정지 카드를 따로 그린다
+                    card = SpaceShareCardView(space: space).snapshot()
                 })
+            
+            spaceInfoBadges
             
             Spacer()
             
@@ -86,5 +93,38 @@ struct MySpaceDetailView: View {
             
             Spacer()
         }
+    }
+}
+
+private extension MySpaceDetailView {
+    //면적·방 종류를 카드 아래에 배지로 노출
+    @ViewBuilder
+    var spaceInfoBadges: some View {
+        HStack(spacing: 8) {
+            if space.roomType != .unknown {
+                badge(text: Text(LocalizedStringKey(space.roomType.displayNameKey)), systemImage: "square.split.bottomrightquarter")
+            }
+            
+            if let floorAreaSqM = space.floorAreaSqM, floorAreaSqM > 0 {
+                //면적 숫자는 번역 대상이 아니므로 그대로 출력한다
+                badge(text: Text(verbatim: String(format: "%.1f m²", floorAreaSqM)), systemImage: "ruler")
+            }
+        }
+        .padding(.top, 12)
+    }
+    
+    func badge(text: Text, systemImage: String) -> some View {
+        Label {
+            text
+        } icon: {
+            Image(systemName: systemImage)
+        }
+            .font(.system(size: 14))
+            .foregroundStyle(Color.gray)
+            .padding(.horizontal, 12)
+            .padding(.vertical, 6)
+            .background {
+                Capsule().foregroundStyle(Color.grayButton.opacity(0.3))
+            }
     }
 }

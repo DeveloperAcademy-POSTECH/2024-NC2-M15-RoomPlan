@@ -9,10 +9,12 @@ import SwiftUI
 import MapKit
 
 //MySpaceDetailView에 보이는 카드 부분을 그린 뷰
+//앞면은 회전 가능한 3D 모델, 뒷면은 위치 지도
 struct MySpaceCardView: View {
     @Environment(\.colorScheme) var colorScheme
     
     let space: SpaceData
+    let modelURL: URL?
     @Binding var cardFlipped: Bool
     
     var body: some View {
@@ -26,7 +28,7 @@ struct MySpaceCardView: View {
 }
 
 private extension MySpaceCardView {
-    //카드의 앞면 - 스캔된 모델, 배경이미지, 장소명, 날짜 등이 노출됨
+    //카드의 앞면 - 회전 가능한 3D 모델, 배경이미지, 장소명, 날짜 등이 노출됨
     var cardFrontView: some View {
         RoundedRectangle(cornerRadius: 19)
             .stroke(Color.gray, lineWidth: 2)
@@ -34,7 +36,6 @@ private extension MySpaceCardView {
             .foregroundColor(.white)
             .overlay(
                 ZStack {
-                    //배경 이미지 데이터가 손상된 경우 크래시 대신 단색 배경으로 대체
                     if let backgroundData = space.background, let backgroundImage = UIImage(data: backgroundData) {
                         Image(uiImage: backgroundImage)
                             .resizable()
@@ -63,17 +64,13 @@ private extension MySpaceCardView {
                         
                         Spacer()
                         
-                        //모델 이미지 데이터가 손상된 경우 크래시 대신 대체 아이콘 노출
-                        if let modelData = space.previewImageData, let modelImage = UIImage(data: modelData) {
-                            Image(uiImage: modelImage)
+                        //모델 파일이 있으면 3D로, 없으면 저장된 썸네일로 대체
+                        if let modelURL {
+                            Space3DView(modelURL: modelURL)
+                        } else if let thumbnailData = space.thumbnail, let thumbnail = UIImage(data: thumbnailData) {
+                            Image(uiImage: thumbnail)
                                 .resizable()
                                 .scaledToFit()
-                        } else {
-                            Image(systemName: "cube.transparent")
-                                .resizable()
-                                .scaledToFit()
-                                .padding(60)
-                                .foregroundStyle(Color.white.opacity(0.5))
                         }
                         
                         Spacer()
@@ -97,11 +94,6 @@ private extension MySpaceCardView {
                     }
                 }
             )
-            .onTapGesture {
-                withAnimation(Animation.linear(duration: 0.8)) {
-                    cardFlipped.toggle()
-                }
-            }
     }
     
     //카드의 뒷부분 - 장소의 위치 정보, 장소명, 날짜 등이 노출됨
@@ -147,10 +139,5 @@ private extension MySpaceCardView {
                     }
                 }
             )
-            .onTapGesture {
-                withAnimation(Animation.linear(duration: 0.8)) {
-                    cardFlipped.toggle()
-                }
-            }
     }
 }

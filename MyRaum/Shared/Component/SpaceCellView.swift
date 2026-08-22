@@ -1,5 +1,5 @@
 //
-//  MySpaceCellView.swift
+//  SpaceCellView.swift
 //  MyRaum
 //
 //  Created by Yune Cho on 6/13/24.
@@ -8,7 +8,8 @@
 import SwiftUI
 
 //보관함 목록에서 보여지는 간략한 정보를 담은 공간 카드 뷰
-struct MySpaceCellView: View {
+//신규 보관함과 레거시 보관함이 함께 사용한다
+struct SpaceCellView: View {
     let space: SpaceData
     
     var body: some View {

@@ -145,6 +145,22 @@
         }
       }
     },
+    "거실": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Living room"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "거실"
+          }
+        }
+      }
+    },
     "결과물을 저장해보세요.": {
       "localizations": {
         "en": {
@@ -173,6 +189,22 @@
           "stringUnit": {
             "state": "translated",
             "value": "결과물을 확인하세요."
+          }
+        }
+      }
+    },
+    "공간": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Space"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "공간"
           }
         }
       }
@@ -484,6 +516,22 @@
         }
       }
     },
+    "욕실": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bathroom"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "욕실"
+          }
+        }
+      }
+    },
     "이 공간을 삭제하시겠습니까?": {
       "localizations": {
         "en": {
@@ -544,6 +592,70 @@
           "stringUnit": {
             "state": "translated",
             "value": "이미지가 저장되었습니다."
+          }
+        }
+      }
+    },
+    "이전 카드": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Older Cards"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "이전 카드"
+          }
+        }
+      }
+    },
+    "이전 카드 보기": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "View older cards"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "이전 카드 보기"
+          }
+        }
+      }
+    },
+    "이전 카드가 없습니다.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "There are no older cards."
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "이전 카드가 없습니다."
+          }
+        }
+      }
+    },
+    "이전 카드는 이 기기에만 저장되어 있어 기기를 바꾸면 복원되지 않습니다.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Older cards are stored only on this device and will not be restored if you switch devices."
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "이전 카드는 이 기기에만 저장되어 있어 기기를 바꾸면 복원되지 않습니다."
           }
         }
       }
@@ -677,6 +789,22 @@
         }
       }
     },
+    "주방": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kitchen"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "주방"
+          }
+        }
+      }
+    },
     "지원하지 않는 기기입니다.": {
       "localizations": {
         "en": {
@@ -705,6 +833,22 @@
           "stringUnit": {
             "state": "translated",
             "value": "취소"
+          }
+        }
+      }
+    },
+    "침실": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bedroom"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "침실"
           }
         }
       }
