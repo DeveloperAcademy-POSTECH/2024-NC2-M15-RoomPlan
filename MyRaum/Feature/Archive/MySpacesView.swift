@@ -11,7 +11,7 @@ import SwiftData
 //보관함 화면
 struct MySpacesView: View {
     @Environment(\.dismiss) private var dismiss
-    @Environment(\.modelContext) var modelContext
+    @Environment(AppContainer.self) private var container
     
     @Query var spaceData: [SpaceData]
     
@@ -88,7 +88,7 @@ struct MySpacesView: View {
                 
                 Button(role: .destructive) {
                     if let space = spaceToDelete {
-                        modelContext.deleteSpace(space: space)
+                        container.spaceRepository.delete(space)
                     }
                 } label: {
                     Text("삭제")
@@ -97,11 +97,5 @@ struct MySpacesView: View {
                 Text("이 공간을 삭제하시겠습니까?")
             })
         }
-    }
-}
-
-#Preview {
-    NavigationStack {
-        MySpacesView()
     }
 }

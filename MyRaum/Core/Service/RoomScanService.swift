@@ -1,5 +1,5 @@
 //
-//  RoomPlanManager.swift
+//  RoomScanService.swift
 //  MyRaum
 //
 //  Created by Yune Cho on 6/13/24.
@@ -8,9 +8,23 @@
 import SwiftUI
 import RoomPlan
 
+//방 캡쳐 세션을 제어하는 역할
+protocol RoomScanning: AnyObject {
+    func startSession()
+    func stopSession()
+}
+
+//RoomPlan이 제공하는 캡쳐 뷰를 UI 계층에 전달하는 역할
+protocol RoomCaptureViewProviding: AnyObject {
+    var captureView: RoomCaptureView { get }
+}
+
+//스캔 화면이 필요로 하는 두 역할을 함께 만족하는 타입
+typealias RoomScanner = RoomScanning & RoomCaptureViewProviding
+
 //방 캡쳐를 담당하는 클래스
 @Observable
-final class RoomPlanManager: RoomCaptureViewDelegate {
+final class RoomPlanManager: RoomCaptureViewDelegate, RoomScanning, RoomCaptureViewProviding {
     func encode(with coder: NSCoder) {
         fatalError("Not Needed")
     }
@@ -47,19 +61,5 @@ final class RoomPlanManager: RoomCaptureViewDelegate {
     //캡쳐를 종료하는 함수
     func stopSession() {
         captureView.captureSession.stop()
-    }
-}
-
-//UIKit으로 작성된 RoomPlan 뷰를 SwiftUI에서 보여지도록 UIViewRepresentable 프로토콜을 사용한 뷰
-struct RoomCaptureViewRepresentable : UIViewRepresentable {
-    let manager: RoomPlanManager
-    
-    //뷰를 생성하고 초기화하는 함수
-    func makeUIView(context: Context) -> RoomCaptureView {
-        manager.captureView
-    }
-    
-    func updateUIView(_ uiView: RoomCaptureView, context: Context) {
-        
     }
 }

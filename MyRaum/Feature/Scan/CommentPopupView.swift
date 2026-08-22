@@ -9,9 +9,8 @@ import SwiftUI
 
 //장소 입력 팝업창
 struct CommentPopupView: View {
-    @Binding var showCommentPopup: Bool
-    @Binding var currentPage: RoomPlanPage
-    @Binding var comment: String
+    let comment: String
+    let onDone: (String) -> Void
     
     @State private var typedComment: String = ""
     
@@ -39,9 +38,7 @@ struct CommentPopupView: View {
             })
             
             TextButtonCapsule(text: "완료", color: .gray) {
-                comment = typedComment
-                currentPage = .addInfo
-                showCommentPopup = false
+                onDone(typedComment)
             }
         }
         .frame(width: 350, height: 180)
@@ -53,6 +50,21 @@ struct CommentPopupView: View {
     }
 }
 
+//팝업 뒤의 어두운 배경까지 함께 그리는 오버레이
+struct CommentPopupOverlay: View {
+    let viewModel: ScanFlowViewModel
+    
+    var body: some View {
+        Color.black
+            .opacity(0.5)
+            .ignoresSafeArea()
+        
+        CommentPopupView(comment: viewModel.comment) { newComment in
+            viewModel.confirmComment(newComment)
+        }
+    }
+}
+
 #Preview {
-    CommentPopupView(showCommentPopup: .constant(true), currentPage: .constant(.scanResult), comment: .constant(""))
+    CommentPopupView(comment: "", onDone: { _ in })
 }

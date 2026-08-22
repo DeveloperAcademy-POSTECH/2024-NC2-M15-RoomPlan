@@ -10,6 +10,7 @@ import SwiftUI
 //앱 메인화면
 struct ContentView: View {
     @Environment(\.colorScheme) var colorScheme
+    @Environment(AppContainer.self) private var container
     
     @State private var navigateToRoomPlanView: Bool = false
     @State private var navigateToMySpaceView: Bool = false
@@ -64,7 +65,7 @@ struct ContentView: View {
                 }
                 .padding(.leading, 30)
                 .navigationDestination(isPresented: $navigateToRoomPlanView) {
-                    RoomPlanView()
+                    ScanFlowView(container: container)
                 }
                 
                 Spacer()
@@ -112,8 +113,4 @@ private extension ContentView {
                 }
             }
     }
-}
-
-#Preview {
-    ContentView()
 }

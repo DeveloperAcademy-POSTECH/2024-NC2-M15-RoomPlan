@@ -9,7 +9,13 @@ import UIKit
 import Vision
 import CoreImage.CIFilterBuiltins
 
-final class ModelCaptureManager {
+//스캔된 3D 모델을 누끼 이미지로 만들어 주는 역할
+protocol ModelCapturing {
+    func captureScreen() -> UIImage?
+    func createSticker(image: UIImage) async -> UIImage?
+}
+
+final class ModelCaptureManager: ModelCapturing {
     //캡쳐된 모델이 보이는 뷰를 이미지로 캡쳐하기 위한 함수
     //3D모델이 존재하는 부분만 캡쳐되도록 영역을 조정해서 이미지로 만듦
     func captureScreen() -> UIImage? {
