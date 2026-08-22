@@ -8,8 +8,10 @@
 import SwiftUI
 import RoomPlan
 
-//방 캡쳐 세션을 제어하는 역할
+//방 캡쳐 세션을 제어하고 결과를 보관하는 역할
 protocol RoomScanning: AnyObject {
+    //캡쳐가 완료된 스캔 결과. 아직 끝나지 않았으면 nil
+    var capturedRoom: CapturedRoom? { get }
     func startSession()
     func stopSession()
 }
@@ -34,8 +36,9 @@ final class RoomPlanManager: RoomCaptureViewDelegate, RoomScanning, RoomCaptureV
     }
     
     var captureView: RoomCaptureView
+    //스캔 결과를 USDZ로 내보내야 하므로 외부에서 읽을 수 있게 공개한다
+    private(set) var capturedRoom: CapturedRoom?
     private var sessionConfig: RoomCaptureSession.Configuration
-    private var finalResult: CapturedRoom?
     
     init() {
         captureView = RoomCaptureView(frame: .zero)
@@ -48,13 +51,14 @@ final class RoomPlanManager: RoomCaptureViewDelegate, RoomScanning, RoomCaptureV
         return true
     }
     
-    //캡쳐가 완료된 결과를 finalResult에 저장하는 함수
+    //캡쳐가 완료된 결과를 저장하는 함수
     func captureView(didPresent processedResult: CapturedRoom, error: (Error)?) {
-        finalResult = processedResult
+        capturedRoom = processedResult
     }
     
     //캡쳐를 시작하는 함수
     func startSession() {
+        capturedRoom = nil
         captureView.captureSession.run(configuration: sessionConfig)
     }
     

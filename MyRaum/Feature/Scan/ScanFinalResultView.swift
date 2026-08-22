@@ -20,7 +20,7 @@ struct ScanFinalResultView: View {
                 .padding()
             
             NewCardView(
-                model: $viewModel.model,
+                model: $viewModel.thumbnail,
                 background: $viewModel.background,
                 date: $viewModel.dateString,
                 comment: $viewModel.comment

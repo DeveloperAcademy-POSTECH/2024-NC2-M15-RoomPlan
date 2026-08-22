@@ -34,15 +34,21 @@ struct MyRaumApp: App {
     
     //디스크 저장소를 열지 못하면 인메모리 저장소로 대체해 앱이 바로 종료되지 않도록 함
     private static func makeModelContainer() -> ModelContainer {
+        let schema = Schema(versionedSchema: SpaceSchemaV2.self)
+        
         do {
-            return try ModelContainer(for: SpaceData.self)
+            return try ModelContainer(
+                for: schema,
+                migrationPlan: SpaceMigrationPlan.self
+            )
         } catch {
             print("Failed to create ModelContainer: \(error)")
             
             do {
                 return try ModelContainer(
-                    for: SpaceData.self,
-                    configurations: ModelConfiguration(isStoredInMemoryOnly: true)
+                    for: schema,
+                    migrationPlan: SpaceMigrationPlan.self,
+                    configurations: ModelConfiguration(schema: schema, isStoredInMemoryOnly: true)
                 )
             } catch {
                 fatalError("Failed to create in-memory ModelContainer: \(error)")

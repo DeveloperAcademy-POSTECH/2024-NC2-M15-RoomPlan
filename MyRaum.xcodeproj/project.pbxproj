@@ -13,14 +13,24 @@
 		01A7A92B2E2A20A800A5EBBF /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 01A7A92A2E2A20A800A5EBBF /* Localizable.xcstrings */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		0AF0000000000000000000BA /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 019062682C1AE0A500D89653 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 0190626F2C1AE0A500D89653;
+			remoteInfo = MyRaum;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
 		0135846F2C230A2C0001889E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		019062702C1AE0A500D89653 /* MyRaum.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MyRaum.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		0AF0000000000000000000B2 /* MyRaumTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MyRaumTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		019062732C1AE0A500D89653 /* MyRaumApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyRaumApp.swift; sourceTree = "<group>"; };
 		019062792C1AE0A600D89653 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		0190627C2C1AE0A600D89653 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		01A7A92A2E2A20A800A5EBBF /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
+		0AF0000000000000000000B2 /* MyRaumTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MyRaumTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -214,16 +224,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXContainerItemProxy section */
-		0AF0000000000000000000BA /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 019062682C1AE0A500D89653 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 0190626F2C1AE0A500D89653;
-			remoteInfo = MyRaum;
-		};
-/* End PBXContainerItemProxy section */
 
 /* Begin PBXTargetDependency section */
 		0AF0000000000000000000B9 /* PBXTargetDependency */ = {

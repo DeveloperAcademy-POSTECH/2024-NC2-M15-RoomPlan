@@ -16,13 +16,14 @@ struct ScanFlowViewModelTests {
     private func makeViewModel(
         scanner: FakeRoomScanner = FakeRoomScanner(),
         locationService: FakeLocationService = FakeLocationService(),
-        repository: InMemorySpaceRepository? = nil
+        repository: InMemorySpaceRepository? = nil,
+        exporter: FakeRoomExporter? = nil
     ) -> ScanFlowViewModel {
         ScanFlowViewModel(
             scanner: scanner,
-            modelCapturer: FakeModelCapturer(),
             locationService: locationService,
-            spaceRepository: repository ?? InMemorySpaceRepository()
+            spaceRepository: repository ?? InMemorySpaceRepository(),
+            roomExporter: exporter ?? FakeRoomExporter(result: makeExportedRoom())
         )
     }
     
@@ -57,18 +58,52 @@ struct ScanFlowViewModelTests {
         #expect(viewModel.doneScanning == true)
     }
     
-    @Test("다시 스캔하면 scan 단계로 돌아가고 세션이 다시 실행된다")
-    func restartScanningReturnsToScanPage() {
+    @Test("다시 스캔하면 scan 단계로 돌아가고 내보낸 모델 정보가 지워진다")
+    func restartScanningClearsExportedModel() {
         let scanner = FakeRoomScanner()
         let viewModel = makeViewModel(scanner: scanner)
-        viewModel.finishScanning()
-        viewModel.currentPage = .scanResult
+        viewModel.prepareModel()
+        #expect(viewModel.thumbnail != nil)
         
         viewModel.restartScanning()
         
         #expect(viewModel.currentPage == .scan)
         #expect(viewModel.doneScanning == false)
+        #expect(viewModel.thumbnail == nil)
         #expect(scanner.startCallCount == 1)
+    }
+    
+    @Test("모델을 내보내면 썸네일과 파생 데이터가 채워진다")
+    func prepareModelFillsThumbnailAndMetrics() {
+        let exporter = FakeRoomExporter(
+            result: makeExportedRoom(furniture: [makeFurniture(category: "bed")], floorAreaSqM: 18.2, roomType: .bedroom)
+        )
+        let viewModel = makeViewModel(exporter: exporter)
+        
+        #expect(viewModel.prepareModel() == true)
+        #expect(viewModel.thumbnail != nil)
+        #expect(viewModel.metrics?.floorAreaSqM == 18.2)
+        #expect(viewModel.metrics?.roomType == .bedroom)
+    }
+    
+    @Test("이미 내보낸 모델이 있으면 다시 내보내지 않는다")
+    func prepareModelIsIdempotent() {
+        let exporter = FakeRoomExporter(result: makeExportedRoom())
+        let viewModel = makeViewModel(exporter: exporter)
+        
+        viewModel.prepareModel()
+        viewModel.prepareModel()
+        
+        #expect(exporter.exportCallCount == 1)
+    }
+    
+    @Test("내보내기에 실패하면 실패 알림을 보여준다")
+    func prepareModelFailureShowsAlert() {
+        let exporter = FakeRoomExporter(error: RoomExportError.noCapturedRoom)
+        let viewModel = makeViewModel(exporter: exporter)
+        
+        #expect(viewModel.prepareModel() == false)
+        #expect(viewModel.showExportFailureAlert == true)
     }
     
     @Test("장소 입력을 완료하면 addInfo 단계로 이동하고 팝업이 닫힌다")
@@ -99,15 +134,17 @@ struct ScanFlowViewModelTests {
         #expect(viewModel.dateString?.wholeMatch(of: /\d{4}\.\d{2}\.\d{2}/) != nil)
     }
     
-    @Test("모델과 배경이 모두 있으면 저장에 성공한다")
-    func saveSucceedsWithModelAndBackground() {
+    @Test("USDZ를 내보낸 뒤에는 저장에 성공하고 usdz 카드로 기록된다")
+    func saveSucceedsAfterExport() {
         let repository = InMemorySpaceRepository()
         let locationService = FakeLocationService(
             lastKnownLocation: CLLocationCoordinate2D(latitude: 36.0190, longitude: 129.3435)
         )
-        let viewModel = makeViewModel(locationService: locationService, repository: repository)
-        viewModel.model = makeTestImage()
-        viewModel.background = makeTestImage()
+        let exporter = FakeRoomExporter(
+            result: makeExportedRoom(fileName: "room.usdz", furniture: [makeFurniture(category: "sofa")], roomType: .livingRoom)
+        )
+        let viewModel = makeViewModel(locationService: locationService, repository: repository, exporter: exporter)
+        viewModel.prepareModel()
         viewModel.comment = "작업실"
         viewModel.moveToFinalResult()
         
@@ -115,16 +152,23 @@ struct ScanFlowViewModelTests {
         
         #expect(viewModel.showSavedSuccessAlert == true)
         #expect(viewModel.showSavedFailureAlert == false)
-        #expect(repository.spaces.count == 1)
-        #expect(repository.spaces.first?.comment == "작업실")
-        #expect(repository.spaces.first?.latitude == 36.0190)
+        
+        let saved = repository.spaces.first
+        #expect(saved?.comment == "작업실")
+        #expect(saved?.kind == .usdz)
+        #expect(saved?.modelFileName == "room.usdz")
+        #expect(saved?.latitude == 36.0190)
+        #expect(saved?.roomType == .livingRoom)
+        #expect(saved?.furniture.first?.category == "sofa")
+        //신규 스캔은 예외 없이 업로드 대기 상태로 저장된다 (D-06)
+        #expect(saved?.sync == .pending)
+        #expect(saved?.isPublic == false)
     }
     
-    @Test("모델이 없으면 저장하지 않고 실패 알림을 보여준다")
-    func saveFailsWithoutModel() {
+    @Test("내보낸 모델이 없으면 저장하지 않고 실패 알림을 보여준다")
+    func saveFailsWithoutExportedModel() {
         let repository = InMemorySpaceRepository()
         let viewModel = makeViewModel(repository: repository)
-        viewModel.background = makeTestImage()
         
         viewModel.saveSpaceData()
         
@@ -137,8 +181,7 @@ struct ScanFlowViewModelTests {
         let repository = InMemorySpaceRepository()
         repository.shouldFailToSave = true
         let viewModel = makeViewModel(repository: repository)
-        viewModel.model = makeTestImage()
-        viewModel.background = makeTestImage()
+        viewModel.prepareModel()
         
         viewModel.saveSpaceData()
         

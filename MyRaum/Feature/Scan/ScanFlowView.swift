@@ -17,9 +17,9 @@ struct ScanFlowView: View {
         _scanner = State(initialValue: scanner)
         _viewModel = State(initialValue: ScanFlowViewModel(
             scanner: scanner,
-            modelCapturer: container.makeModelCapturer(),
             locationService: container.locationService,
-            spaceRepository: container.spaceRepository
+            spaceRepository: container.spaceRepository,
+            roomExporter: container.makeRoomExporter(scanner: scanner)
         ))
     }
     

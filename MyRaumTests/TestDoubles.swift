@@ -8,10 +8,12 @@
 import Foundation
 import CoreLocation
 import UIKit
+import RoomPlan
 @testable import MyRaum
 
 //스캔 세션 호출 여부만 기록하는 테스트용 스캐너
 final class FakeRoomScanner: RoomScanning {
+    var capturedRoom: CapturedRoom?
     private(set) var startCallCount = 0
     private(set) var stopCallCount = 0
     
@@ -31,13 +33,73 @@ final class FakeLocationService: LocationProviding {
     func checkLocationAuthorization() { checkCallCount += 1 }
 }
 
-//누끼 처리를 실제로 하지 않는 테스트용 모델 캡쳐 서비스
-final class FakeModelCapturer: ModelCapturing {
-    var screenImage: UIImage?
-    var stickerImage: UIImage?
+//파일을 실제로 쓰지 않는 테스트용 모델 파일 저장소
+final class FakeModelFileStore: ModelFileStoring {
+    var exportedFileName: String? = "test.usdz"
+    var exportError: Error?
+    private(set) var deletedFileNames: [String] = []
     
-    func captureScreen() -> UIImage? { screenImage }
-    func createSticker(image: UIImage) async -> UIImage? { stickerImage }
+    func export(_ room: CapturedRoom, id: UUID) throws -> String {
+        if let exportError { throw exportError }
+        return exportedFileName ?? "\(id.uuidString).usdz"
+    }
+    
+    func url(forFileName fileName: String) -> URL? { nil }
+    
+    func delete(fileName: String) { deletedFileNames.append(fileName) }
+}
+
+//썸네일을 만들지 않는 테스트용 렌더러
+final class FakeThumbnailRenderer: ThumbnailRendering {
+    var thumbnailData: Data?
+    
+    func renderThumbnail(of modelURL: URL, size: CGSize) -> Data? { thumbnailData }
+}
+
+//USDZ 내보내기를 흉내내는 테스트용 서비스
+final class FakeRoomExporter: RoomExporting {
+    var result: ExportedRoom?
+    var error: Error?
+    private(set) var exportCallCount = 0
+    
+    init(result: ExportedRoom? = nil, error: Error? = nil) {
+        self.result = result
+        self.error = error
+    }
+    
+    func exportCurrentScan(id: UUID) throws -> ExportedRoom {
+        exportCallCount += 1
+        if let error { throw error }
+        guard let result else { throw RoomExportError.noCapturedRoom }
+        return result
+    }
+}
+
+//테스트용 내보내기 결과를 만드는 함수
+func makeExportedRoom(
+    fileName: String = "test.usdz",
+    furniture: [CapturedFurniture] = [],
+    floorAreaSqM: Double? = 12.5,
+    roomType: RoomTypeGuess = .bedroom
+) -> ExportedRoom {
+    ExportedRoom(
+        fileName: fileName,
+        thumbnailData: makeTestImage().pngData(),
+        metrics: RoomMetrics(floorAreaSqM: floorAreaSqM, roomType: roomType, furniture: furniture)
+    )
+}
+
+//테스트용 가구 항목을 만드는 함수
+func makeFurniture(category: String, confidence: String = "high") -> CapturedFurniture {
+    CapturedFurniture(
+        id: UUID(),
+        category: category,
+        width: 1.0,
+        height: 0.5,
+        length: 2.0,
+        confidence: confidence,
+        transform: Array(repeating: 0.0, count: 16)
+    )
 }
 
 //저장·삭제 호출을 메모리에 기록하는 테스트용 저장소
@@ -61,15 +123,23 @@ final class InMemorySpaceRepository: SpaceRepository {
 }
 
 //테스트용 더미 공간 데이터를 만드는 함수
-func makeSpaceData(comment: String = "작업실", date: String = "2026.08.22") -> SpaceData {
+func makeSpaceData(
+    comment: String = "작업실",
+    createdAt: Date = Date(timeIntervalSince1970: 1_787_000_000),
+    storageKind: SpaceStorageKind = .usdz,
+    modelFileName: String? = "test.usdz"
+) -> SpaceData {
     SpaceData(
         id: UUID(),
-        date: date,
+        createdAt: createdAt,
         comment: comment,
-        model: Data([0x01]),
-        background: Data([0x02]),
         latitude: 36.0190,
-        longitude: 129.3435
+        longitude: 129.3435,
+        storageKind: storageKind,
+        background: Data([0x02]),
+        modelFileName: modelFileName,
+        thumbnail: Data([0x01]),
+        syncState: storageKind == .usdz ? .pending : .localOnly
     )
 }
 

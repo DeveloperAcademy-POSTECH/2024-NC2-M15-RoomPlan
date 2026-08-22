@@ -19,7 +19,7 @@ struct MySpaceCellView: View {
             .overlay(
                 ZStack {
                     //배경 이미지 데이터가 손상된 경우 크래시 대신 단색 배경으로 대체
-                    if let backgroundImage = UIImage(data: space.background) {
+                    if let backgroundData = space.background, let backgroundImage = UIImage(data: backgroundData) {
                         Image(uiImage: backgroundImage)
                             .resizable()
                             .scaledToFill()

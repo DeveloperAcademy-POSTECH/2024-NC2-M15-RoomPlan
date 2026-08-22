@@ -13,35 +13,48 @@ import PhotosUI
 @MainActor
 final class ScanFlowViewModel {
     private let scanner: any RoomScanning
-    private let modelCapturer: any ModelCapturing
     private let locationService: any LocationProviding
     private let spaceRepository: any SpaceRepository
+    private let roomExporter: any RoomExporting
     
     var currentPage: RoomPlanPage = .scan
     var doneScanning: Bool = false
     var selectedItem: PhotosPickerItem?
-    var model: UIImage?
     var background: UIImage?
     var comment: String = ""
     var dateString: String?
     var showCommentPopup: Bool = false
     var showSavedSuccessAlert: Bool = false
     var showSavedFailureAlert: Bool = false
+    var showExportFailureAlert: Bool = false
+    var isPreparingModel: Bool = false
     
+    //카드에 보여줄 3D 모델의 미리보기 이미지 (USDZ 썸네일)
+    var thumbnail: UIImage?
+    //인식된 가구·면적·방 종류
+    private(set) var metrics: RoomMetrics?
+    
+    private let spaceID = UUID()
+    private var modelFileName: String?
     private var date: Date = .now
     private var latitude: Double = 0.0
     private var longitude: Double = 0.0
     
     init(
         scanner: any RoomScanning,
-        modelCapturer: any ModelCapturing,
         locationService: any LocationProviding,
-        spaceRepository: any SpaceRepository
+        spaceRepository: any SpaceRepository,
+        roomExporter: any RoomExporting
     ) {
         self.scanner = scanner
-        self.modelCapturer = modelCapturer
         self.locationService = locationService
         self.spaceRepository = spaceRepository
+        self.roomExporter = roomExporter
+    }
+    
+    //신뢰도가 낮은 오브젝트가 있으면 더 스캔하도록 안내하기 위한 값
+    var lowConfidenceCount: Int {
+        metrics?.lowConfidenceCount ?? 0
     }
     
     //캡쳐를 시작할 때 위치 정보 권한을 승인할 것인지 확인
@@ -60,22 +73,43 @@ final class ScanFlowViewModel {
     func restartScanning() {
         currentPage = .scan
         doneScanning = false
+        modelFileName = nil
+        thumbnail = nil
+        metrics = nil
         scanner.startSession()
     }
     
-    //배경 이미지를 선택할때 3D 모델은 화면 캡쳐 및 배경 제거를 통해 모델만 존재하는 이미지로 변환
-    func captureModelAndLoadBackground() async {
-        //화면 캡쳐
-        if let capturedView = modelCapturer.captureScreen() {
-            //배경 제거
-            Task {
-                model = await modelCapturer.createSticker(image: capturedView)
-            }
-        }
-        
+    //배경 이미지를 선택하면 스캔 결과를 USDZ로 내보내고 썸네일을 만든 뒤 결과 화면으로 이동
+    func prepareModelAndLoadBackground() async {
         await loadBackground()
         
-        currentPage = .scanResult
+        if prepareModel() {
+            currentPage = .scanResult
+        }
+    }
+    
+    //스캔 결과를 USDZ 파일로 저장하고 썸네일을 렌더링하는 함수
+    //성공하면 true를 리턴
+    @discardableResult
+    func prepareModel() -> Bool {
+        //이미 내보낸 모델이 있으면 다시 만들지 않는다
+        if modelFileName != nil { return true }
+        
+        isPreparingModel = true
+        defer { isPreparingModel = false }
+        
+        do {
+            let exported = try roomExporter.exportCurrentScan(id: spaceID)
+            modelFileName = exported.fileName
+            thumbnail = exported.thumbnailData.flatMap { UIImage(data: $0) }
+            metrics = exported.metrics
+            
+            return true
+        } catch {
+            print("Failed to export USDZ: \(error)")
+            showExportFailureAlert = true
+            return false
+        }
     }
     
     //선택한 사진을 배경 이미지로 불러오는 함수
@@ -109,24 +143,27 @@ final class ScanFlowViewModel {
     
     //입력된 정보로 공간 카드를 저장하는 함수
     func saveSpaceData() {
-        let savedDate = date.spaceCardFormatted
-        
-        //PNG 변환에 실패하면 저장하지 않고 실패 알림을 보여줌
-        guard let model, let background,
-              let modelData = model.pngData(),
-              let backgroundData = background.pngData() else {
+        //USDZ 파일이 없으면 저장할 3D 모델이 없는 것이므로 저장하지 않는다
+        guard let modelFileName else {
             showSavedFailureAlert = true
             return
         }
         
         let newSpace = SpaceData(
-            id: UUID(),
-            date: savedDate,
+            id: spaceID,
+            createdAt: date,
             comment: comment,
-            model: modelData,
-            background: backgroundData,
             latitude: latitude,
-            longitude: longitude
+            longitude: longitude,
+            storageKind: .usdz,
+            background: background?.pngData(),
+            modelFileName: modelFileName,
+            thumbnail: thumbnail?.pngData(),
+            furnitureJSON: metrics?.furniture.encodedJSON(),
+            floorAreaSqM: metrics?.floorAreaSqM,
+            roomTypeGuess: metrics?.roomType.rawValue,
+            //2.0에서 스캔한 공간은 전부 서버에 올린다 (D-06). 업로드는 Phase 6에서 붙인다
+            syncState: .pending
         )
         
         if spaceRepository.save(newSpace) {

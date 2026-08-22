@@ -53,11 +53,17 @@ struct ScanCaptureView: View {
                     }
                     .onChange(of: viewModel.selectedItem) {
                         Task {
-                            await viewModel.captureModelAndLoadBackground()
+                            await viewModel.prepareModelAndLoadBackground()
                         }
                     }
                 }
                 .padding(.horizontal, 16)
+            }
+        }
+        .alert("3D 모델을 저장하지 못했습니다.", isPresented: $viewModel.showExportFailureAlert) {
+            Button {
+            } label: {
+                Text("확인")
             }
         }
     }

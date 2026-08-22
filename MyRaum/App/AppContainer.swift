@@ -14,30 +14,36 @@ import SwiftData
 final class AppContainer {
     let locationService: any LocationProviding
     let spaceRepository: any SpaceRepository
+    let modelFileStore: any ModelFileStoring
+    let thumbnailRenderer: any ThumbnailRendering
     
     //스캔 세션은 스캔할 때마다 새로 만들어야 하므로 인스턴스가 아닌 생성 함수를 보관
     private let roomScannerFactory: () -> any RoomScanner
-    private let modelCapturerFactory: () -> any ModelCapturing
     
     init(
         locationService: any LocationProviding,
         spaceRepository: any SpaceRepository,
-        roomScannerFactory: @escaping () -> any RoomScanner,
-        modelCapturerFactory: @escaping () -> any ModelCapturing
+        modelFileStore: any ModelFileStoring,
+        thumbnailRenderer: any ThumbnailRendering,
+        roomScannerFactory: @escaping () -> any RoomScanner
     ) {
         self.locationService = locationService
         self.spaceRepository = spaceRepository
+        self.modelFileStore = modelFileStore
+        self.thumbnailRenderer = thumbnailRenderer
         self.roomScannerFactory = roomScannerFactory
-        self.modelCapturerFactory = modelCapturerFactory
     }
     
     //실제 앱에서 사용하는 기본 구성
     convenience init(modelContext: ModelContext) {
+        let modelFileStore = ModelFileStore()
+        
         self.init(
             locationService: LocationManager(),
-            spaceRepository: LocalSpaceRepository(modelContext: modelContext),
-            roomScannerFactory: { RoomPlanManager() },
-            modelCapturerFactory: { ModelCaptureManager() }
+            spaceRepository: LocalSpaceRepository(modelContext: modelContext, modelFileStore: modelFileStore),
+            modelFileStore: modelFileStore,
+            thumbnailRenderer: ThumbnailRenderer(),
+            roomScannerFactory: { RoomPlanManager() }
         )
     }
     
@@ -45,7 +51,12 @@ final class AppContainer {
         roomScannerFactory()
     }
     
-    func makeModelCapturer() -> any ModelCapturing {
-        modelCapturerFactory()
+    //스캔 한 번에 대응하는 내보내기 서비스를 만드는 함수
+    func makeRoomExporter(scanner: any RoomScanning) -> any RoomExporting {
+        RoomExportService(
+            scanner: scanner,
+            modelFileStore: modelFileStore,
+            thumbnailRenderer: thumbnailRenderer
+        )
     }
 }

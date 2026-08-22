@@ -35,7 +35,7 @@ private extension MySpaceCardView {
             .overlay(
                 ZStack {
                     //배경 이미지 데이터가 손상된 경우 크래시 대신 단색 배경으로 대체
-                    if let backgroundImage = UIImage(data: space.background) {
+                    if let backgroundData = space.background, let backgroundImage = UIImage(data: backgroundData) {
                         Image(uiImage: backgroundImage)
                             .resizable()
                             .scaledToFill()
@@ -64,7 +64,7 @@ private extension MySpaceCardView {
                         Spacer()
                         
                         //모델 이미지 데이터가 손상된 경우 크래시 대신 대체 아이콘 노출
-                        if let modelImage = UIImage(data: space.model) {
+                        if let modelData = space.previewImageData, let modelImage = UIImage(data: modelData) {
                             Image(uiImage: modelImage)
                                 .resizable()
                                 .scaledToFit()
@@ -88,7 +88,7 @@ private extension MySpaceCardView {
                             
                             Spacer()
                             
-                            Text(space.date)
+                            Text(space.displayDate)
                                 .font(.system(size: 23, weight: .semibold))
                                 .foregroundColor(Color.white.opacity(0.8))
                                 .padding()
@@ -138,7 +138,7 @@ private extension MySpaceCardView {
                             
                             Spacer()
                             
-                            Text(space.date)
+                            Text(space.displayDate)
                                 .font(.system(size: 23, weight: .semibold))
                                 .foregroundColor(colorScheme == .dark ? .white.opacity(0.8) : .black.opacity(0.8))
                                 .padding()
