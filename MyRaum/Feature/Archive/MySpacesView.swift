@@ -71,13 +71,25 @@ struct MySpacesView: View {
                     .bold()
             }
             
-            if legacySpaceData.isEmpty == false {
-                ToolbarItem(placement: .topBarTrailing) {
+            ToolbarItem(placement: .topBarTrailing) {
+                Menu {
                     NavigationLink {
-                        LegacyArchiveView()
+                        SpaceMapView()
                     } label: {
-                        Text("이전 카드 보기")
+                        Label("지도에서 보기", systemImage: "map")
                     }
+                    
+                    //레거시 카드가 있을 때만 이전 카드 진입점을 노출한다
+                    if legacySpaceData.isEmpty == false {
+                        NavigationLink {
+                            LegacyArchiveView()
+                        } label: {
+                            Label("이전 카드 보기", systemImage: "clock.arrow.circlepath")
+                        }
+                    }
+                } label: {
+                    Image(systemName: "ellipsis.circle")
+                        .bold()
                 }
             }
         }

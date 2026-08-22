@@ -983,6 +983,22 @@
         }
       }
     },
+    "위치 정보가 있는 공간이 없습니다.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No spaces have location data."
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "위치 정보가 있는 공간이 없습니다."
+          }
+        }
+      }
+    },
     "이 공간을 공개하시겠습니까?": {
       "localizations": {
         "en": {
@@ -1317,6 +1333,22 @@
           "stringUnit": {
             "state": "translated",
             "value": "주방"
+          }
+        }
+      }
+    },
+    "지도에서 보기": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "View on map"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "지도에서 보기"
           }
         }
       }

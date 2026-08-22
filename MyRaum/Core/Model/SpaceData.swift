@@ -132,6 +132,20 @@ extension SpaceData {
         }
     }
     
+    //지도 마커에 쓰는 이미지
+    //레거시 카드는 3D 썸네일이 없으므로 배경 이미지를 사용한다 (Phase 7)
+    var markerImageData: Data? {
+        switch kind {
+        case .usdz: return thumbnail ?? background
+        case .legacyImage: return background ?? legacyModelImage
+        }
+    }
+    
+    //위치 정보가 기록된 공간인지
+    var hasLocation: Bool {
+        latitude != 0 || longitude != 0
+    }
+    
     //카드에 표시할 날짜 문자열
     //원본 문자열이 남아 있으면 그대로 쓰고, 없으면 createdAt을 포맷한다
     var displayDate: String {
