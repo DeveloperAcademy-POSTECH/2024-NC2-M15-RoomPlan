@@ -9,9 +9,8 @@ import SwiftUI
 
 //최종 결과 확인 화면
 struct ScanFinalResultView: View {
-    @Environment(\.dismiss) private var dismiss
-    
     @Bindable var viewModel: ScanFlowViewModel
+    let onFinish: () -> Void
     
     var body: some View {
         VStack {
@@ -35,7 +34,7 @@ struct ScanFinalResultView: View {
             .alert("저장되었습니다.", isPresented: $viewModel.showSavedSuccessAlert) {
                 Button {
                     viewModel.resetAfterSave()
-                    dismiss()
+                    onFinish()
                 } label: {
                     Text("확인")
                 }
@@ -43,7 +42,7 @@ struct ScanFinalResultView: View {
             .alert("저장하지 못했습니다.", isPresented: $viewModel.showSavedFailureAlert) {
                 Button {
                     viewModel.resetAfterSave()
-                    dismiss()
+                    onFinish()
                 } label: {
                     Text("확인")
                 }

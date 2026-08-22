@@ -1,5 +1,5 @@
 //
-//  ContentView.swift
+//  HomeCenterView.swift
 //  MyRaum
 //
 //  Created by Yune Cho on 6/13/24.
@@ -7,14 +7,12 @@
 
 import SwiftUI
 
-//앱 메인화면
-struct ContentView: View {
+//드로어 가운데에 놓이는 홈 화면
+struct HomeCenterView: View {
     @Environment(\.colorScheme) var colorScheme
-    @Environment(AppContainer.self) private var container
     
-    @State private var navigateToRoomPlanView: Bool = false
-    @State private var navigateToMySpaceView: Bool = false
-    @State private var isDragging: Bool = false
+    let onOpenArchive: () -> Void
+    let onOpenScan: () -> Void
     
     var body: some View {
         NavigationStack {
@@ -25,20 +23,12 @@ struct ContentView: View {
                     NavigationLink {
                         MyPageView()
                     } label: {
-                        if #available(iOS 18.0, *) {
-                            Image(systemName: "person.crop.circle")
-                                .font(.title)
-                                .foregroundStyle(Color.gray)
-                                .padding(.top, 70)
-                                .padding(.trailing, 16)
-                                .symbolEffect(.breathe, options: .nonRepeating)
-                        } else {
-                            Image(systemName: "person.crop.circle")
-                                .font(.title)
-                                .foregroundStyle(Color.gray)
-                                .padding(.top, 70)
-                                .padding(.trailing, 16)
-                        }
+                        Image(systemName: "person.crop.circle")
+                            .font(.title)
+                            .foregroundStyle(Color.gray)
+                            .padding(.top, 70)
+                            .padding(.trailing, 16)
+                            .symbolEffect(.breathe, options: .nonRepeating)
                     }
                 }
                 
@@ -59,21 +49,18 @@ struct ContentView: View {
                     .padding(.leading, 30)
                     .padding(.bottom, 30)
                 
-                //공간 스캔 화면으로 이동
+                //공간 스캔 패널 열기
                 TextButtonCapsule(text: "스캔하기", color: .white) {
-                    navigateToRoomPlanView = true
+                    onOpenScan()
                 }
                 .padding(.leading, 30)
-                .navigationDestination(isPresented: $navigateToRoomPlanView) {
-                    ScanFlowView(container: container)
-                }
                 
                 Spacer()
                 
                 HStack {
                     Spacer()
                     
-                    //보관함으로 이동
+                    //보관함 패널 열기
                     Image("corner")
                         .resizable()
                         .aspectRatio(contentMode: .fit)
@@ -84,33 +71,14 @@ struct ContentView: View {
                                 .foregroundStyle(Color.black)
                                 .padding(24)
                         })
-                        .navigationDestination(isPresented: $navigateToMySpaceView, destination: {
-                            MySpacesView()
-                        })
                         .onTapGesture {
-                            navigateToMySpaceView = true
+                            onOpenArchive()
                         }
-                        .gesture(dragGesture)
                 }
             }
             .background(Color.black)
             .ignoresSafeArea()
         }
         .tint(colorScheme == .dark ? .white : .black)
-    }
-}
-
-private extension ContentView {
-    var dragGesture: some Gesture {
-        DragGesture(minimumDistance: 50)
-            .onChanged { _ in
-                self.isDragging = true
-            }
-            .onEnded { gesture in
-                self.isDragging = false
-                if gesture.translation.width < -50 && gesture.translation.height < -50 {
-                    navigateToMySpaceView = true
-                }
-            }
     }
 }

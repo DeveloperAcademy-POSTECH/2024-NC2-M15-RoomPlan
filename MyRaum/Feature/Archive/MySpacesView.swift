@@ -10,12 +10,14 @@ import SwiftData
 
 //보관함 화면 — 2.0에서 스캔한 3D 카드만 보여준다
 struct MySpacesView: View {
-    @Environment(\.dismiss) private var dismiss
     @Environment(AppContainer.self) private var container
     
     @Query private var spaceData: [SpaceData]
     //"이전 카드 보기" 진입점은 레거시 카드가 있을 때만 노출한다
     @Query private var legacySpaceData: [SpaceData]
+    
+    //드로어를 닫는 동작. NavigationStack의 루트라 화면 닫기를 주입받는다
+    let onClose: () -> Void
     
     @State private var selectedSpace: SpaceData? = nil
     @State private var spaceToDelete: SpaceData? = nil
@@ -26,7 +28,9 @@ struct MySpacesView: View {
         GridItem()
     ]
     
-    init() {
+    init(onClose: @escaping () -> Void) {
+        self.onClose = onClose
+        
         let usdzKind = SpaceStorageKind.usdz.rawValue
         let legacyKind = SpaceStorageKind.legacyImage.rawValue
         
@@ -55,7 +59,7 @@ struct MySpacesView: View {
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {
                 Button {
-                    dismiss()
+                    onClose()
                 } label: {
                     Image(systemName: "chevron.left")
                         .bold()
