@@ -85,10 +85,13 @@ private extension MySpaceCardView {
                             
                             Spacer()
                             
-                            Text(space.displayDate)
-                                .font(.system(size: 23, weight: .semibold))
-                                .foregroundColor(Color.white.opacity(0.8))
-                                .padding()
+                            //편집 캔버스에서 날짜를 끈 카드는 날짜를 감춘다
+                            if space.showsDate {
+                                Text(space.displayDate)
+                                    .font(.system(size: 23, weight: .semibold))
+                                    .foregroundColor(Color.white.opacity(0.8))
+                                    .padding()
+                            }
                         }
                         .padding(.bottom, 20)
                     }

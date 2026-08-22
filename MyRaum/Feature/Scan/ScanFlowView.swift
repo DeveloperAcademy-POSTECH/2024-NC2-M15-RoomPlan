@@ -31,26 +31,30 @@ struct ScanFlowView: View {
             scanner: scanner,
             locationService: container.locationService,
             spaceRepository: container.spaceRepository,
-            roomExporter: container.makeRoomExporter(scanner: scanner)
+            roomExporter: container.makeRoomExporter(scanner: scanner),
+            modelFileStore: container.modelFileStore
         ))
+    }
+    
+    //스캔 화면을 벗어나는 동작
+    private func close() {
+        onScanActiveChange(false)
+        onFinish()
     }
     
     var body: some View {
         Group {
-            switch viewModel.currentPage {
-            case .scan:
-                ScanCaptureView(viewModel: viewModel, scanner: scanner)
-            case .scanResult:
-                ScanResultView(viewModel: viewModel)
-            case .addInfo:
-                ScanAddInfoView(viewModel: viewModel)
-            case .finalResult:
-                ScanFinalResultView(viewModel: viewModel, onFinish: onFinish)
+            switch viewModel.currentStep {
+            case .capture:
+                ScanCaptureView(viewModel: viewModel, scanner: scanner, onClose: close)
+            case .edit:
+                ScanEditorView(viewModel: viewModel, onClose: close)
             }
         }
-        //캡쳐 화면에서는 드로어 제스처를 비활성화한다
-        .onChange(of: viewModel.currentPage, initial: true) {
-            onScanActiveChange(viewModel.currentPage == .scan)
+        //스캔 플로우가 떠 있는 동안에는 드로어 제스처를 비활성화한다
+        //편집 캔버스의 가로 드래그(3D 회전)와 정면으로 충돌하기 때문
+        .onAppear {
+            onScanActiveChange(true)
         }
         .onDisappear {
             onScanActiveChange(false)

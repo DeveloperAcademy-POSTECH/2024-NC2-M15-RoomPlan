@@ -7,6 +7,7 @@
 
 import SwiftUI
 import RoomPlan
+import ARKit
 
 //방 캡쳐 세션을 제어하고 결과를 보관하는 역할
 protocol RoomScanning: AnyObject {
@@ -39,9 +40,11 @@ final class RoomPlanManager: RoomCaptureViewDelegate, RoomScanning, RoomCaptureV
     //스캔 결과를 USDZ로 내보내야 하므로 외부에서 읽을 수 있게 공개한다
     private(set) var capturedRoom: CapturedRoom?
     private var sessionConfig: RoomCaptureSession.Configuration
+    //커스텀 코칭 오버레이를 올리기 위해 ARSession을 직접 소유한다
+    private let arSession = ARSession()
     
     init() {
-        captureView = RoomCaptureView(frame: .zero)
+        captureView = RoomCaptureView(frame: .zero, arSession: arSession)
         sessionConfig = RoomCaptureSession.Configuration()
         captureView.delegate = self
     }

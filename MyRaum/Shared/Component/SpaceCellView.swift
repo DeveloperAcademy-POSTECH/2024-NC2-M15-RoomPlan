@@ -28,6 +28,16 @@ struct SpaceCellView: View {
                             .overlay(Color.black.opacity(0.4))
                             .cornerRadius(19)
                             .clipped()
+                    } else if let previewData = space.previewImageData, let preview = UIImage(data: previewData) {
+                        //배경 사진을 넣지 않은 카드는 모델 썸네일로 대신 보여준다
+                        Color.black
+                            .frame(width: 153, height: 272)
+                            .cornerRadius(19)
+                        
+                        Image(uiImage: preview)
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 130)
                     } else {
                         Color.grayButton
                             .frame(width: 153, height: 272)

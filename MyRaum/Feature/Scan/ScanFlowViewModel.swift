@@ -16,14 +16,20 @@ final class ScanFlowViewModel {
     private let locationService: any LocationProviding
     private let spaceRepository: any SpaceRepository
     private let roomExporter: any RoomExporting
+    private let modelFileStore: any ModelFileStoring
     
-    var currentPage: RoomPlanPage = .scan
+    var currentStep: ScanStep = .capture
     var doneScanning: Bool = false
     var selectedItem: PhotosPickerItem?
     var background: UIImage?
     var comment: String = ""
-    var dateString: String?
-    var showCommentPopup: Bool = false
+    //편집 캔버스의 날짜 토글
+    var showsDate: Bool = true
+    //장소명 인라인 편집 중인지
+    var isEditingComment: Bool = false
+    //값이 바뀌면 3D 모델의 각도가 초기화된다
+    var modelResetToken: Int = 0
+    
     var showSavedSuccessAlert: Bool = false
     var showSavedFailureAlert: Bool = false
     var showExportFailureAlert: Bool = false
@@ -35,7 +41,7 @@ final class ScanFlowViewModel {
     private(set) var metrics: RoomMetrics?
     
     private let spaceID = UUID()
-    private var modelFileName: String?
+    private(set) var modelFileName: String?
     private var date: Date = .now
     private var latitude: Double = 0.0
     private var longitude: Double = 0.0
@@ -44,17 +50,30 @@ final class ScanFlowViewModel {
         scanner: any RoomScanning,
         locationService: any LocationProviding,
         spaceRepository: any SpaceRepository,
-        roomExporter: any RoomExporting
+        roomExporter: any RoomExporting,
+        modelFileStore: any ModelFileStoring
     ) {
         self.scanner = scanner
         self.locationService = locationService
         self.spaceRepository = spaceRepository
         self.roomExporter = roomExporter
+        self.modelFileStore = modelFileStore
+    }
+    
+    //편집 캔버스에서 보여줄 USDZ 경로
+    var modelURL: URL? {
+        guard let modelFileName else { return nil }
+        return modelFileStore.url(forFileName: modelFileName)
     }
     
     //신뢰도가 낮은 오브젝트가 있으면 더 스캔하도록 안내하기 위한 값
     var lowConfidenceCount: Int {
         metrics?.lowConfidenceCount ?? 0
+    }
+    
+    //카드에 표시할 날짜 문자열
+    var dateText: String {
+        date.spaceCardFormatted
     }
     
     //캡쳐를 시작할 때 위치 정보 권한을 승인할 것인지 확인
@@ -63,29 +82,32 @@ final class ScanFlowViewModel {
         locationService.checkLocationAuthorization()
     }
     
-    //스캔을 끝내고 결과를 확인하는 상태로 전환
+    //스캔을 끝내고 편집 캔버스로 넘어가는 함수
+    //화면 전환 없이 하나의 캔버스에서 마무리하도록 여기서 USDZ까지 만들어 둔다
     func finishScanning() {
         scanner.stopSession()
         doneScanning = true
+        
+        guard prepareModel() else { return }
+        
+        //편집 캔버스에 들어갈 때 날짜·위치를 확정한다
+        date = .now
+        if let coordinate = locationService.lastKnownLocation {
+            latitude = coordinate.latitude
+            longitude = coordinate.longitude
+        }
+        
+        currentStep = .edit
     }
     
     //처음부터 다시 스캔
     func restartScanning() {
-        currentPage = .scan
+        currentStep = .capture
         doneScanning = false
         modelFileName = nil
         thumbnail = nil
         metrics = nil
         scanner.startSession()
-    }
-    
-    //배경 이미지를 선택하면 스캔 결과를 USDZ로 내보내고 썸네일을 만든 뒤 결과 화면으로 이동
-    func prepareModelAndLoadBackground() async {
-        await loadBackground()
-        
-        if prepareModel() {
-            currentPage = .scanResult
-        }
     }
     
     //스캔 결과를 USDZ 파일로 저장하고 썸네일을 렌더링하는 함수
@@ -121,24 +143,24 @@ final class ScanFlowViewModel {
         }
     }
     
-    //장소 입력 팝업에서 입력을 완료했을 때
-    func confirmComment(_ newComment: String) {
-        comment = newComment
-        currentPage = .addInfo
-        showCommentPopup = false
+    //장소명 인라인 편집을 시작·종료하는 함수
+    func beginEditingComment() {
+        isEditingComment = true
     }
     
-    //미리보기 버튼을 선택할때 현재의 날짜 정보와 위치 정보 입력
-    func moveToFinalResult() {
-        date = .now
-        dateString = date.spaceCardFormatted
-        
-        if let coordinate = locationService.lastKnownLocation {
-            latitude = coordinate.latitude
-            longitude = coordinate.longitude
-        }
-        
-        currentPage = .finalResult
+    func endEditingComment(with newComment: String) {
+        comment = newComment
+        isEditingComment = false
+    }
+    
+    //날짜 노출 여부를 뒤집는 함수
+    func toggleDate() {
+        showsDate.toggle()
+    }
+    
+    //3D 모델의 각도를 초기 상태로 되돌리는 함수
+    func resetModelAngle() {
+        modelResetToken += 1
     }
     
     //입력된 정보로 공간 카드를 저장하는 함수
@@ -157,6 +179,7 @@ final class ScanFlowViewModel {
             longitude: longitude,
             storageKind: .usdz,
             background: background?.pngData(),
+            showsDate: showsDate,
             modelFileName: modelFileName,
             thumbnail: thumbnail?.pngData(),
             furnitureJSON: metrics?.furniture.encodedJSON(),
@@ -176,6 +199,6 @@ final class ScanFlowViewModel {
     //저장 알림을 닫고 화면을 벗어나기 전 상태를 되돌리는 함수
     func resetAfterSave() {
         doneScanning = false
-        currentPage = .scan
+        currentStep = .capture
     }
 }

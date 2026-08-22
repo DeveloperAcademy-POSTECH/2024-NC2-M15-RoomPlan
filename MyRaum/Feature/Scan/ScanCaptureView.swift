@@ -6,58 +6,47 @@
 //
 
 import SwiftUI
-import PhotosUI
 
-//방 캡쳐 화면 & 캡쳐 결과 확인 화면
+//방 캡쳐 화면 — RoomPlan 캡쳐 뷰 위에 커스텀 코칭 오버레이를 올린다
 struct ScanCaptureView: View {
     @Bindable var viewModel: ScanFlowViewModel
     let scanner: any RoomScanner
+    let onClose: () -> Void
     
     var body: some View {
-        VStack {
-            if viewModel.doneScanning == true {
-                Text("3D 모델의 각도를 조절한 후\n배경을 추가하세요.")
-                    .bold()
-                    .multilineTextAlignment(.center)
-            }
-            
+        ZStack {
             RoomCaptureViewRepresentable(provider: scanner)
+                .ignoresSafeArea(.all)
                 .onAppear(perform: {
                     viewModel.startScanning()
                 })
-                .ignoresSafeArea(.all)
             
-            if viewModel.doneScanning == false {
+            VStack {
+                HStack {
+                    CloseScanButton(action: onClose)
+                    
+                    Spacer()
+                }
+                .padding(.horizontal, 20)
+                .padding(.top, 8)
+                
+                ScanStepIndicator(step: .capture)
+                    .padding(.top, 12)
+                
+                coachingOverlay
+                
+                Spacer()
+                
+                if viewModel.isPreparingModel {
+                    ProgressView()
+                        .tint(.white)
+                        .padding(.bottom, 20)
+                }
+                
                 TextButtonCapsule(text: "스캔 끝내기", color: .gray) {
                     viewModel.finishScanning()
                 }
-            } else {
-                HStack(spacing: 16) {
-                    TextButtonRoundedRectangle(text: "다시 스캔하기") {
-                        viewModel.restartScanning()
-                    }
-                    
-                    PhotosPicker(selection: $viewModel.selectedItem, matching: .images) {
-                        RoundedRectangle(cornerRadius: 16)
-                            .stroke(style: StrokeStyle(lineWidth: 1))
-                            .foregroundStyle(Color.grayButtonStroke)
-                            .frame(height: 60)
-                            .overlay {
-                                RoundedRectangle(cornerRadius: 16)
-                                    .foregroundStyle(Color.grayButton)
-                                
-                                Text("배경 추가하기")
-                                    .font(.system(size: 18))
-                                    .foregroundStyle(Color.white)
-                            }
-                    }
-                    .onChange(of: viewModel.selectedItem) {
-                        Task {
-                            await viewModel.prepareModelAndLoadBackground()
-                        }
-                    }
-                }
-                .padding(.horizontal, 16)
+                .padding(.bottom, 40)
             }
         }
         .alert("3D 모델을 저장하지 못했습니다.", isPresented: $viewModel.showExportFailureAlert) {
@@ -66,5 +55,21 @@ struct ScanCaptureView: View {
                 Text("확인")
             }
         }
+    }
+}
+
+private extension ScanCaptureView {
+    //RoomPlan 기본 안내 위에 앱의 문구를 얹은 코칭 오버레이
+    var coachingOverlay: some View {
+        Text("공간을 천천히 둘러보며 벽과 가구를 비춰주세요.")
+            .font(.system(size: 15, weight: .semibold))
+            .foregroundStyle(Color.white)
+            .multilineTextAlignment(.center)
+            .padding(.horizontal, 20)
+            .padding(.vertical, 12)
+            .background {
+                Capsule().foregroundStyle(Color.black.opacity(0.55))
+            }
+            .padding(.top, 16)
     }
 }

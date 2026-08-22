@@ -1,895 +1,943 @@
 {
-  "sourceLanguage" : "en",
-  "strings" : {
-    " 지도" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Map"
+  "sourceLanguage": "en",
+  "strings": {
+    " 지도": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Map"
           }
         },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "지도"
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "지도"
           }
         }
       }
     },
-    " 카드" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Card"
+    " 카드": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Card"
           }
         },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "카드"
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "카드"
           }
         }
       }
     },
-    "[Version %@]" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "[Version %@]"
+    "3D 모델을 저장하지 못했습니다.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Failed to save the 3D model."
           }
         },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "[Version %@]"
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "3D 모델을 저장하지 못했습니다."
           }
         }
       }
     },
-    "3D 모델을 저장하지 못했습니다." : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Failed to save the 3D model."
+    "3D 모델의 각도를 조절한 후\n배경을 추가하세요.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "After adjusting the angle of the 3D model, add a background."
           }
         },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "3D 모델을 저장하지 못했습니다."
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "3D 모델의 각도를 조절한 후\n배경을 추가하세요."
           }
         }
       }
     },
-    "3D 모델의 각도를 조절한 후\n배경을 추가하세요." : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "After adjusting the angle of the 3D model, add a background."
+    "Card View": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Card View"
           }
         },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "3D 모델의 각도를 조절한 후\n배경을 추가하세요."
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Card View"
           }
         }
       }
     },
-    "Card View" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Card View"
+    "My Raum을 만든 사람들": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "My Raum Team"
           }
         },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Card View"
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "My Raum을 만든 사람들"
           }
         }
       }
     },
-    "iOS Developer" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "iOS Developer"
+    "UX/UI Designer": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "UX/UI Designer"
           }
         },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "iOS Developer"
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "UX/UI Designer"
           }
         }
       }
     },
-    "My Raum을 만든 사람들" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "My Raum Team"
+    "[Version %@]": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "[Version %@]"
           }
         },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "My Raum을 만든 사람들"
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "[Version %@]"
           }
         }
       }
     },
-    "UX/UI Designer" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "UX/UI Designer"
+    "iOS Developer": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "iOS Developer"
           }
         },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "UX/UI Designer"
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "iOS Developer"
           }
         }
       }
     },
-    "거실" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Living room"
+    "거실": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Living room"
           }
         },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "거실"
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "거실"
           }
         }
       }
     },
-    "결과물을 저장해보세요." : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Save your results."
+    "결과물을 저장해보세요.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Save your results."
           }
         },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "결과물을 저장해보세요."
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "결과물을 저장해보세요."
           }
         }
       }
     },
-    "결과물을 확인하세요." : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Check the results."
+    "결과물을 확인하세요.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Check the results."
           }
         },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "결과물을 확인하세요."
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "결과물을 확인하세요."
           }
         }
       }
     },
-    "공간" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Space"
+    "공간": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Space"
           }
         },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "공간"
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "공간"
           }
         }
       }
     },
-    "공간 삭제" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Delete space"
+    "공간 삭제": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Delete space"
           }
         },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "공간 삭제"
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "공간 삭제"
           }
         }
       }
     },
-    "공간 카드 공유" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Share space card"
+    "공간 카드 공유": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Share space card"
           }
         },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "공간 카드 공유"
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "공간 카드 공유"
           }
         }
       }
     },
-    "공간에 대해서 기록하세요." : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Write about the space."
+    "공간에 대해서 기록하세요.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Write about the space."
           }
         },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "공간에 대해서 기록하세요."
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "공간에 대해서 기록하세요."
           }
         }
       }
     },
-    "공유" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Share"
+    "공간을 천천히 둘러보며 벽과 가구를 비춰주세요.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Slowly look around the space and aim at the walls and furniture."
           }
         },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "공유"
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "공간을 천천히 둘러보며 벽과 가구를 비춰주세요."
           }
         }
       }
     },
-    "김민정" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Minjeong Kim"
+    "공유": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Share"
           }
         },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "김민정"
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "공유"
           }
         }
       }
     },
-    "나의 공간을 기록해보세요." : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Record my space."
+    "김민정": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Minjeong Kim"
           }
         },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "나의 공간을 기록해보세요."
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "김민정"
           }
         }
       }
     },
-    "내 정보" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "My Page"
+    "나의 공간을 기록해보세요.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Record my space."
           }
         },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "내 정보"
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "나의 공간을 기록해보세요."
           }
         }
       }
     },
-    "다시 스캔하기" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Scan again"
+    "내 정보": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "My Page"
           }
         },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "다시 스캔하기"
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "내 정보"
           }
         }
       }
     },
-    "미리보기" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Preview"
+    "다시 스캔하기": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scan again"
           }
         },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "미리보기"
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "다시 스캔하기"
           }
         }
       }
     },
-    "배경 수정하기" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Edit background"
+    "닫기": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Close"
           }
         },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "배경 수정하기"
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "닫기"
           }
         }
       }
     },
-    "배경 추가하기" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Add a background"
+    "미리보기": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Preview"
           }
         },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "배경 추가하기"
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "미리보기"
           }
         }
       }
     },
-    "보관함" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Archive"
+    "배경 수정하기": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Edit background"
           }
         },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "보관함"
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "배경 수정하기"
           }
         }
       }
     },
-    "삭제" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Delete"
+    "배경 추가하기": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Add a background"
           }
         },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "삭제"
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "배경 추가하기"
           }
         }
       }
     },
-    "설정" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Settings"
+    "보관함": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Archive"
           }
         },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "설정"
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "보관함"
           }
         }
       }
     },
-    "스캔 끝내기" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Finish scanning"
+    "삭제": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Delete"
           }
         },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "스캔 끝내기"
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "삭제"
           }
         }
       }
     },
-    "스캔하기" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Scan"
+    "설정": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Settings"
           }
         },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "스캔하기"
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "설정"
           }
         }
       }
     },
-    "앱 정보" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "App Information"
+    "스캔 끝내기": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Finish scanning"
           }
         },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "앱 정보"
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "스캔 끝내기"
           }
         }
       }
     },
-    "언어 설정" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Language Setting"
+    "스캔하기": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scan"
           }
         },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "언어 설정"
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "스캔하기"
           }
         }
       }
     },
-    "완료" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Complete"
+    "앱 정보": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "App Information"
           }
         },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "완료"
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "앱 정보"
           }
         }
       }
     },
-    "욕실" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Bathroom"
+    "언어 설정": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Language Setting"
           }
         },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "욕실"
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "언어 설정"
           }
         }
       }
     },
-    "이 공간을 삭제하시겠습니까?" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Are you sure you want to delete this space?"
+    "완료": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Complete"
           }
         },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "이 공간을 삭제하시겠습니까?"
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "완료"
           }
         }
       }
     },
-    "이 기기는 라이다(LiDAR)를 지원하지 않습니다." : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "This device does not support LiDAR."
+    "욕실": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bathroom"
           }
         },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "이 기기는 라이다(LiDAR)를 지원하지 않습니다."
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "욕실"
           }
         }
       }
     },
-    "이미지 저장" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Save image"
+    "이 공간을 삭제하시겠습니까?": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Are you sure you want to delete this space?"
           }
         },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "이미지 저장"
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "이 공간을 삭제하시겠습니까?"
           }
         }
       }
     },
-    "이미지가 저장되었습니다." : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "The image has been saved."
+    "이 기기는 라이다(LiDAR)를 지원하지 않습니다.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "This device does not support LiDAR."
           }
         },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "이미지가 저장되었습니다."
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "이 기기는 라이다(LiDAR)를 지원하지 않습니다."
           }
         }
       }
     },
-    "이전 카드" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Older Cards"
+    "이 영역을 더 스캔해 보세요.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Try scanning this area some more."
           }
         },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "이전 카드"
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "이 영역을 더 스캔해 보세요."
           }
         }
       }
     },
-    "이전 카드 보기" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "View older cards"
+    "이미지 저장": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Save image"
           }
         },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "이전 카드 보기"
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "이미지 저장"
           }
         }
       }
     },
-    "이전 카드가 없습니다." : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "There are no older cards."
+    "이미지가 저장되었습니다.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The image has been saved."
           }
         },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "이전 카드가 없습니다."
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "이미지가 저장되었습니다."
           }
         }
       }
     },
-    "이전 카드는 이 기기에만 저장되어 있어 기기를 바꾸면 복원되지 않습니다." : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Older cards are stored only on this device and will not be restored if you switch devices."
+    "이전 카드": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Older Cards"
           }
         },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "이전 카드는 이 기기에만 저장되어 있어 기기를 바꾸면 복원되지 않습니다."
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "이전 카드"
           }
         }
       }
     },
-    "장소 수정하기" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Edit location"
+    "이전 카드 보기": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "View older cards"
           }
         },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "장소 수정하기"
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "이전 카드 보기"
           }
         }
       }
     },
-    "장소 입력하기" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Enter a location"
+    "이전 카드가 없습니다.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "There are no older cards."
           }
         },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "장소 입력하기"
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "이전 카드가 없습니다."
           }
         }
       }
     },
-    "장소를 입력하세요." : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Please enter a location."
+    "이전 카드는 이 기기에만 저장되어 있어 기기를 바꾸면 복원되지 않습니다.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Older cards are stored only on this device and will not be restored if you switch devices."
           }
         },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "장소를 입력하세요."
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "이전 카드는 이 기기에만 저장되어 있어 기기를 바꾸면 복원되지 않습니다."
           }
         }
       }
     },
-    "저장" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Save"
+    "장소 수정하기": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Edit location"
           }
         },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "저장"
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "장소 수정하기"
           }
         }
       }
     },
-    "저장되었습니다." : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Saving completed."
+    "장소 입력하기": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Enter a location"
           }
         },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "저장되었습니다."
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "장소 입력하기"
           }
         }
       }
     },
-    "저장된 공간이 없습니다." : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "There is no space saved."
+    "장소를 입력하세요.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Please enter a location."
           }
         },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "저장된 공간이 없습니다."
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "장소를 입력하세요."
           }
         }
       }
     },
-    "저장하지 못했습니다." : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Failed to save."
+    "저장": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Save"
           }
         },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "저장하지 못했습니다."
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "저장"
           }
         }
       }
     },
-    "조윤" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Yune Cho"
+    "저장되었습니다.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Saving completed."
           }
         },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "조윤"
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "저장되었습니다."
           }
         }
       }
     },
-    "주방" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Kitchen"
+    "저장된 공간이 없습니다.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "There is no space saved."
           }
         },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "주방"
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "저장된 공간이 없습니다."
           }
         }
       }
     },
-    "지원하지 않는 기기입니다." : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "This device is not supported."
+    "저장하지 못했습니다.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Failed to save."
           }
         },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "지원하지 않는 기기입니다."
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "저장하지 못했습니다."
           }
         }
       }
     },
-    "취소" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Cancel"
+    "조윤": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Yune Cho"
           }
         },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "취소"
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "조윤"
           }
         }
       }
     },
-    "침실" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Bedroom"
+    "주방": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kitchen"
           }
         },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "침실"
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "주방"
           }
         }
       }
     },
-    "확인" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Confirm"
+    "지원하지 않는 기기입니다.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "This device is not supported."
           }
         },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "확인"
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "지원하지 않는 기기입니다."
           }
         }
       }
     },
-    " Apple Developer Academy @ POSTECH" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : " Apple Developer Academy @ POSTECH"
+    "취소": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cancel"
           }
         },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : " Apple Developer Academy @ POSTECH"
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "취소"
+          }
+        }
+      }
+    },
+    "침실": {
+      "extractionState": "stale",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bedroom"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "침실"
+          }
+        }
+      }
+    },
+    "확인": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Confirm"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "확인"
+          }
+        }
+      }
+    },
+    " Apple Developer Academy @ POSTECH": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": " Apple Developer Academy @ POSTECH"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": " Apple Developer Academy @ POSTECH"
           }
         }
       }
     }
   },
-  "version" : "1.0"
+  "version": "1.0"
 }

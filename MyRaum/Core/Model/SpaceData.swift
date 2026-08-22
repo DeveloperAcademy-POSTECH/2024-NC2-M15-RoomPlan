@@ -36,6 +36,9 @@ enum SpaceSchemaV2: VersionedSchema {
         //V1의 date 문자열 원본. 파싱에 실패해도 표시가 깨지지 않도록 보존한다
         @Attribute(originalName: "date") var legacyDateText: String?
         
+        //카드에 날짜를 노출할지 여부 (편집 캔버스의 날짜 토글)
+        var showsDate: Bool = true
+        
         //usdz 전용 (신규)
         //Documents/Models/{uuid}.usdz  (.parametric 단독)
         var modelFileName: String?
@@ -66,6 +69,7 @@ enum SpaceSchemaV2: VersionedSchema {
             legacyModelImage: Data? = nil,
             background: Data? = nil,
             legacyDateText: String? = nil,
+            showsDate: Bool = true,
             modelFileName: String? = nil,
             thumbnail: Data? = nil,
             structureID: UUID? = nil,
@@ -86,6 +90,7 @@ enum SpaceSchemaV2: VersionedSchema {
             self.legacyModelImage = legacyModelImage
             self.background = background
             self.legacyDateText = legacyDateText
+            self.showsDate = showsDate
             self.modelFileName = modelFileName
             self.thumbnail = thumbnail
             self.structureID = structureID

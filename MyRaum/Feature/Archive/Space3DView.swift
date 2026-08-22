@@ -12,6 +12,8 @@ import RealityKit
 //최소 배포 타겟이 18.0이므로 버전 분기 없이 RealityView를 사용한다 (D-01)
 struct Space3DView: View {
     let modelURL: URL
+    //값이 바뀌면 회전·배율을 초기 상태로 되돌린다
+    var resetToken: Int = 0
     
     //진입할 때마다 초기 각도로 시작한다 (회전 상태를 카드별로 유지하지 않음)
     @State private var rotation: Double = 0
@@ -36,6 +38,19 @@ struct Space3DView: View {
                 modelView
             }
         }
+        .onChange(of: resetToken) {
+            resetTransform()
+        }
+    }
+    
+    //회전과 배율을 초기 상태로 되돌리는 함수
+    private func resetTransform() {
+        withAnimation(.easeOut(duration: 0.25)) {
+            rotation = 0
+            scale = 1
+        }
+        dragStartRotation = 0
+        pinchStartScale = 1
     }
 }
 
@@ -59,7 +74,7 @@ private extension Space3DView {
             
             //비 AR 렌더이므로 모델을 비추는 카메라를 직접 넣는다
             let camera = PerspectiveCamera()
-            camera.position = [0, 0.35, 1.4]
+            camera.position = [0, 0.9, 2.0]
             camera.look(at: .zero, from: camera.position, relativeTo: nil)
             content.add(camera)
         } update: { content in
