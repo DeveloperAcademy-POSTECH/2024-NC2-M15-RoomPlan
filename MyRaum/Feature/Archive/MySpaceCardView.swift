@@ -34,13 +34,20 @@ private extension MySpaceCardView {
             .foregroundColor(.white)
             .overlay(
                 ZStack {
-                    Image(uiImage: UIImage(data: space.background)!)
-                        .resizable()
-                        .scaledToFill()
-                        .frame(width: 315, height: 560)
-                        .overlay(Color.black.opacity(0.4))
-                        .cornerRadius(19)
-                        .clipped()
+                    //배경 이미지 데이터가 손상된 경우 크래시 대신 단색 배경으로 대체
+                    if let backgroundImage = UIImage(data: space.background) {
+                        Image(uiImage: backgroundImage)
+                            .resizable()
+                            .scaledToFill()
+                            .frame(width: 315, height: 560)
+                            .overlay(Color.black.opacity(0.4))
+                            .cornerRadius(19)
+                            .clipped()
+                    } else {
+                        Color.grayButton
+                            .frame(width: 315, height: 560)
+                            .cornerRadius(19)
+                    }
                     
                     VStack {
                         Label {
@@ -56,9 +63,18 @@ private extension MySpaceCardView {
                         
                         Spacer()
                         
-                        Image(uiImage: UIImage(data: space.model)!)
-                            .resizable()
-                            .scaledToFit()
+                        //모델 이미지 데이터가 손상된 경우 크래시 대신 대체 아이콘 노출
+                        if let modelImage = UIImage(data: space.model) {
+                            Image(uiImage: modelImage)
+                                .resizable()
+                                .scaledToFit()
+                        } else {
+                            Image(systemName: "cube.transparent")
+                                .resizable()
+                                .scaledToFit()
+                                .padding(60)
+                                .foregroundStyle(Color.white.opacity(0.5))
+                        }
                         
                         Spacer()
                         

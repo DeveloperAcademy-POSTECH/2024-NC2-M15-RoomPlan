@@ -14,24 +14,30 @@ final class ModelCaptureManager {
     //3D모델이 존재하는 부분만 캡쳐되도록 영역을 조정해서 이미지로 만듦
     func captureScreen() -> UIImage? {
         guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene else {
-            fatalError("Failed to get UIWindowScene")
+            print("Failed to get UIWindowScene")
+            return nil
         }
         guard let window = windowScene.windows.first(where: { $0.isKeyWindow }) else {
-            fatalError("Failed to get key window")
+            print("Failed to get key window")
+            return nil
         }
-        let rootView = window.rootViewController?.view
+        guard let rootView = window.rootViewController?.view else {
+            print("Failed to get root view")
+            return nil
+        }
         let topMargin: CGFloat = 100
         let bottomMargin: CGFloat = 300
         let screenHeight = UIScreen.main.bounds.height
         let screenWidth = UIScreen.main.bounds.width
         let rect = CGRect(x: 0, y: topMargin, width: screenWidth, height: screenHeight - topMargin - bottomMargin)
-        return rootView?.snapshot(of: rect)
+        return rootView.snapshot(of: rect)
     }
     
     //이미지의 배경을 제거하는 함수
     func createSticker(image: UIImage) async -> UIImage? {
         guard let inputImage = CIImage(image: image) else {
-            fatalError("Failed to create CIImage")
+            print("Failed to create CIImage")
+            return nil
         }
         
         return await Task.detached(priority: .userInitiated) {
@@ -39,9 +45,11 @@ final class ModelCaptureManager {
                 print("Failed to create mask image")
                 return nil
             }
-            let outputImage = self.apply(mask: maskImage, to: inputImage)
-            let image = self.render(ciImage: outputImage)
-            return image
+            guard let outputImage = self.apply(mask: maskImage, to: inputImage) else {
+                print("Failed to apply mask image")
+                return nil
+            }
+            return self.render(ciImage: outputImage)
         }.value
     }
     
@@ -65,18 +73,19 @@ final class ModelCaptureManager {
     }
     
     //이미지에 Mask를 적용하는 함수
-    private func apply(mask: CIImage, to image: CIImage) -> CIImage {
+    private func apply(mask: CIImage, to image: CIImage) -> CIImage? {
         let filter = CIFilter.blendWithMask()
         filter.inputImage = image
         filter.maskImage = mask
         filter.backgroundImage = CIImage.empty()
-        return filter.outputImage!
+        return filter.outputImage
     }
     
     //이미지에 적용된 Mask에 따라 배경을 제거한 이미지를 리턴하는 함수
-    private func render(ciImage: CIImage) -> UIImage {
+    private func render(ciImage: CIImage) -> UIImage? {
         guard let cgImage = CIContext(options: nil).createCGImage(ciImage, from: ciImage.extent) else {
-            fatalError("Failed to render CGImage")
+            print("Failed to render CGImage")
+            return nil
         }
         return UIImage(cgImage: cgImage)
     }

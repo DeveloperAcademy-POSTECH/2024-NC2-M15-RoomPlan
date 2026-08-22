@@ -18,13 +18,20 @@ struct MySpaceCellView: View {
             .foregroundStyle(Color.white)
             .overlay(
                 ZStack {
-                    Image(uiImage: UIImage(data: space.background)!)
-                        .resizable()
-                        .scaledToFill()
-                        .frame(width: 153, height: 272)
-                        .overlay(Color.black.opacity(0.4))
-                        .cornerRadius(19)
-                        .clipped()
+                    //배경 이미지 데이터가 손상된 경우 크래시 대신 단색 배경으로 대체
+                    if let backgroundImage = UIImage(data: space.background) {
+                        Image(uiImage: backgroundImage)
+                            .resizable()
+                            .scaledToFill()
+                            .frame(width: 153, height: 272)
+                            .overlay(Color.black.opacity(0.4))
+                            .cornerRadius(19)
+                            .clipped()
+                    } else {
+                        Color.grayButton
+                            .frame(width: 153, height: 272)
+                            .cornerRadius(19)
+                    }
                     
                     Label {
                         Text(space.comment)

@@ -262,24 +262,26 @@ private extension RoomPlanView {
         formatter.dateFormat = "yyyy.MM.dd"
         let savedDate = formatter.string(from: date)
         
-        if let model, let background {
-            let newSpace = SpaceData(
-                id: UUID(),
-                date: savedDate,
-                comment: comment,
-                model: model.pngData()!,
-                background: background.pngData()!,
-                latitude: latitude,
-                longitude: longitude
-            )
-            
-            let result = modelContext.addSpace(space: newSpace)
-            
-            if result {
-                showSavedSuccessAlert = true
-            } else {
-                showSavedFailureAlert = true
-            }
+        //PNG 변환에 실패하면 저장하지 않고 실패 알림을 보여줌
+        guard let model, let background,
+              let modelData = model.pngData(),
+              let backgroundData = background.pngData() else {
+            showSavedFailureAlert = true
+            return
+        }
+        
+        let newSpace = SpaceData(
+            id: UUID(),
+            date: savedDate,
+            comment: comment,
+            model: modelData,
+            background: backgroundData,
+            latitude: latitude,
+            longitude: longitude
+        )
+        
+        if modelContext.addSpace(space: newSpace) {
+            showSavedSuccessAlert = true
         } else {
             showSavedFailureAlert = true
         }
