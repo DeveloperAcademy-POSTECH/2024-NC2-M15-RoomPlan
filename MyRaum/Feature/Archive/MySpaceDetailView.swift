@@ -54,12 +54,17 @@ struct MySpaceDetailView: View {
             }
             
             MySpaceCardView(space: space, modelURL: modelURL, cardFlipped: $cardFlipped)
+                //VoiceOver 사용자에게 조작 방법을 알려 준다 (8.5)
+                .accessibilityLabel(Text(cardFlipped ? "지도 카드" : "3D 공간 카드"))
+                .accessibilityHint(Text("좌우로 끌어 3D 모델을 돌릴 수 있습니다."))
                 .onAppear(perform: {
                     //3D 뷰는 이미지로 캡쳐되지 않으므로 공유용 정지 카드를 따로 그린다
                     card = SpaceShareCardView(space: space).snapshot()
                 })
             
             spaceInfoBadges
+            
+            furnitureList
             
             visibilitySection
             
@@ -101,6 +106,44 @@ struct MySpaceDetailView: View {
 }
 
 private extension MySpaceDetailView {
+    //인식된 가구 목록 (8.2)
+    @ViewBuilder
+    var furnitureList: some View {
+        let furniture = space.furniture
+        
+        if furniture.isEmpty == false {
+            DisclosureGroup {
+                VStack(alignment: .leading, spacing: 8) {
+                    ForEach(furniture) { item in
+                        HStack {
+                            Text(LocalizedStringKey(FurnitureCategory.displayNameKey(for: item.category)))
+                                .font(.system(size: 14))
+                            
+                            if item.isLowConfidence {
+                                Image(systemName: "questionmark.circle")
+                                    .font(.system(size: 12))
+                                    .foregroundStyle(Color.orange)
+                                    .accessibilityLabel(Text("신뢰도 낮음"))
+                            }
+                            
+                            Spacer()
+                            
+                            Text(verbatim: String(format: "%.1f × %.1f m", item.width, item.length))
+                                .font(.system(size: 13))
+                                .foregroundStyle(Color.gray)
+                        }
+                    }
+                }
+                .padding(.top, 8)
+            } label: {
+                Text("인식된 가구 \(furniture.count)개")
+                    .font(.system(size: 15))
+            }
+            .padding(.horizontal, 30)
+            .padding(.top, 12)
+        }
+    }
+    
     //공개 토글과 동기화 상태 (6B.8)
     var visibilitySection: some View {
         VStack(spacing: 8) {

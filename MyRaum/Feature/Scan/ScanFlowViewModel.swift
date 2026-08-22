@@ -40,11 +40,31 @@ final class ScanFlowViewModel {
     //인식된 가구·면적·방 종류
     private(set) var metrics: RoomMetrics?
     
-    private let spaceID = UUID()
+    private var spaceID = UUID()
     private(set) var modelFileName: String?
     private var date: Date = .now
     private var latitude: Double = 0.0
     private var longitude: Double = 0.0
+    
+    //MultiRoom — 같은 구조에 이어 붙인 방들 (D-04, 8.1)
+    private(set) var structureID: UUID?
+    private var savedRooms: [PendingRoom] = []
+    
+    //구조에 담긴 방의 개수 (편집 중인 방 포함)
+    var roomCountInStructure: Int {
+        savedRooms.count + 1
+    }
+    
+    //편집 중인 방을 잠시 담아 두는 값
+    private struct PendingRoom {
+        let id: UUID
+        let modelFileName: String
+        let comment: String
+        let background: Data?
+        let thumbnail: Data?
+        let showsDate: Bool
+        let metrics: RoomMetrics?
+    }
     
     init(
         scanner: any RoomScanning,
@@ -164,6 +184,7 @@ final class ScanFlowViewModel {
     }
     
     //입력된 정보로 공간 카드를 저장하는 함수
+    //구조에 담아 둔 방이 있으면 모두 함께 저장한다 (8.1)
     func saveSpaceData() {
         //USDZ 파일이 없으면 저장할 3D 모델이 없는 것이므로 저장하지 않는다
         guard let modelFileName else {
@@ -171,29 +192,107 @@ final class ScanFlowViewModel {
             return
         }
         
-        let newSpace = SpaceData(
+        let lastRoom = PendingRoom(
             id: spaceID,
-            createdAt: date,
+            modelFileName: modelFileName,
             comment: comment,
+            background: background?.pngData(),
+            thumbnail: thumbnail?.pngData(),
+            showsDate: showsDate,
+            metrics: metrics
+        )
+        let rooms = savedRooms + [lastRoom]
+        
+        let saved = rooms.enumerated().allSatisfy { order, room in
+            spaceRepository.save(makeSpaceData(from: room, order: order, roomCount: rooms.count))
+        }
+        
+        guard saved else {
+            showSavedFailureAlert = true
+            return
+        }
+        
+        showSavedSuccessAlert = true
+        
+        //방이 여러 개면 CapturedStructure로 병합한 "집 전체" 모델을 덧붙인다
+        //병합에 실패해도 각 방은 이미 저장되어 있으므로 저장 자체는 성공으로 둔다
+        if let structureID, rooms.count >= 2 {
+            mergeStructure(structureID: structureID, representativeID: rooms[0].id)
+        }
+    }
+    
+    //담아 둔 방 하나를 저장 가능한 형태로 만드는 함수
+    private func makeSpaceData(from room: PendingRoom, order: Int, roomCount: Int) -> SpaceData {
+        SpaceData(
+            id: room.id,
+            createdAt: date,
+            comment: room.comment,
             latitude: latitude,
             longitude: longitude,
             storageKind: .usdz,
-            background: background?.pngData(),
-            showsDate: showsDate,
-            modelFileName: modelFileName,
-            thumbnail: thumbnail?.pngData(),
-            furnitureJSON: metrics?.furniture.encodedJSON(),
-            floorAreaSqM: metrics?.floorAreaSqM,
-            roomTypeGuess: metrics?.roomType.rawValue,
-            //2.0에서 스캔한 공간은 전부 서버에 올린다 (D-06). 업로드는 Phase 6에서 붙인다
+            background: room.background,
+            showsDate: room.showsDate,
+            modelFileName: room.modelFileName,
+            thumbnail: room.thumbnail,
+            //방이 하나뿐이면 구조로 묶지 않는다
+            structureID: roomCount >= 2 ? structureID : nil,
+            structureOrder: roomCount >= 2 ? order : nil,
+            furnitureJSON: room.metrics?.furniture.encodedJSON(),
+            floorAreaSqM: room.metrics?.floorAreaSqM,
+            roomTypeGuess: room.metrics?.roomType.rawValue,
+            //2.0에서 스캔한 공간은 전부 서버에 올린다 (D-06)
             syncState: .pending
         )
-        
-        if spaceRepository.save(newSpace) {
-            showSavedSuccessAlert = true
-        } else {
-            showSavedFailureAlert = true
+    }
+    
+    //병합된 구조 모델을 만들어 대표 방에 붙이는 함수
+    private func mergeStructure(structureID: UUID, representativeID: UUID) {
+        Task {
+            guard let fileName = await roomExporter.exportMergedStructure(id: structureID) else { return }
+            
+            let representative = spaceRepository.fetchAll().first { $0.id == representativeID }
+            representative?.structureModelFileName = fileName
+            spaceRepository.saveChanges()
         }
+    }
+    
+    //현재 방을 구조에 담고 다음 방 스캔으로 넘어가는 함수 (8.1 "방 추가하기")
+    func addAnotherRoom() {
+        guard let modelFileName else {
+            showSavedFailureAlert = true
+            return
+        }
+        
+        //첫 "방 추가하기" 시점에 구조가 만들어진다
+        if structureID == nil {
+            structureID = UUID()
+        }
+        
+        savedRooms.append(PendingRoom(
+            id: spaceID,
+            modelFileName: modelFileName,
+            comment: comment,
+            background: background?.pngData(),
+            thumbnail: thumbnail?.pngData(),
+            showsDate: showsDate,
+            metrics: metrics
+        ))
+        
+        scanner.keepCurrentRoomForStructure()
+        
+        //다음 방은 새 식별자로 처음부터 다시 입력받는다
+        spaceID = UUID()
+        self.modelFileName = nil
+        thumbnail = nil
+        self.metrics = nil
+        comment = ""
+        background = nil
+        selectedItem = nil
+        showsDate = true
+        
+        currentStep = .capture
+        doneScanning = false
+        scanner.startSession()
     }
     
     //저장 알림을 닫고 화면을 벗어나기 전 상태를 되돌리는 함수

@@ -13,8 +13,12 @@ import ARKit
 protocol RoomScanning: AnyObject {
     //캡쳐가 완료된 스캔 결과. 아직 끝나지 않았으면 nil
     var capturedRoom: CapturedRoom? { get }
+    //MultiRoom을 위해 누적해 둔 스캔 결과 (D-04)
+    var capturedRooms: [CapturedRoom] { get }
     func startSession()
     func stopSession()
+    //현재 결과를 구조에 담고 다음 방 스캔을 준비하는 함수
+    func keepCurrentRoomForStructure()
 }
 
 //RoomPlan이 제공하는 캡쳐 뷰를 UI 계층에 전달하는 역할
@@ -39,6 +43,8 @@ final class RoomPlanManager: RoomCaptureViewDelegate, RoomScanning, RoomCaptureV
     var captureView: RoomCaptureView
     //스캔 결과를 USDZ로 내보내야 하므로 외부에서 읽을 수 있게 공개한다
     private(set) var capturedRoom: CapturedRoom?
+    //MultiRoom 병합에 사용할 누적 결과
+    private(set) var capturedRooms: [CapturedRoom] = []
     private var sessionConfig: RoomCaptureSession.Configuration
     //커스텀 코칭 오버레이를 올리기 위해 ARSession을 직접 소유한다
     private let arSession = ARSession()
@@ -68,5 +74,11 @@ final class RoomPlanManager: RoomCaptureViewDelegate, RoomScanning, RoomCaptureV
     //캡쳐를 종료하는 함수
     func stopSession() {
         captureView.captureSession.stop()
+    }
+    
+    //현재 결과를 구조에 담아 두는 함수. 다음 스캔을 시작해도 지워지지 않는다
+    func keepCurrentRoomForStructure() {
+        guard let capturedRoom else { return }
+        capturedRooms.append(capturedRoom)
     }
 }

@@ -20,6 +20,7 @@ struct MySpacesView: View {
     let onClose: () -> Void
     
     @State private var selectedSpace: SpaceData? = nil
+    @State private var selectedStructure: SpaceGroup? = nil
     @State private var spaceToDelete: SpaceData? = nil
     @State private var showDeleteConfirmation: Bool = false
     
@@ -96,6 +97,9 @@ struct MySpacesView: View {
         .sheet(item: $selectedSpace) { space in
             MySpaceDetailView(space: space)
         }
+        .sheet(item: $selectedStructure) { group in
+            StructureDetailView(group: group)
+        }
         .alert("공간 삭제", isPresented: $showDeleteConfirmation, actions: {
             Button(role: .cancel) {
             } label: {
@@ -132,23 +136,66 @@ private extension MySpacesView {
         .navigationBarTitleDisplayMode(.inline)
     }
     
+    //구조에 속한 방들은 한 칸으로 묶어 보여준다 (8.1)
+    var groups: [SpaceGroup] {
+        SpaceGrouping.group(spaceData)
+    }
+    
     var spaceGrid: some View {
         ScrollView {
             LazyVGrid(columns: columns, spacing: 30) {
-                ForEach(spaceData) { space in
-                    SpaceCellView(space: space)
-                        .onTapGesture {
-                            selectedSpace = space
-                        }
-                        .onLongPressGesture(minimumDuration: 0.3, perform: {
-                            spaceToDelete = space
-                            showDeleteConfirmation = true
-                        })
+                ForEach(groups) { group in
+                    if let representative = group.representative {
+                        cell(for: group, representative: representative)
+                    }
                 }
             }
             .padding(.top, 4)
             .padding(.horizontal, 20)
         }
         .padding(.top)
+    }
+    
+    func cell(for group: SpaceGroup, representative: SpaceData) -> some View {
+        SpaceCellView(space: representative)
+            //묶인 구조는 방 개수를 배지로 표시한다
+            .overlay(alignment: .topTrailing) {
+                if group.isStructure {
+                    Label("\(group.roomCount)", systemImage: "square.stack.3d.up")
+                        .font(.system(size: 12, weight: .semibold))
+                        .foregroundStyle(Color.white)
+                        .padding(.horizontal, 8)
+                        .padding(.vertical, 4)
+                        .background {
+                            Capsule().foregroundStyle(Color.black.opacity(0.6))
+                        }
+                        .padding(8)
+                }
+            }
+            .accessibilityElement(children: .combine)
+            .accessibilityLabel(accessibilityLabel(for: group, representative: representative))
+            .onTapGesture {
+                if group.isStructure {
+                    selectedStructure = group
+                } else {
+                    selectedSpace = representative
+                }
+            }
+            .onLongPressGesture(minimumDuration: 0.3, perform: {
+                //구조는 방 단위로 지워야 하므로 상세에서 처리한다
+                guard group.isStructure == false else { return }
+                spaceToDelete = representative
+                showDeleteConfirmation = true
+            })
+    }
+    
+    //VoiceOver로 카드 정보를 읽어 준다 (8.5)
+    func accessibilityLabel(for group: SpaceGroup, representative: SpaceData) -> Text {
+        let name = representative.comment.isEmpty ? String(localized: "이름 없는 방") : representative.comment
+        
+        if group.isStructure {
+            return Text("\(name), \(group.roomCount)개의 방")
+        }
+        return Text("\(name), \(representative.displayDate)")
     }
 }

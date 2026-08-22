@@ -48,6 +48,8 @@ enum SpaceSchemaV2: VersionedSchema {
         //MultiRoom (D-04) — 여러 방이 하나의 구조에 속할 수 있음
         var structureID: UUID?
         var structureOrder: Int?
+        //CapturedStructure로 병합한 "집 전체" 모델. 구조의 대표 방에만 채워진다
+        var structureModelFileName: String?
         
         //RoomPlan 파생 데이터
         var furnitureJSON: String?
@@ -74,6 +76,7 @@ enum SpaceSchemaV2: VersionedSchema {
             thumbnail: Data? = nil,
             structureID: UUID? = nil,
             structureOrder: Int? = nil,
+            structureModelFileName: String? = nil,
             furnitureJSON: String? = nil,
             floorAreaSqM: Double? = nil,
             roomTypeGuess: String? = nil,
@@ -95,6 +98,7 @@ enum SpaceSchemaV2: VersionedSchema {
             self.thumbnail = thumbnail
             self.structureID = structureID
             self.structureOrder = structureOrder
+            self.structureModelFileName = structureModelFileName
             self.furnitureJSON = furnitureJSON
             self.floorAreaSqM = floorAreaSqM
             self.roomTypeGuess = roomTypeGuess

@@ -38,6 +38,10 @@ struct ScanEditorView: View {
                 ScanStepIndicator(step: .edit)
                     .padding(.top, 12)
                 
+                if viewModel.roomCountInStructure > 1 {
+                    structureBadge
+                }
+                
                 if viewModel.lowConfidenceCount > 0 {
                     lowConfidenceHint
                 }
@@ -89,6 +93,19 @@ private extension ScanEditorView {
             }
         }
         .ignoresSafeArea()
+    }
+    
+    //구조에 몇 번째 방을 담고 있는지 알려 준다
+    var structureBadge: some View {
+        Text("\(viewModel.roomCountInStructure)번째 방")
+            .font(.system(size: 13, weight: .semibold))
+            .foregroundStyle(Color.white)
+            .padding(.horizontal, 16)
+            .padding(.vertical, 8)
+            .background {
+                Capsule().foregroundStyle(Color.black.opacity(0.55))
+            }
+            .padding(.top, 12)
     }
     
     //신뢰도가 낮은 오브젝트가 있으면 더 스캔하도록 안내한다
@@ -194,6 +211,14 @@ private extension ScanEditorView {
             }
             
             Spacer()
+            
+            //기존 구조에 방을 이어 붙인다 (8.1)
+            Button {
+                viewModel.addAnotherRoom()
+            } label: {
+                toolbarIcon("plus.rectangle.on.rectangle")
+            }
+            .accessibilityLabel(Text("방 추가하기"))
             
             Button {
                 viewModel.saveSpaceData()

@@ -14,11 +14,14 @@ import RoomPlan
 //스캔 세션 호출 여부만 기록하는 테스트용 스캐너
 final class FakeRoomScanner: RoomScanning {
     var capturedRoom: CapturedRoom?
+    private(set) var capturedRooms: [CapturedRoom] = []
     private(set) var startCallCount = 0
     private(set) var stopCallCount = 0
+    private(set) var keepForStructureCallCount = 0
     
     func startSession() { startCallCount += 1 }
     func stopSession() { stopCallCount += 1 }
+    func keepCurrentRoomForStructure() { keepForStructureCallCount += 1 }
 }
 
 //지정한 좌표를 그대로 돌려주는 테스트용 위치 서비스
@@ -45,6 +48,10 @@ final class FakeModelFileStore: ModelFileStoring {
     func export(_ room: CapturedRoom, id: UUID) throws -> String {
         if let exportError { throw exportError }
         return exportedFileName ?? "\(id.uuidString).usdz"
+    }
+    
+    func exportStructure(_ structure: CapturedStructure, id: UUID) throws -> String {
+        "structure-\(id.uuidString).usdz"
     }
     
     func write(_ data: Data, id: UUID) throws -> String {
@@ -75,11 +82,27 @@ final class FakeRoomExporter: RoomExporting {
         self.error = error
     }
     
+    //MultiRoom에서 방마다 다른 파일이 나오도록 두 번째 호출부터 순번을 붙인다
     func exportCurrentScan(id: UUID) throws -> ExportedRoom {
         exportCallCount += 1
         if let error { throw error }
         guard let result else { throw RoomExportError.noCapturedRoom }
-        return result
+        
+        guard exportCallCount > 1 else { return result }
+        
+        return ExportedRoom(
+            fileName: "\(exportCallCount)-\(result.fileName)",
+            thumbnailData: result.thumbnailData,
+            metrics: result.metrics
+        )
+    }
+    
+    var mergedStructureFileName: String?
+    private(set) var mergeCallCount = 0
+    
+    func exportMergedStructure(id: UUID) async -> String? {
+        mergeCallCount += 1
+        return mergedStructureFileName
     }
 }
 

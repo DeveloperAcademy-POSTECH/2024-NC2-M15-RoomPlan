@@ -33,6 +33,70 @@
         }
       }
     },
+    "%1$@, %2$@": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@, %2$@"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@, %2$@"
+          }
+        }
+      }
+    },
+    "%1$@, %2$lld개의 방": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@, %2$lld rooms"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@, %2$lld개의 방"
+          }
+        }
+      }
+    },
+    "%lld개의 방": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld rooms"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld개의 방"
+          }
+        }
+      }
+    },
+    "%lld번째 방": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Room %lld"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld번째 방"
+          }
+        }
+      }
+    },
     "2.0에서 스캔한 모든 공간은 계정에 함께 저장되어 기기를 바꿔도 복원됩니다. 위치 정보도 함께 저장됩니다.": {
       "localizations": {
         "en": {
@@ -45,6 +109,22 @@
           "stringUnit": {
             "state": "translated",
             "value": "2.0에서 스캔한 모든 공간은 계정에 함께 저장되어 기기를 바꿔도 복원됩니다. 위치 정보도 함께 저장됩니다."
+          }
+        }
+      }
+    },
+    "3D 공간 카드": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "3D space card"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "3D 공간 카드"
           }
         }
       }
@@ -125,6 +205,22 @@
           "stringUnit": {
             "state": "translated",
             "value": "My Raum을 만든 사람들"
+          }
+        }
+      }
+    },
+    "TV": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "TV"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "TV"
           }
         }
       }
@@ -222,6 +318,22 @@
           "stringUnit": {
             "state": "translated",
             "value": "결과물을 확인하세요."
+          }
+        }
+      }
+    },
+    "계단": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Stairs"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "계단"
           }
         }
       }
@@ -517,6 +629,22 @@
         }
       }
     },
+    "냉장고": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Refrigerator"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "냉장고"
+          }
+        }
+      }
+    },
     "다시 스캔하기": {
       "localizations": {
         "en": {
@@ -645,6 +773,22 @@
         }
       }
     },
+    "방 추가하기": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Add a room"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "방 추가하기"
+          }
+        }
+      }
+    },
     "배경 수정하기": {
       "localizations": {
         "en": {
@@ -673,6 +817,38 @@
           "stringUnit": {
             "state": "translated",
             "value": "배경 추가하기"
+          }
+        }
+      }
+    },
+    "벽난로": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fireplace"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "벽난로"
+          }
+        }
+      }
+    },
+    "변기": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Toilet"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "변기"
           }
         }
       }
@@ -773,6 +949,54 @@
         }
       }
     },
+    "세탁기": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Washer/Dryer"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "세탁기"
+          }
+        }
+      }
+    },
+    "소파": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sofa"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "소파"
+          }
+        }
+      }
+    },
+    "수납장": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Storage"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "수납장"
+          }
+        }
+      }
+    },
     "스캔 끝내기": {
       "localizations": {
         "en": {
@@ -854,6 +1078,22 @@
         }
       }
     },
+    "스토브": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Stove"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "스토브"
+          }
+        }
+      }
+    },
     "시작하기": {
       "localizations": {
         "en": {
@@ -866,6 +1106,54 @@
           "stringUnit": {
             "state": "translated",
             "value": "시작하기"
+          }
+        }
+      }
+    },
+    "식기세척기": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dishwasher"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "식기세척기"
+          }
+        }
+      }
+    },
+    "신뢰도 낮음": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Low confidence"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "신뢰도 낮음"
+          }
+        }
+      }
+    },
+    "싱크대": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sink"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "싱크대"
           }
         }
       }
@@ -950,6 +1238,22 @@
         }
       }
     },
+    "오븐": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Oven"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "오븐"
+          }
+        }
+      }
+    },
     "완료": {
       "localizations": {
         "en": {
@@ -983,6 +1287,22 @@
         }
       }
     },
+    "욕조": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bathtub"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "욕조"
+          }
+        }
+      }
+    },
     "위치 정보가 있는 공간이 없습니다.": {
       "localizations": {
         "en": {
@@ -995,6 +1315,22 @@
           "stringUnit": {
             "state": "translated",
             "value": "위치 정보가 있는 공간이 없습니다."
+          }
+        }
+      }
+    },
+    "의자": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chair"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "의자"
           }
         }
       }
@@ -1059,6 +1395,22 @@
           "stringUnit": {
             "state": "translated",
             "value": "이 영역을 더 스캔해 보세요."
+          }
+        }
+      }
+    },
+    "이름 없는 방": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Untitled room"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "이름 없는 방"
           }
         }
       }
@@ -1171,6 +1523,22 @@
           "stringUnit": {
             "state": "translated",
             "value": "이전 카드는 이 기기에만 저장되어 있어 기기를 바꾸면 복원되지 않습니다."
+          }
+        }
+      }
+    },
+    "인식된 가구 %lld개": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld pieces of furniture found"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "인식된 가구 %lld개"
           }
         }
       }
@@ -1320,6 +1688,22 @@
         }
       }
     },
+    "좌우로 끌어 3D 모델을 돌릴 수 있습니다.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Drag left or right to turn the 3D model."
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "좌우로 끌어 3D 모델을 돌릴 수 있습니다."
+          }
+        }
+      }
+    },
     "주방": {
       "extractionState": "stale",
       "localizations": {
@@ -1333,6 +1717,22 @@
           "stringUnit": {
             "state": "translated",
             "value": "주방"
+          }
+        }
+      }
+    },
+    "지도 카드": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Map card"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "지도 카드"
           }
         }
       }
@@ -1369,6 +1769,22 @@
         }
       }
     },
+    "집 전체 3D 모델": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "3D model of the whole place"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "집 전체 3D 모델"
+          }
+        }
+      }
+    },
     "취소": {
       "localizations": {
         "en": {
@@ -1381,6 +1797,22 @@
           "stringUnit": {
             "state": "translated",
             "value": "취소"
+          }
+        }
+      }
+    },
+    "침대": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bed"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "침대"
           }
         }
       }
@@ -1398,6 +1830,22 @@
           "stringUnit": {
             "state": "translated",
             "value": "침실"
+          }
+        }
+      }
+    },
+    "테이블": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Table"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "테이블"
           }
         }
       }

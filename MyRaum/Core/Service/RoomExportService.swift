@@ -21,6 +21,9 @@ struct ExportedRoom {
 //현재 스캔 결과를 USDZ로 내보내고 파생 데이터를 함께 만들어 주는 역할
 protocol RoomExporting {
     func exportCurrentScan(id: UUID) throws -> ExportedRoom
+    //누적된 방들을 CapturedStructure로 병합해 "집 전체" 모델을 만드는 함수 (8.1)
+    //방이 2개 미만이거나 병합에 실패하면 nil
+    func exportMergedStructure(id: UUID) async -> String?
 }
 
 enum RoomExportError: Error {
@@ -62,5 +65,22 @@ final class RoomExportService: RoomExporting {
             thumbnailData: thumbnailData,
             metrics: RoomAnalyzer.metrics(from: room)
         )
+    }
+    
+    //여러 방을 하나의 구조로 병합해 내보내는 함수
+    //병합에 실패해도 각 방은 이미 따로 저장되어 있으므로 nil을 돌려주고 넘어간다
+    func exportMergedStructure(id: UUID) async -> String? {
+        let rooms = scanner.capturedRooms
+        guard rooms.count >= 2 else { return nil }
+        
+        do {
+            let builder = StructureBuilder(options: [.beautifyObjects])
+            let structure = try await builder.capturedStructure(from: rooms)
+            
+            return try modelFileStore.exportStructure(structure, id: id)
+        } catch {
+            print("Failed to merge captured structure: \(error)")
+            return nil
+        }
     }
 }
