@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import Vision
 
 //저장된 공간의 상세 정보를 확인하고 이미지 저장 및 공유가 가능한 뷰
 struct MySpaceDetailView: View {
@@ -48,8 +47,13 @@ struct MySpaceDetailView: View {
             
             MySpaceCardView(space: space, cardFlipped: $cardFlipped)
                 .onAppear(perform: {
-                    let view = MySpaceCardView(space: space, cardFlipped: $cardFlipped)
-                    card = view.snapshot()
+                    //저장 및 공유에는 카드 앞면을 이미지로 변환해서 사용
+                    card = SpaceCardFrontView(
+                        model: space.modelImage,
+                        background: space.backgroundImage,
+                        comment: space.comment,
+                        date: space.date
+                    ).snapshot()
                 })
             
             Spacer()
@@ -68,19 +72,9 @@ struct MySpaceDetailView: View {
                 }
                 
                 ShareLink(item: Image(uiImage: card), preview: SharePreview("공간 카드 공유", icon: "AppIcon")) {
-                    RoundedRectangle(cornerRadius: 8)
-                        .stroke(style: StrokeStyle(lineWidth: 1))
-                        .foregroundStyle(Color.grayButtonStroke)
-                        .frame(width: 150, height: 40)
-                        .overlay {
-                            RoundedRectangle(cornerRadius: 8)
-                                .foregroundStyle(Color.grayButton)
-                            
-                            Label("공유", systemImage: "square.and.arrow.up")
-                                .font(.system(size: 18))
-                                .foregroundStyle(Color.white)
-                        }
+                    RoundedRectangleButtonLabel(text: "공유", systemImage: "square.and.arrow.up", height: 40, cornerRadius: 8)
                 }
+                .frame(width: 150)
             }
             .padding(.horizontal, 30)
             

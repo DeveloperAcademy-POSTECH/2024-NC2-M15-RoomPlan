@@ -21,7 +21,8 @@ final class RoomPlanManager: RoomCaptureViewDelegate {
     
     var captureView: RoomCaptureView
     private var sessionConfig: RoomCaptureSession.Configuration
-    private var finalResult: CapturedRoom?
+    //스캔이 완료된 공간의 3D 데이터 (USDZ로 내보낼 때 사용)
+    private(set) var capturedRoom: CapturedRoom?
     
     init() {
         captureView = RoomCaptureView(frame: .zero)
@@ -34,13 +35,14 @@ final class RoomPlanManager: RoomCaptureViewDelegate {
         return true
     }
     
-    //캡쳐가 완료된 결과를 finalResult에 저장하는 함수
+    //캡쳐가 완료된 결과를 capturedRoom에 저장하는 함수
     func captureView(didPresent processedResult: CapturedRoom, error: (Error)?) {
-        finalResult = processedResult
+        capturedRoom = processedResult
     }
     
     //캡쳐를 시작하는 함수
     func startSession() {
+        capturedRoom = nil
         captureView.captureSession.run(configuration: sessionConfig)
     }
     

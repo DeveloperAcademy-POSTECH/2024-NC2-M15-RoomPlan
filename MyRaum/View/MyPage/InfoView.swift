@@ -9,7 +9,6 @@ import SwiftUI
 
 struct InfoView: View {
     @Environment(\.colorScheme) var colorScheme
-    @Environment(\.dismiss) private var dismiss
     
     var body: some View {
         VStack {
@@ -27,22 +26,7 @@ struct InfoView: View {
                 .foregroundStyle(Color.gray)
                 .font(.caption)
         }
-        .navigationBarBackButtonHidden()
-        .toolbar {
-            ToolbarItem(placement: .topBarLeading) {
-                Button {
-                    dismiss()
-                } label: {
-                    Image(systemName: "chevron.left")
-                        .bold()
-                }
-            }
-            
-            ToolbarItem(placement: .principal) {
-                Text("My Raum을 만든 사람들")
-                    .bold()
-            }
-        }
+        .customNavigationBar(title: "My Raum을 만든 사람들")
     }
 }
 

@@ -7,7 +7,10 @@
 
 import SwiftUI
 import SwiftData
+import CoreLocation
 
+//저장된 공간 카드
+//기존 사용자의 데이터가 유지되어야 하므로 저장 프로퍼티를 변경할 때는 VersionedSchema와 마이그레이션 플랜을 함께 추가해야 함
 @Model
 final class SpaceData: Identifiable {
     var id: UUID
@@ -17,7 +20,7 @@ final class SpaceData: Identifiable {
     @Attribute(.externalStorage) var background: Data
     var latitude: Double
     var longitude: Double
-    
+
     init(id: UUID, date: String, comment: String, model: Data, background: Data, latitude: Double, longitude: Double) {
         self.id = id
         self.date = date
@@ -26,6 +29,23 @@ final class SpaceData: Identifiable {
         self.background = background
         self.latitude = latitude
         self.longitude = longitude
+    }
+}
+
+extension SpaceData {
+    //누끼 처리된 3D 모델 이미지
+    var modelImage: UIImage? {
+        UIImage(data: model)
+    }
+
+    var backgroundImage: UIImage? {
+        UIImage(data: background)
+    }
+
+    //위치 권한이 없어서 위치 정보를 받지 못한 경우 (0, 0)으로 저장되어 있으므로 nil로 처리
+    var coordinate: CLLocationCoordinate2D? {
+        guard latitude != 0 || longitude != 0 else { return nil }
+        return CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
     }
 }
 
@@ -41,7 +61,7 @@ extension ModelContext {
         }
         return true
     }
-    
+
     //SwiftData에서 데이터를 삭제하는 함수
     func deleteSpace(space: SpaceData) {
         do {

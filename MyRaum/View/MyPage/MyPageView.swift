@@ -8,8 +8,6 @@
 import SwiftUI
 
 struct MyPageView: View {
-    @Environment(\.dismiss) private var dismiss
-    
     var body: some View {
         VStack(alignment: .center, spacing: 8) {
             ScrollView {
@@ -35,22 +33,7 @@ struct MyPageView: View {
                 .font(.caption)
         }
         .padding(.horizontal, 16)
-        .navigationBarBackButtonHidden()
-        .toolbar {
-            ToolbarItem(placement: .topBarLeading) {
-                Button {
-                    dismiss()
-                } label: {
-                    Image(systemName: "chevron.left")
-                        .bold()
-                }
-            }
-            
-            ToolbarItem(placement: .principal) {
-                Text("내 정보")
-                    .bold()
-            }
-        }
+        .customNavigationBar(title: "내 정보")
     }
 }
 

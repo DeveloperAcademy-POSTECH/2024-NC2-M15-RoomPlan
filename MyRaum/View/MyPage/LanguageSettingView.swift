@@ -41,29 +41,12 @@ struct LanguageSettingView: View {
             Spacer()
         }
         .padding(.horizontal, 16)
-        .navigationBarBackButtonHidden()
-        .toolbar {
-            ToolbarItem(placement: .topBarLeading) {
-                Button {
-                    dismiss()
-                } label: {
-                    Image(systemName: "chevron.left")
-                        .bold()
-                }
-            }
-            
-            ToolbarItem(placement: .principal) {
-                Text("언어 설정")
-                    .bold()
-            }
-            
-            ToolbarItem(placement: .topBarTrailing) {
-                Button {
-                    appSettingsManager.language = selectedLanguage
-                    dismiss()
-                } label: {
-                    Text("저장")
-                }
+        .customNavigationBar(title: "언어 설정") {
+            Button {
+                appSettingsManager.language = selectedLanguage
+                dismiss()
+            } label: {
+                Text("저장")
             }
         }
         .onAppear {
@@ -76,4 +59,5 @@ struct LanguageSettingView: View {
     NavigationStack {
         LanguageSettingView()
     }
+    .environment(AppSettingsManager())
 }

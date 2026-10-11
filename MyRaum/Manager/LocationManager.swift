@@ -9,38 +9,39 @@ import Foundation
 import SwiftUI
 import CoreLocation
 
-//MapKit에 표시하기 위한 위치를 가져오는 클래스
+//공간을 스캔한 위치를 가져오는 클래스
 @Observable
 final class LocationManager: NSObject, CLLocationManagerDelegate {
-    var lastKnownLocation: CLLocationCoordinate2D?
-    private var manager = CLLocationManager()
-    
-    func checkLocationAuthorization() {
+    private(set) var lastKnownLocation: CLLocationCoordinate2D?
+    @ObservationIgnored private let manager = CLLocationManager()
+
+    override init() {
+        super.init()
         manager.delegate = self
-        manager.startUpdatingLocation()
-        
+    }
+
+    //위치 권한이 없으면 권한을 요청하고, 권한이 있으면 위치 업데이트를 시작
+    func checkLocationAuthorization() {
         switch manager.authorizationStatus {
         case .notDetermined:
             manager.requestWhenInUseAuthorization()
-        case .restricted:
-            print("Location restricted")
-        case .denied:
-            print("Location denied")
-        case .authorizedAlways:
-            print("Location authorizedAlways")
-        case .authorizedWhenInUse:
-            print("Location authorized when in use")
+        case .authorizedAlways, .authorizedWhenInUse:
             lastKnownLocation = manager.location?.coordinate
-        @unknown default:
-            print("Location service disabled")
+            manager.startUpdatingLocation()
+        default:
+            break
         }
     }
-    
+
+    func stopUpdatingLocation() {
+        manager.stopUpdatingLocation()
+    }
+
     func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
         checkLocationAuthorization()
     }
-    
+
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        lastKnownLocation = locations.first?.coordinate
+        lastKnownLocation = locations.last?.coordinate
     }
 }

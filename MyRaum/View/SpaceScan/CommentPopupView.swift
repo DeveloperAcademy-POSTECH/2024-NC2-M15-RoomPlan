@@ -9,39 +9,35 @@ import SwiftUI
 
 //장소 입력 팝업창
 struct CommentPopupView: View {
-    @Binding var showCommentPopup: Bool
-    @Binding var currentPage: RoomPlanPage
-    @Binding var comment: String
-    
+    let initialComment: String
+    let onComplete: (String) -> Void
+
     @State private var typedComment: String = ""
-    
+
     @FocusState private var focusState: Bool
-    
+
     var body: some View {
         VStack {
             Text("공간에 대해서 기록하세요.")
                 .bold()
                 .foregroundStyle(Color.black)
-            
+
             TextField(text: $typedComment) {
                 Text("장소를 입력하세요.")
                     .foregroundStyle(Color.gray)
                     .padding(.leading)
-                    .submitLabel(.done)
             }
+            .submitLabel(.done)
+            .focused($focusState)
             .foregroundStyle(Color.black)
             .padding()
             .onAppear(perform: {
-                if comment != "" {
-                    typedComment = comment
-                }
+                typedComment = initialComment
                 focusState = true
             })
-            
+
             TextButtonCapsule(text: "완료", color: .gray) {
-                comment = typedComment
-                currentPage = .addInfo
-                showCommentPopup = false
+                onComplete(typedComment)
             }
         }
         .frame(width: 350, height: 180)
@@ -54,5 +50,5 @@ struct CommentPopupView: View {
 }
 
 #Preview {
-    CommentPopupView(showCommentPopup: .constant(true), currentPage: .constant(.scanResult), comment: .constant(""))
+    CommentPopupView(initialComment: "", onComplete: { _ in })
 }
