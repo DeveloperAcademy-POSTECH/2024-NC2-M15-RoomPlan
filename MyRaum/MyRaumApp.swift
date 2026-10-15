@@ -22,7 +22,7 @@ struct MyRaumApp: App {
                 UnsupportedDeviceView()
             }
         }
-        .modelContainer(for: SpaceData.self)
+        .modelContainer(for: [SpaceRecord.self, SpaceData.self])
         .environment(appSettingsManager)
         .environment(\.locale, appSettingsManager.effectiveLocale)
     }

@@ -9,7 +9,7 @@ import SwiftUI
 import SwiftData
 import CoreLocation
 
-//저장된 공간 카드
+//이전 버전에서 3D 모델을 이미지로 저장하던 공간 카드 (새 카드는 SpaceRecord로 저장)
 //기존 사용자의 데이터가 유지되어야 하므로 저장 프로퍼티를 변경할 때는 VersionedSchema와 마이그레이션 플랜을 함께 추가해야 함
 @Model
 final class SpaceData: Identifiable {

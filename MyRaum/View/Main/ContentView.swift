@@ -87,6 +87,8 @@ private extension ContentView {
             RoomPlanView()
         case .mySpaces:
             MySpacesView()
+        case .legacySpaces:
+            LegacySpacesView()
         case .myPage:
             MyPageView()
         }

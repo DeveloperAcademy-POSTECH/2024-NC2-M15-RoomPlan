@@ -10,5 +10,6 @@
 enum AppRoute: Hashable {
     case spaceScan
     case mySpaces
+    case legacySpaces
     case myPage
 }

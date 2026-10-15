@@ -49,18 +49,66 @@
         }
       }
     },
-    "3D 모델의 각도를 조절한 후\n배경을 추가하세요." : {
+    "3D 모델" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "After adjusting the angle of the 3D model, add a background."
+            "value" : "3D Model"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "3D 모델의 각도를 조절한 후\n배경을 추가하세요."
+            "value" : "3D 모델"
+          }
+        }
+      }
+    },
+    "3D 모델을 만드는 중입니다..." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Creating 3D model..."
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "3D 모델을 만드는 중입니다..."
+          }
+        }
+      }
+    },
+    "3D 모델을 불러오지 못했습니다." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Failed to load the 3D model."
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "3D 모델을 불러오지 못했습니다."
+          }
+        }
+      }
+    },
+    "3D로 보기" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "View in 3D"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "3D로 보기"
           }
         }
       }
@@ -113,6 +161,22 @@
         }
       }
     },
+    "TV" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "TV"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "TV"
+          }
+        }
+      }
+    },
     "UX/UI Designer" : {
       "localizations" : {
         "en" : {
@@ -129,34 +193,50 @@
         }
       }
     },
-    "결과물을 저장해보세요." : {
+    "가구" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Save your results."
+            "value" : "Furniture"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "결과물을 저장해보세요."
+            "value" : "가구"
           }
         }
       }
     },
-    "결과물을 확인하세요." : {
+    "가스레인지" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Check the results."
+            "value" : "Stove"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "결과물을 확인하세요."
+            "value" : "가스레인지"
+          }
+        }
+      }
+    },
+    "계단" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Stairs"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "계단"
           }
         }
       }
@@ -189,22 +269,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "공간 카드 공유"
-          }
-        }
-      }
-    },
-    "공간에 대해서 기록하세요." : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Write about the space."
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "공간에 대해서 기록하세요."
           }
         }
       }
@@ -242,6 +306,22 @@
         }
       }
     },
+    "나가기" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Leave"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "나가기"
+          }
+        }
+      }
+    },
     "나의 공간을 기록해보세요." : {
       "extractionState" : "manual",
       "localizations" : {
@@ -255,6 +335,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "나의 공간을 기록해보세요."
+          }
+        }
+      }
+    },
+    "날짜" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Date"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "날짜"
           }
         }
       }
@@ -275,6 +371,22 @@
         }
       }
     },
+    "냉장고" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Refrigerator"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "냉장고"
+          }
+        }
+      }
+    },
     "다시 스캔하기" : {
       "localizations" : {
         "en" : {
@@ -291,39 +403,88 @@
         }
       }
     },
-    "미리보기" : {
+    "닫기" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Preview"
+            "value" : "Close"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "미리보기"
+            "value" : "닫기"
           }
         }
       }
     },
-    "배경 수정하기" : {
+    "드래그해서 공간을 돌려보세요." : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Edit background"
+            "value" : "Drag to rotate the space."
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "배경 수정하기"
+            "value" : "드래그해서 공간을 돌려보세요."
+          }
+        }
+      }
+    },
+    "모델을 돌려 각도를 맞추고, 오른쪽에서 요소를 추가해보세요." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rotate the model to set the angle, then add items from the right."
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "모델을 돌려 각도를 맞추고, 오른쪽에서 요소를 추가해보세요."
+          }
+        }
+      }
+    },
+    "배경 사진" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Background Photo"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "배경 사진"
+          }
+        }
+      }
+    },
+    "배경 색상" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Background Color"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "배경 색상"
           }
         }
       }
     },
     "배경 추가하기" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -335,6 +496,54 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "배경 추가하기"
+          }
+        }
+      }
+    },
+    "벽과 가구를 천천히 비추며 공간을 스캔하세요." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Slowly point at walls and furniture to scan the space."
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "벽과 가구를 천천히 비추며 공간을 스캔하세요."
+          }
+        }
+      }
+    },
+    "벽난로" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fireplace"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "벽난로"
+          }
+        }
+      }
+    },
+    "변기" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Toilet"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "변기"
           }
         }
       }
@@ -387,6 +596,54 @@
         }
       }
     },
+    "세탁기" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Washer/Dryer"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "세탁기"
+          }
+        }
+      }
+    },
+    "소파" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sofa"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "소파"
+          }
+        }
+      }
+    },
+    "수납장" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Storage"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "수납장"
+          }
+        }
+      }
+    },
     "스캔 끝내기" : {
       "localizations" : {
         "en" : {
@@ -399,6 +656,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "스캔 끝내기"
+          }
+        }
+      }
+    },
+    "스캔에 실패했습니다." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Scan failed."
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "스캔에 실패했습니다."
           }
         }
       }
@@ -416,6 +689,38 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "스캔하기"
+          }
+        }
+      }
+    },
+    "식기세척기" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dishwasher"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "식기세척기"
+          }
+        }
+      }
+    },
+    "싱크대" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sink"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "싱크대"
           }
         }
       }
@@ -452,6 +757,22 @@
         }
       }
     },
+    "오븐" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Oven"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "오븐"
+          }
+        }
+      }
+    },
     "완료" : {
       "localizations" : {
         "en" : {
@@ -464,6 +785,38 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "완료"
+          }
+        }
+      }
+    },
+    "욕조" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bathtub"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "욕조"
+          }
+        }
+      }
+    },
+    "의자" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Chair"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "의자"
           }
         }
       }
@@ -532,34 +885,50 @@
         }
       }
     },
-    "장소 수정하기" : {
+    "이전 공간 카드" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Edit location"
+            "value" : "Previous Space Cards"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "장소 수정하기"
+            "value" : "이전 공간 카드"
           }
         }
       }
     },
-    "장소 입력하기" : {
+    "인식된 가구가 없습니다." : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Enter a location"
+            "value" : "No furniture detected."
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "장소 입력하기"
+            "value" : "인식된 가구가 없습니다."
+          }
+        }
+      }
+    },
+    "장소" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Location"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "장소"
           }
         }
       }
@@ -677,6 +1046,22 @@
         }
       }
     },
+    "천천히 움직이며 다시 스캔해주세요." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Please move slowly and scan again."
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "천천히 움직이며 다시 스캔해주세요."
+          }
+        }
+      }
+    },
     "취소" : {
       "localizations" : {
         "en" : {
@@ -689,6 +1074,86 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "취소"
+          }
+        }
+      }
+    },
+    "침대" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bed"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "침대"
+          }
+        }
+      }
+    },
+    "테이블" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Table"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "테이블"
+          }
+        }
+      }
+    },
+    "텍스트" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Text"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "텍스트"
+          }
+        }
+      }
+    },
+    "텍스트를 입력하세요." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enter text."
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "텍스트를 입력하세요."
+          }
+        }
+      }
+    },
+    "편집을 그만두시겠습니까?" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Stop editing?"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "편집을 그만두시겠습니까?"
           }
         }
       }

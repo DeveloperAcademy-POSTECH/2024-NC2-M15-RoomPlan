@@ -7,219 +7,145 @@
 
 import SwiftUI
 import SwiftData
-import PhotosUI
+import RoomPlan
 
-//공간을 캡쳐하고 공간 카드를 만들기까지의 프로세스들을 구현한 뷰
+//공간을 스캔하고 스토리처럼 꾸며서 공간 카드를 만드는 화면
+//스캔 → 3D 모델 생성 → 꾸미기(StoryEditorView) 순서로 진행
 struct RoomPlanView: View {
+    private enum Phase {
+        case scanning
+        case processing
+        case editing(ScannedRoom)
+    }
+
     @Environment(\.dismiss) private var dismiss
-    @Environment(\.modelContext) private var modelContext
 
     @State private var roomPlanManager = RoomPlanManager()
     @State private var locationManager = LocationManager()
-    @State private var draft = SpaceDraft()
-    @State private var currentPage: RoomPlanPage = .scan
-    @State private var doneScanning: Bool = false
-    @State private var selectedItem: PhotosPickerItem?
-    @State private var showCommentPopup: Bool = false
-    @State private var showSavedSuccessAlert: Bool = false
-    @State private var showSavedFailureAlert: Bool = false
-
-    private let modelCaptureManager = ModelCaptureManager()
+    @State private var phase: Phase = .scanning
+    @State private var showScanFailedAlert: Bool = false
 
     var body: some View {
-        ZStack {
-            switch currentPage {
-            case .scan:
+        Group {
+            switch phase {
+            case .scanning, .processing:
                 scanView
-            case .scanResult:
-                scanResultView
-            case .addInfo:
-                addInfoView
-            case .finalResult:
-                finalResultView
+            case .editing(let room):
+                StoryEditorView(
+                    room: room,
+                    locationManager: locationManager,
+                    onRescan: {
+                        //편집 화면이 사라지고 스캔 화면이 다시 나타나면 onAppear에서 스캔이 시작됨
+                        phase = .scanning
+                    },
+                    onExit: {
+                        dismiss()
+                    }
+                )
+                .toolbar(.hidden, for: .navigationBar)
             }
-
-            if showCommentPopup {
-                commentPopup
+        }
+        .onAppear {
+            roomPlanManager.onCaptureCompleted = { capturedRoom in
+                handleCaptureCompleted(capturedRoom)
             }
         }
         .onDisappear {
-            if !doneScanning {
+            if case .scanning = phase {
                 roomPlanManager.stopSession()
             }
             locationManager.stopUpdatingLocation()
+        }
+        .alert("스캔에 실패했습니다.", isPresented: $showScanFailedAlert) {
+            Button {
+                phase = .scanning
+                roomPlanManager.startSession()
+            } label: {
+                Text("다시 스캔하기")
+            }
+        } message: {
+            Text("천천히 움직이며 다시 스캔해주세요.")
         }
     }
 }
 
 private extension RoomPlanView {
-    // 방 캡쳐 화면 & 캡쳐 결과 확인 화면
-    var scanView: some View {
-        VStack {
-            if doneScanning == true {
-                Text("3D 모델의 각도를 조절한 후\n배경을 추가하세요.")
-                    .bold()
-                    .multilineTextAlignment(.center)
-            }
+    var isProcessing: Bool {
+        if case .processing = phase {
+            return true
+        }
+        return false
+    }
 
+    // 공간 스캔 화면 - RoomPlan이 벽, 문, 창문, 가구를 인식해서 실시간으로 보여줌
+    var scanView: some View {
+        ZStack {
             RoomCaptureViewRepresentable(manager: roomPlanManager)
+                .ignoresSafeArea(.all)
                 .onAppear(perform: {
                     roomPlanManager.startSession()
 
                     //캡쳐를 시작할 때 위치 정보 권한을 승인할 것인지 확인
                     locationManager.checkLocationAuthorization()
                 })
-                .ignoresSafeArea(.all)
 
-            if doneScanning == false {
-                TextButtonCapsule(text: "스캔 끝내기", color: .gray) {
-                    roomPlanManager.stopSession()
-                    doneScanning = true
+            VStack {
+                if !isProcessing {
+                    Text("벽과 가구를 천천히 비추며 공간을 스캔하세요.")
+                        .font(.footnote)
+                        .bold()
+                        .foregroundStyle(Color.white)
+                        .padding(.horizontal, 14)
+                        .padding(.vertical, 8)
+                        .background(Capsule().fill(Color.black.opacity(0.5)))
                 }
-            } else {
-                HStack(spacing: 16) {
-                    TextButtonRoundedRectangle(text: "다시 스캔하기") {
-                        doneScanning = false
-                        roomPlanManager.startSession()
-                    }
 
-                    PhotosPicker(selection: $selectedItem, matching: .images) {
-                        RoundedRectangleButtonLabel(text: "배경 추가하기")
-                    }
-                    .onChange(of: selectedItem) {
-                        Task {
-                            //배경 이미지를 선택할때 3D 모델은 화면 캡쳐 및 배경 제거를 통해 모델만 존재하는 이미지로 변환
-                            if let capturedView = modelCaptureManager.captureScreen() {
-                                Task {
-                                    draft.model = await modelCaptureManager.createSticker(image: capturedView)
-                                }
-                            }
+                Spacer()
 
-                            await loadBackground()
-                            currentPage = .scanResult
-                        }
-                    }
-                }
-                .padding(.horizontal, 16)
-            }
-        }
-    }
+                if isProcessing {
+                    HStack(spacing: 8) {
+                        ProgressView()
+                            .tint(Color.white)
 
-    // 방 모델 이미지 + 배경 이미지 화면
-    var scanResultView: some View {
-        cardStepView(title: "장소를 입력하세요.") {
-            PhotosPicker(selection: $selectedItem, matching: .images) {
-                RoundedRectangleButtonLabel(text: "배경 수정하기")
-            }
-            .onChange(of: selectedItem) {
-                Task {
-                    await loadBackground()
+                        Text("3D 모델을 만드는 중입니다...")
+                            .bold()
+                            .foregroundStyle(Color.white)
+                    }
+                    .padding(.horizontal, 20)
+                    .padding(.vertical, 10)
+                    .background(Capsule().fill(Color.black.opacity(0.5)))
+                } else {
+                    TextButtonCapsule(text: "스캔 끝내기", color: .gray) {
+                        phase = .processing
+                        roomPlanManager.stopSession()
+                    }
                 }
             }
-
-            TextButtonRoundedRectangle(text: "장소 입력하기") {
-                showCommentPopup = true
-            }
+            .padding(.vertical, 16)
         }
     }
 
-    // 방 모델 이미지 + 배경 이미지 + 장소명 화면
-    var addInfoView: some View {
-        cardStepView(title: "결과물을 확인하세요.") {
-            TextButtonRoundedRectangle(text: "장소 수정하기") {
-                showCommentPopup = true
-            }
-
-            TextButtonRoundedRectangle(text: "미리보기") {
-                //미리보기 버튼을 선택할때 현재의 날짜, 위치 정보 입력
-                draft.date = .now
-                draft.coordinate = locationManager.lastKnownLocation
-                currentPage = .finalResult
-            }
-        }
-    }
-
-    // 최종 결과 확인 화면
-    var finalResultView: some View {
-        cardStepView(title: "결과물을 저장해보세요.") {
-            TextButtonRoundedRectangle(text: "저장") {
-                saveSpaceData()
-            }
-        }
-        .alert("저장되었습니다.", isPresented: $showSavedSuccessAlert) {
-            Button {
-                dismiss()
-            } label: {
-                Text("확인")
-            }
-        }
-        .alert("저장하지 못했습니다.", isPresented: $showSavedFailureAlert) {
-            Button {
-                dismiss()
-            } label: {
-                Text("확인")
-            }
-        }
-    }
-
-    // 장소 입력 팝업
-    var commentPopup: some View {
-        ZStack {
-            Color.black
-                .opacity(0.5)
-                .ignoresSafeArea()
-
-            CommentPopupView(initialComment: draft.comment) { comment in
-                draft.comment = comment
-                currentPage = .addInfo
-                showCommentPopup = false
-            }
-        }
-    }
-
-    // 스캔 이후 단계들의 공통 레이아웃 - 안내 문구 + 카드 미리보기 + 하단 버튼
-    func cardStepView<Buttons: View>(title: LocalizedStringKey, @ViewBuilder buttons: () -> Buttons) -> some View {
-        VStack {
-            Text(title)
-                .bold()
-                .padding()
-
-            SpaceCardFrontView(
-                model: draft.model,
-                background: draft.background,
-                comment: draft.comment,
-                date: draft.dateString
-            )
-
-            Spacer()
-
-            HStack(spacing: 16) {
-                buttons()
-            }
-            .padding(.horizontal, 16)
-        }
-    }
-}
-
-private extension RoomPlanView {
-    func loadBackground() async {
-        if let data = try? await selectedItem?.loadTransferable(type: Data.self) {
-            draft.background = UIImage(data: data)
-        } else {
-            print("Failed to load the image")
-        }
-    }
-
-    func saveSpaceData() {
-        guard let newSpace = draft.makeSpaceData(), modelContext.addSpace(space: newSpace) else {
-            showSavedFailureAlert = true
+    //RoomPlan의 처리가 끝나면 USDZ로 내보낸 뒤 꾸미기 화면으로 이동
+    func handleCaptureCompleted(_ capturedRoom: CapturedRoom?) {
+        guard isProcessing else { return }
+        guard let capturedRoom else {
+            showScanFailedAlert = true
             return
         }
-        showSavedSuccessAlert = true
+
+        Task {
+            do {
+                let room = try await ScannedRoom.make(from: capturedRoom)
+                phase = .editing(room)
+            } catch {
+                print("Failed to export room: \(error.localizedDescription)")
+                showScanFailedAlert = true
+            }
+        }
     }
 }
 
 #Preview {
     RoomPlanView()
-        .modelContainer(for: SpaceData.self, inMemory: true)
+        .modelContainer(for: SpaceRecord.self, inMemory: true)
 }

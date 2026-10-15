@@ -7,8 +7,7 @@
 
 import SwiftUI
 
-//공간 카드의 앞면 - 스캔된 모델, 배경이미지, 장소명, 날짜 등이 노출됨
-//카드를 만드는 과정(RoomPlanView)과 보관함(MySpaceCardView)에서 함께 사용
+//이전 버전 공간 카드의 앞면 - 누끼 처리된 모델 이미지, 배경이미지, 장소명, 날짜 등이 노출됨
 struct SpaceCardFrontView: View {
     let model: UIImage?
     let background: UIImage?
