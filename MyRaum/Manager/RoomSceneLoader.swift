@@ -15,7 +15,26 @@ struct RoomScene {
     let target: SCNVector3
 }
 
-//스캔이 끝난 공간 - 꾸미기 화면에서 사용
+//3D 모델을 바라보는 카메라의 위치와 시야각
+struct CameraPose: Codable {
+    var transform: [Float]
+    var fieldOfView: Double
+    
+    init(node: SCNNode) {
+        let matrix = node.simdTransform
+        transform = [matrix.columns.0, matrix.columns.1, matrix.columns.2, matrix.columns.3].flatMap { [$0.x, $0.y, $0.z, $0.w] }
+        fieldOfView = Double(node.camera?.fieldOfView ?? 30)
+    }
+    
+    func apply(to node: SCNNode) {
+        guard transform.count == 16 else { return }
+        let column = { (index: Int) in SIMD4<Float>(transform[index * 4], transform[index * 4 + 1], transform[index * 4 + 2], transform[index * 4 + 3]) }
+        node.simdTransform = simd_float4x4(column(0), column(1), column(2), column(3))
+        node.camera?.fieldOfView = CGFloat(fieldOfView)
+    }
+}
+
+//스캔이 끝난 공간 또는 저장된 공간 카드의 3D 모델 - 꾸미기 화면에서 사용
 struct ScannedRoom {
     //CapturedRoom을 JSON으로 인코딩한 원본 데이터
     let roomData: Data?
@@ -28,20 +47,42 @@ struct ScannedRoom {
         try await make(layout: RoomLayout(capturedRoom), roomData: try? JSONEncoder().encode(capturedRoom))
     }
 
+    //저장된 공간 카드를 다시 열 때 사용 - 저장할 때의 카메라 각도를 복원함
+    //RoomPlan 원본 데이터가 있으면 모델과 USDZ 파일을 새로 만들고, 없으면 저장된 USDZ 파일을 사용
+    @MainActor
+    static func load(from record: SpaceRecord) async throws -> ScannedRoom {
+        let room: ScannedRoom
+        if let roomData = record.roomData,
+           let capturedRoom = try? JSONDecoder().decode(CapturedRoom.self, from: roomData) {
+            room = try await make(layout: RoomLayout(capturedRoom), roomData: roomData)
+        } else {
+            let url = try record.writeModelFile()
+            let roomScene = try await Task.detached(priority: .userInitiated) {
+                try RoomSceneLoader.load(modelURL: url)
+            }.value
+            room = ScannedRoom(roomData: nil, modelURL: url, roomScene: roomScene, furniture: record.furniture)
+        }
+        
+        record.cameraPose?.apply(to: room.roomScene.cameraNode)
+        return room
+    }
+    
     static func make(layout: RoomLayout, roomData: Data?) async throws -> ScannedRoom {
         let url = FileManager.default.temporaryDirectory
             .appendingPathComponent(UUID().uuidString)
             .appendingPathExtension("usdz")
-
+        
         let roomScene = try await Task.detached(priority: .userInitiated) {
-            let scene = RoomModelBuilder.makeScene(from: layout)
+            //모서리가 둥근 SCNBox는 USDZ로 내보내면 형태가 깨지므로 파일용 모델은 둥근 모서리 없이 따로 만듦
+            let exportScene = RoomModelBuilder.makeScene(from: layout)
+            RoomModelBuilder.removeRoundedEdges(in: exportScene)
             //카메라와 조명을 추가하기 전의 모델만 파일로 저장
-            guard scene.write(to: url, options: nil, delegate: nil, progressHandler: nil) else {
+            guard exportScene.write(to: url, options: nil, delegate: nil, progressHandler: nil) else {
                 throw RoomSceneError.exportFailed
             }
-            return RoomSceneLoader.prepare(scene)
+            return RoomSceneLoader.prepare(RoomModelBuilder.makeScene(from: layout))
         }.value
-
+        
         return ScannedRoom(
             roomData: roomData,
             modelURL: url,
@@ -57,17 +98,13 @@ enum RoomSceneError: Error {
 
 //3D 공간을 화면에 보여줄 수 있도록 조명, 카메라를 설정하는 클래스
 enum RoomSceneLoader {
-    //저장된 공간 카드의 3D 모델을 불러옴
-    //RoomPlan 원본 데이터가 있으면 다시 만들고, 없으면 저장된 USDZ 파일을 사용
-    static func load(roomData: Data?, modelURL: URL) throws -> RoomScene {
-        if let roomData, let capturedRoom = try? JSONDecoder().decode(CapturedRoom.self, from: roomData) {
-            return prepare(RoomModelBuilder.makeScene(from: RoomLayout(capturedRoom)))
-        }
+    //저장된 USDZ 파일로 3D 모델을 불러옴
+    static func load(modelURL: URL) throws -> RoomScene {
         let scene = try SCNScene(url: modelURL, options: nil)
         RoomPalette.restore(in: scene)
         return prepare(scene)
     }
-
+    
     static func prepare(_ scene: SCNScene) -> RoomScene {
         scene.background.contents = UIColor.clear
 
@@ -78,6 +115,10 @@ enum RoomSceneLoader {
         addLights(to: scene, center: center, radius: radius)
         let cameraNode = makeCamera(center: center, radius: radius)
         scene.rootNode.addChildNode(cameraNode)
+        
+        //백그라운드 스레드에서 만든 씬은 암묵적 트랜잭션이 커밋되지 않아서
+        //나중에 메인 스레드에서 바꾼 카메라 위치를 덮어쓸 수 있으므로 바로 커밋함
+        SCNTransaction.flush()
 
         return RoomScene(scene: scene, cameraNode: cameraNode, target: SCNVector3(center))
     }

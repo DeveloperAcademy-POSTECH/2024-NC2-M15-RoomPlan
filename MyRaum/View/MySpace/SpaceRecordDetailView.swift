@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-//저장된 공간 카드를 크게 보고, 3D 모델 보기 / 이미지 저장 / 공유가 가능한 뷰
+//저장된 공간 카드를 크게 보고, 3D 모델 보기 / 수정 / 이미지 저장 / 공유가 가능한 뷰
 struct SpaceRecordDetailView: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(\.colorScheme) private var colorScheme
@@ -16,6 +16,7 @@ struct SpaceRecordDetailView: View {
 
     @State private var cardImage: UIImage = UIImage()
     @State private var showModelViewer: Bool = false
+    @State private var showEditor: Bool = false
     @State private var showSavedAlert: Bool = false
 
     var body: some View {
@@ -47,8 +48,14 @@ struct SpaceRecordDetailView: View {
             Spacer()
 
             VStack(spacing: 12) {
-                LabelButtonRoundedRectangle(text: "3D로 보기", image: "rotate.3d") {
-                    showModelViewer = true
+                HStack(spacing: 16) {
+                    LabelButtonRoundedRectangle(text: "3D로 보기", image: "rotate.3d") {
+                        showModelViewer = true
+                    }
+                    
+                    LabelButtonRoundedRectangle(text: "수정하기", image: "pencil") {
+                        showEditor = true
+                    }
                 }
 
                 HStack(spacing: 16) {
@@ -67,10 +74,7 @@ struct SpaceRecordDetailView: View {
             Spacer()
         }
         .onAppear {
-            //저장 및 공유에는 카드를 이미지로 변환해서 사용
-            let renderer = ImageRenderer(content: StoryCardView(record: record, width: StoryLayout.referenceWidth))
-            renderer.scale = 3
-            cardImage = renderer.uiImage ?? UIImage()
+            renderCardImage()
         }
         .alert("이미지가 저장되었습니다.", isPresented: $showSavedAlert) {
             Button {
@@ -81,5 +85,18 @@ struct SpaceRecordDetailView: View {
         .fullScreenCover(isPresented: $showModelViewer) {
             RoomModelViewerView(record: record)
         }
+        //수정이 끝나면 저장, 공유용 이미지도 새로 만듦
+        .fullScreenCover(isPresented: $showEditor, onDismiss: renderCardImage) {
+            SpaceRecordEditorView(record: record)
+        }
+    }
+}
+
+private extension SpaceRecordDetailView {
+    //저장 및 공유에는 카드를 이미지로 변환해서 사용
+    func renderCardImage() {
+        let renderer = ImageRenderer(content: StoryCardView(record: record, width: StoryLayout.referenceWidth))
+        renderer.scale = 3
+        cardImage = renderer.uiImage ?? UIImage()
     }
 }

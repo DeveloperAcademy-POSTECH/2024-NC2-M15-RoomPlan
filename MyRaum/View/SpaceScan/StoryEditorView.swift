@@ -11,15 +11,17 @@ import PhotosUI
 
 //스캔한 공간을 인스타그램 스토리처럼 꾸미는 화면
 //3D 모델을 돌려서 각도를 맞추고, 오른쪽 도구에서 원하는 요소를 골라 추가함
+//record가 있으면 저장된 공간 카드를 수정하고, 없으면 새 공간 카드를 만듦
 struct StoryEditorView: View {
     let room: ScannedRoom
-    let locationManager: LocationManager
-    let onRescan: () -> Void
+    let record: SpaceRecord?
+    let locationManager: LocationManager?
+    let onRescan: (() -> Void)?
     let onExit: () -> Void
 
     @Environment(\.modelContext) private var modelContext
 
-    @State private var draft = StoryDraft()
+    @State private var draft: StoryDraft
     @State private var snapshotter = RoomSceneSnapshotter()
     @State private var selectedPhoto: PhotosPickerItem?
     @State private var editingElementID: UUID?
@@ -30,11 +32,27 @@ struct StoryEditorView: View {
     @State private var isDragging: Bool = false
     @State private var isOverTrash: Bool = false
     @State private var showHint: Bool = true
+    @State private var showBackgroundPicker: Bool = false
     @State private var showExitDialog: Bool = false
     @State private var showSavedAlert: Bool = false
     @State private var showSaveFailedAlert: Bool = false
 
     @FocusState private var isTextFieldFocused: Bool
+
+    init(
+        room: ScannedRoom,
+        record: SpaceRecord? = nil,
+        locationManager: LocationManager? = nil,
+        onRescan: (() -> Void)? = nil,
+        onExit: @escaping () -> Void
+    ) {
+        self.room = room
+        self.record = record
+        self.locationManager = locationManager
+        self.onRescan = onRescan
+        self.onExit = onExit
+        _draft = State(initialValue: record.map(StoryDraft.init(record:)) ?? StoryDraft())
+    }
 
     var body: some View {
         VStack(spacing: 16) {
@@ -65,19 +83,27 @@ struct StoryEditorView: View {
             }
         }
         .onChange(of: selectedPhoto) {
+            guard let item = selectedPhoto else { return }
             Task {
-                if let data = try? await selectedPhoto?.loadTransferable(type: Data.self) {
-                    draft.setBackground(UIImage(data: data))
+                if let data = try? await item.loadTransferable(type: Data.self), let image = UIImage(data: data) {
+                    draft.setBackground(image)
                 } else {
                     print("Failed to load the image")
                 }
+                //같은 사진을 다시 선택해도 반영되도록 선택 상태를 초기화
+                selectedPhoto = nil
             }
         }
+        .sheet(isPresented: $showBackgroundPicker) {
+            StoryBackgroundPicker(draft: draft, selectedPhoto: $selectedPhoto)
+        }
         .confirmationDialog("편집을 그만두시겠습니까?", isPresented: $showExitDialog, titleVisibility: .visible) {
-            Button {
-                onRescan()
-            } label: {
-                Text("다시 스캔하기")
+            if let onRescan {
+                Button {
+                    onRescan()
+                } label: {
+                    Text("다시 스캔하기")
+                }
             }
 
             Button(role: .destructive) {
@@ -186,13 +212,8 @@ private extension StoryEditorView {
                     .disabled(room.furniture.isEmpty)
                     .opacity(room.furniture.isEmpty ? 0.4 : 1)
 
-                    PhotosPicker(selection: $selectedPhoto, matching: .images) {
-                        toolIcon("photo", isOn: draft.background != nil)
-                    }
-                    .accessibilityLabel(Text("배경 사진"))
-
-                    toolButton("paintpalette", label: "배경 색상") {
-                        draft.nextBackgroundPreset()
+                    toolButton("photo.on.rectangle", label: "배경 설정") {
+                        showBackgroundPicker = true
                     }
                 }
             }
@@ -398,12 +419,29 @@ private extension StoryEditorView {
 // MARK: - Save
 private extension StoryEditorView {
     func save() {
-        guard let thumbnail = snapshotter.snapshot(),
-              let record = draft.makeRecord(room: room, thumbnail: thumbnail, coordinate: locationManager.lastKnownLocation),
-              modelContext.addRecord(record) else {
+        guard let thumbnail = snapshotter.snapshot() else {
             showSaveFailedAlert = true
             return
         }
-        showSavedAlert = true
+        let cameraPose = snapshotter.cameraPose()
+        
+        let isSaved: Bool
+        if let record {
+            isSaved = draft.apply(to: record, room: room, thumbnail: thumbnail, cameraPose: cameraPose) && modelContext.saveChanges()
+            if !isSaved {
+                //저장에 실패하면 카드에 반영한 내용을 되돌림
+                modelContext.rollback()
+            }
+        } else if let newRecord = draft.makeRecord(room: room, thumbnail: thumbnail, cameraPose: cameraPose, coordinate: locationManager?.lastKnownLocation) {
+            isSaved = modelContext.addRecord(newRecord)
+        } else {
+            isSaved = false
+        }
+        
+        if isSaved {
+            showSavedAlert = true
+        } else {
+            showSaveFailedAlert = true
+        }
     }
 }

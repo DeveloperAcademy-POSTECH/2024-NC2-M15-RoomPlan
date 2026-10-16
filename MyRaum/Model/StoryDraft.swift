@@ -15,6 +15,22 @@ final class StoryDraft {
     private(set) var elements: [StoryElement] = []
     private(set) var background: UIImage?
     private(set) var backgroundPreset: Int = 0
+    //저장된 카드를 수정할 때 배경을 바꾸지 않았으면 다시 압축하지 않도록 구분
+    @ObservationIgnored private var isBackgroundChanged: Bool = false
+
+    init() {}
+
+    //저장된 공간 카드를 다시 꾸밀 때 사용
+    init(record: SpaceRecord) {
+        elements = record.elements
+        background = record.backgroundImage
+        backgroundPreset = record.backgroundPreset
+    }
+
+    //보관함에서 보여줄 이름 (장소 요소의 텍스트)
+    var title: String {
+        element(of: .location)?.text ?? element(of: .text)?.text ?? ""
+    }
 
     func element(of kind: StoryElement.Kind) -> StoryElement? {
         elements.first { $0.kind == kind }
@@ -26,7 +42,13 @@ final class StoryDraft {
 
     @discardableResult
     func add(_ kind: StoryElement.Kind, text: String = "") -> StoryElement {
-        let element = StoryElement(kind: kind, text: text, position: Self.defaultPosition(for: kind))
+        var position = Self.defaultPosition(for: kind)
+        //텍스트를 여러 개 추가하면 겹치지 않도록 조금씩 아래에 배치
+        if kind == .text {
+            let count = elements.filter { $0.kind == .text }.count
+            position.y += CGFloat(count % 5) * 0.07
+        }
+        let element = StoryElement(kind: kind, text: text, position: position)
         elements.append(element)
         return element
     }
@@ -40,24 +62,25 @@ final class StoryDraft {
         change(&elements[index])
     }
 
-    func setBackground(_ image: UIImage?) {
+    //배경을 사진으로 설정
+    func setBackground(_ image: UIImage) {
         //큰 사진은 저장 용량을 줄이기 위해 크기를 줄여서 보관
-        background = image.flatMap(Self.downscaled)
+        background = Self.downscaled(image)
+        isBackgroundChanged = true
     }
 
-    //배경 사진을 지우고 다음 그라데이션으로 변경
-    func nextBackgroundPreset() {
+    //배경을 그라데이션으로 설정 (사진은 지움)
+    func setBackgroundPreset(_ index: Int) {
         background = nil
-        backgroundPreset = (backgroundPreset + 1) % StoryBackgroundPreset.gradients.count
+        backgroundPreset = index
+        isBackgroundChanged = true
     }
 
-    func makeRecord(room: ScannedRoom, thumbnail: UIImage, coordinate: CLLocationCoordinate2D?) -> SpaceRecord? {
+    func makeRecord(room: ScannedRoom, thumbnail: UIImage, cameraPose: CameraPose?, coordinate: CLLocationCoordinate2D?) -> SpaceRecord? {
         guard let modelFile = try? Data(contentsOf: room.modelURL),
               let thumbnailData = thumbnail.pngData() else {
             return nil
         }
-
-        let title = element(of: .location)?.text ?? element(of: .text)?.text ?? ""
 
         return SpaceRecord(
             createdAt: .now,
@@ -69,8 +92,29 @@ final class StoryDraft {
             backgroundPreset: backgroundPreset,
             elements: elements,
             furniture: room.furniture,
-            coordinate: coordinate
+            coordinate: coordinate,
+            cameraPose: cameraPose
         )
+    }
+
+    //수정한 내용을 저장된 공간 카드에 반영 - 생성 날짜, 위치는 그대로 유지
+    func apply(to record: SpaceRecord, room: ScannedRoom, thumbnail: UIImage, cameraPose: CameraPose?) -> Bool {
+        guard let thumbnailData = thumbnail.pngData() else { return false }
+        
+        //RoomPlan 원본 데이터로 USDZ 파일을 새로 만든 경우 저장된 파일도 교체
+        if room.roomData != nil, let modelFile = try? Data(contentsOf: room.modelURL) {
+            record.modelFile = modelFile
+        }
+
+        record.title = title
+        record.thumbnail = thumbnailData
+        record.elements = elements
+        record.cameraPose = cameraPose
+        if isBackgroundChanged {
+            record.background = background?.jpegData(compressionQuality: 0.8)
+            record.backgroundPreset = backgroundPreset
+        }
+        return true
     }
 }
 

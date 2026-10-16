@@ -45,4 +45,9 @@ final class RoomSceneSnapshotter {
     func snapshot() -> UIImage? {
         view?.snapshot()
     }
+    
+    //사용자가 돌려놓은 현재 카메라 위치
+    func cameraPose() -> CameraPose? {
+        view?.pointOfView.map(CameraPose.init(node:))
+    }
 }

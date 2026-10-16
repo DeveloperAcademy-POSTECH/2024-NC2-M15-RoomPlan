@@ -70,6 +70,15 @@ enum RoomModelBuilder {
     }
 }
 
+extension RoomModelBuilder {
+    //USDZ로 내보낼 모델에서 SCNBox의 둥근 모서리를 없앰
+    static func removeRoundedEdges(in scene: SCNScene) {
+        scene.rootNode.enumerateHierarchy { node, _ in
+            (node.geometry as? SCNBox)?.chamferRadius = 0
+        }
+    }
+}
+
 // MARK: - Floor
 private extension RoomModelBuilder {
     //벽의 아래쪽 높이를 바닥 높이로 사용

@@ -132,14 +132,12 @@ private extension RoomModelViewerView {
         }
     }
 
+    //카드를 만들 때 맞춘 각도로 시작
     func loadModel() async {
         do {
-            let url = try record.writeModelFile()
-            let roomData = record.roomData
-            modelURL = url
-            roomScene = try await Task.detached(priority: .userInitiated) {
-                try RoomSceneLoader.load(roomData: roomData, modelURL: url)
-            }.value
+            let room = try await ScannedRoom.load(from: record)
+            modelURL = room.modelURL
+            roomScene = room.roomScene
         } catch {
             print("Failed to load model: \(error.localizedDescription)")
             loadFailed = true

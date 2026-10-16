@@ -28,8 +28,11 @@ final class SpaceRecord {
     var elementsData: Data
     //인식된 가구 목록 (FurnitureCategory의 rawValue)
     var furnitureKeys: [String]
+    //스캔한 위치 (위치 권한이 없으면 nil) - 카드를 수정해도 바뀌지 않음
     var latitude: Double?
     var longitude: Double?
+    //썸네일을 만들 때의 카메라 위치 - 카드를 수정할 때 같은 각도로 복원하기 위해 사용
+    var cameraData: Data?
 
     init(
         id: UUID = UUID(),
@@ -42,7 +45,8 @@ final class SpaceRecord {
         backgroundPreset: Int,
         elements: [StoryElement],
         furniture: [FurnitureCategory],
-        coordinate: CLLocationCoordinate2D?
+        coordinate: CLLocationCoordinate2D?,
+        cameraPose: CameraPose?
     ) {
         self.id = id
         self.createdAt = createdAt
@@ -56,12 +60,19 @@ final class SpaceRecord {
         self.furnitureKeys = furniture.map(\.rawValue)
         self.latitude = coordinate?.latitude
         self.longitude = coordinate?.longitude
+        self.cameraData = cameraPose.flatMap { try? JSONEncoder().encode($0) }
     }
 }
 
 extension SpaceRecord {
     var elements: [StoryElement] {
-        (try? JSONDecoder().decode([StoryElement].self, from: elementsData)) ?? []
+        get { (try? JSONDecoder().decode([StoryElement].self, from: elementsData)) ?? [] }
+        set { elementsData = (try? JSONEncoder().encode(newValue)) ?? Data() }
+    }
+    
+    var cameraPose: CameraPose? {
+        get { cameraData.flatMap { try? JSONDecoder().decode(CameraPose.self, from: $0) } }
+        set { cameraData = newValue.flatMap { try? JSONEncoder().encode($0) } }
     }
 
     var furniture: [FurnitureCategory] {
@@ -105,6 +116,17 @@ extension ModelContext {
         return true
     }
 
+    //수정한 내용을 저장
+    func saveChanges() -> Bool {
+        do {
+            try self.save()
+        } catch {
+            print("Failed to save data")
+            return false
+        }
+        return true
+    }
+    
     func deleteRecord(_ record: SpaceRecord) {
         do {
             self.delete(record)
