@@ -47,6 +47,8 @@ enum StoryBackgroundPreset {
 enum StoryLayout {
     static let referenceWidth: CGFloat = 360
     static let aspectRatio: CGFloat = 9 / 16
+    //이전 버전 카드(MySpaceCellView, SpaceCardFrontView)와 같은 모서리 곡률 - 카드 크기와 상관없이 고정
+    static let cornerRadius: CGFloat = 19
 
     static func size(fittingWidth width: CGFloat) -> CGSize {
         CGSize(width: width, height: width / aspectRatio)

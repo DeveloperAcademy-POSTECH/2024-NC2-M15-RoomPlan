@@ -42,7 +42,6 @@ struct RoomPlanView: View {
                         dismiss()
                     }
                 )
-                .toolbar(.hidden, for: .navigationBar)
             }
         }
         .onAppear {
@@ -70,6 +69,21 @@ struct RoomPlanView: View {
 }
 
 private extension RoomPlanView {
+    //전체 화면으로 열리므로 스캔 중에 나갈 수 있는 닫기 버튼
+    var closeButton: some View {
+        Button {
+            dismiss()
+        } label: {
+            Image(systemName: "xmark")
+                .font(.system(size: 17, weight: .semibold))
+                .foregroundStyle(Color.white)
+                .frame(width: 40, height: 40)
+                .background(Circle().fill(Color.black.opacity(0.4)))
+        }
+        .accessibilityLabel(Text("닫기"))
+        .padding(.leading, 16)
+    }
+    
     var isProcessing: Bool {
         if case .processing = phase {
             return true
@@ -90,14 +104,23 @@ private extension RoomPlanView {
                 })
 
             VStack {
-                if !isProcessing {
-                    Text("벽과 가구를 천천히 비추며 공간을 스캔하세요.")
-                        .font(.footnote)
-                        .bold()
-                        .foregroundStyle(Color.white)
-                        .padding(.horizontal, 14)
-                        .padding(.vertical, 8)
-                        .background(Capsule().fill(Color.black.opacity(0.5)))
+                //닫기 버튼은 왼쪽, 안내 문구는 가운데
+                ZStack {
+                    HStack {
+                        closeButton
+                        
+                        Spacer()
+                    }
+                    
+                    if !isProcessing {
+                        Text("벽과 가구를 천천히 비추며 공간을 스캔하세요.")
+                            .font(.footnote)
+                            .bold()
+                            .foregroundStyle(Color.white)
+                            .padding(.horizontal, 14)
+                            .padding(.vertical, 8)
+                            .background(Capsule().fill(Color.black.opacity(0.5)))
+                    }
                 }
 
                 Spacer()

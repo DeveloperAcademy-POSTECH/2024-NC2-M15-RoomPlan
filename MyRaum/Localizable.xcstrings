@@ -1253,6 +1253,134 @@
           }
         }
       }
+    },
+    "홈" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Home"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "홈"
+          }
+        }
+      }
+    },
+    "지도" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Map"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "지도"
+          }
+        }
+      }
+    },
+    "선택" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Select"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "선택"
+          }
+        }
+      }
+    },
+    "전체 선택" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Select All"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "전체 선택"
+          }
+        }
+      }
+    },
+    "선택 해제" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Deselect All"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "선택 해제"
+          }
+        }
+      }
+    },
+    "선택한 %lld개의 공간을 삭제하시겠습니까?" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delete %lld selected spaces?"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "선택한 %lld개의 공간을 삭제하시겠습니까?"
+          }
+        }
+      }
+    },
+    "위치 정보가 있는 공간 카드가 없습니다." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No space cards with location."
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "위치 정보가 있는 공간 카드가 없습니다."
+          }
+        }
+      }
+    },
+    "위치 권한을 허용하고 공간을 스캔하면 지도에 표시됩니다." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Allow location access and scan a space to see it on the map."
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "위치 권한을 허용하고 공간을 스캔하면 지도에 표시됩니다."
+          }
+        }
+      }
     }
   },
   "version" : "1.0"

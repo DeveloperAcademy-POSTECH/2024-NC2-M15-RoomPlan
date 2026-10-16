@@ -127,6 +127,16 @@ extension ModelContext {
         return true
     }
     
+    //여러 공간 카드를 한 번에 삭제
+    func deleteRecords(_ records: [SpaceRecord]) {
+        do {
+            records.forEach { self.delete($0) }
+            try self.save()
+        } catch {
+            print("Failed to delete data")
+        }
+    }
+    
     func deleteRecord(_ record: SpaceRecord) {
         do {
             self.delete(record)

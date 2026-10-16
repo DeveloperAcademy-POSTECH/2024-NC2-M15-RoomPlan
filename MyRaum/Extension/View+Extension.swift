@@ -27,15 +27,16 @@ extension View {
 }
 
 //뒤로가기 버튼과 타이틀로 구성된 공통 네비게이션 바
+//탭의 첫 화면처럼 돌아갈 화면이 없으면 showsBackButton을 false로 설정
 extension View {
-    func customNavigationBar(title: LocalizedStringKey) -> some View {
-        customNavigationBar(title: title) {
+    func customNavigationBar(title: LocalizedStringKey, showsBackButton: Bool = true) -> some View {
+        customNavigationBar(title: title, showsBackButton: showsBackButton) {
             EmptyView()
         }
     }
 
-    func customNavigationBar<Trailing: View>(title: LocalizedStringKey, @ViewBuilder trailing: () -> Trailing) -> some View {
-        modifier(CustomNavigationBarModifier(title: title, trailing: trailing()))
+    func customNavigationBar<Trailing: View>(title: LocalizedStringKey, showsBackButton: Bool = true, @ViewBuilder trailing: () -> Trailing) -> some View {
+        modifier(CustomNavigationBarModifier(title: title, showsBackButton: showsBackButton, trailing: trailing()))
     }
 }
 
@@ -43,18 +44,23 @@ private struct CustomNavigationBarModifier<Trailing: View>: ViewModifier {
     @Environment(\.dismiss) private var dismiss
 
     let title: LocalizedStringKey
+    let showsBackButton: Bool
     let trailing: Trailing
 
     func body(content: Content) -> some View {
         content
             .navigationBarBackButtonHidden()
+            //탭의 첫 화면에서 큰 타이틀 영역만큼 여백이 생기지 않도록 함
+            .navigationBarTitleDisplayMode(.inline)
             .toolbar {
-                ToolbarItem(placement: .topBarLeading) {
-                    Button {
-                        dismiss()
-                    } label: {
-                        Image(systemName: "chevron.left")
-                            .bold()
+                if showsBackButton {
+                    ToolbarItem(placement: .topBarLeading) {
+                        Button {
+                            dismiss()
+                        } label: {
+                            Image(systemName: "chevron.left")
+                                .bold()
+                        }
                     }
                 }
 

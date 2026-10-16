@@ -62,6 +62,16 @@ extension ModelContext {
         return true
     }
 
+    //여러 공간을 한 번에 삭제하는 함수
+    func deleteSpaces(_ spaces: [SpaceData]) {
+        do {
+            spaces.forEach { self.delete($0) }
+            try self.save()
+        } catch {
+            print("Failed to delete data")
+        }
+    }
+    
     //SwiftData에서 데이터를 삭제하는 함수
     func deleteSpace(space: SpaceData) {
         do {

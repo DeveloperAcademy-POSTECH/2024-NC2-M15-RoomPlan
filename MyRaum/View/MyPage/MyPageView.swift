@@ -33,7 +33,7 @@ struct MyPageView: View {
                 .font(.caption)
         }
         .padding(.horizontal, 16)
-        .customNavigationBar(title: "내 정보")
+        .customNavigationBar(title: "내 정보", showsBackButton: false)
     }
 }
 

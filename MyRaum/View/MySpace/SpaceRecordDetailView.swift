@@ -38,7 +38,7 @@ struct SpaceRecordDetailView: View {
 
             StoryCardView(record: record, width: 315)
                 .overlay {
-                    RoundedRectangle(cornerRadius: 20 * 315 / StoryLayout.referenceWidth)
+                    RoundedRectangle(cornerRadius: StoryLayout.cornerRadius)
                         .stroke(Color.gray, lineWidth: 2)
                 }
                 .onTapGesture {

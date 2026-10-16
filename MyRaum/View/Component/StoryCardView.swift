@@ -16,6 +16,7 @@ struct StoryCardView: View {
     let elements: [StoryElement]
     let furniture: [FurnitureCategory]
     let width: CGFloat
+    var cornerRadius: CGFloat = StoryLayout.cornerRadius
 
     var body: some View {
         let size = StoryLayout.size(fittingWidth: width)
@@ -37,19 +38,20 @@ struct StoryCardView: View {
             }
         }
         .frame(width: size.width, height: size.height)
-        .clipShape(RoundedRectangle(cornerRadius: 20 * unit))
+        .clipShape(RoundedRectangle(cornerRadius: cornerRadius))
     }
 }
 
 extension StoryCardView {
-    init(record: SpaceRecord, width: CGFloat) {
+    init(record: SpaceRecord, width: CGFloat, cornerRadius: CGFloat = StoryLayout.cornerRadius) {
         self.init(
             background: record.backgroundImage,
             backgroundPreset: record.backgroundPreset,
             thumbnail: record.thumbnailImage,
             elements: record.elements,
             furniture: record.furniture,
-            width: width
+            width: width,
+            cornerRadius: cornerRadius
         )
     }
 }

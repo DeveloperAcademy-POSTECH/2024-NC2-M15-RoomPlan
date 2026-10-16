@@ -7,119 +7,47 @@
 
 import SwiftUI
 
-//앱 메인화면
+//앱 메인화면 (홈 탭)
 struct ContentView: View {
-    @Environment(\.colorScheme) var colorScheme
-
-    @State private var path: [AppRoute] = []
+    let onScan: () -> Void
 
     var body: some View {
-        NavigationStack(path: $path) {
-            VStack(alignment: .leading, spacing: 10) {
-                HStack {
-                    Spacer()
+        VStack(alignment: .leading, spacing: 10) {
+            Spacer()
 
-                    NavigationLink(value: AppRoute.myPage) {
-                        myPageIcon
-                    }
-                }
-
-                Spacer()
-
-                Image("logo")
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .frame(width: 280)
-                    .padding(.leading, 30)
-                    .padding(.bottom, 30)
-
-                Text("나의 공간을 기록해보세요.")
-                    .font(.title2)
-                    .bold()
-                    .foregroundStyle(Color.white)
-                    .multilineTextAlignment(.leading)
-                    .padding(.leading, 30)
-                    .padding(.bottom, 30)
-
-                //공간 스캔 화면으로 이동
-                TextButtonCapsule(text: "스캔하기", color: .white) {
-                    path.append(.spaceScan)
-                }
+            Image("logo")
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .frame(width: 280)
                 .padding(.leading, 30)
+                .padding(.bottom, 30)
 
-                Spacer()
+            Text("나의 공간을 기록해보세요.")
+                .font(.title2)
+                .bold()
+                .foregroundStyle(Color.white)
+                .multilineTextAlignment(.leading)
+                .padding(.leading, 30)
+                .padding(.bottom, 30)
 
-                HStack {
-                    Spacer()
-
-                    //보관함으로 이동
-                    Image("corner")
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(width: 150)
-                        .overlay(alignment: .bottomTrailing, content: {
-                            Text("보관함")
-                                .font(.title3)
-                                .foregroundStyle(Color.black)
-                                .padding(24)
-                        })
-                        .onTapGesture {
-                            path.append(.mySpaces)
-                        }
-                        .gesture(dragGesture)
-                }
+            //공간 스캔 화면으로 이동
+            TextButtonCapsule(text: "스캔하기", color: .white) {
+                onScan()
             }
-            .background(Color.black)
-            .ignoresSafeArea()
-            .navigationDestination(for: AppRoute.self) { route in
-                destination(for: route)
-            }
+            .padding(.leading, 30)
+
+            Spacer()
         }
-        .tint(colorScheme == .dark ? .white : .black)
-    }
-}
-
-private extension ContentView {
-    @ViewBuilder
-    func destination(for route: AppRoute) -> some View {
-        switch route {
-        case .spaceScan:
-            RoomPlanView()
-        case .mySpaces:
-            MySpacesView()
-        case .legacySpaces:
-            LegacySpacesView()
-        case .myPage:
-            MyPageView()
-        }
-    }
-
-    @ViewBuilder
-    var myPageIcon: some View {
-        let icon = Image(systemName: "person.crop.circle")
-            .font(.title)
-            .foregroundStyle(Color.gray)
-            .padding(.top, 70)
-            .padding(.trailing, 16)
-
-        if #available(iOS 18.0, *) {
-            icon.symbolEffect(.breathe, options: .nonRepeating)
-        } else {
-            icon
-        }
-    }
-
-    //보관함 이미지를 왼쪽 위로 드래그하면 보관함으로 이동
-    var dragGesture: some Gesture {
-        DragGesture(minimumDistance: 50)
-            .onEnded { gesture in
-                if gesture.translation.width < -50 && gesture.translation.height < -50 {
-                    path.append(.mySpaces)
-                }
-            }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(Color.black.ignoresSafeArea())
+        .toolbar(.hidden, for: .navigationBar)
+        //검은 배경과 어울리도록 홈 탭에서는 탭바를 어둡게 표시
+        .toolbarBackground(Color.black, for: .tabBar)
+        .toolbarBackground(.visible, for: .tabBar)
+        .toolbarColorScheme(.dark, for: .tabBar)
     }
 }
 
 #Preview {
-    ContentView()
+    ContentView(onScan: {})
 }

@@ -10,6 +10,7 @@ import SwiftData
 
 //보관함 화면 - 3D로 저장된 공간 카드 목록
 //이전 버전에서 저장한 카드가 있으면 상단에 이전 카드 보관함으로 이동하는 버튼이 노출됨
+//길게 누르면 카드 메뉴, 선택 버튼을 누르면 여러 카드를 선택해서 삭제할 수 있음
 struct MySpacesView: View {
     @Environment(\.modelContext) private var modelContext
 
@@ -17,13 +18,20 @@ struct MySpacesView: View {
     @Query private var legacySpaces: [SpaceData]
 
     @State private var selectedRecord: SpaceRecord? = nil
+    @State private var viewerRecord: SpaceRecord? = nil
+    @State private var editingRecord: SpaceRecord? = nil
     @State private var recordToDelete: SpaceRecord? = nil
+    @State private var isSelecting: Bool = false
+    @State private var selectedIDs: Set<UUID> = []
     @State private var showDeleteConfirmation: Bool = false
+    @State private var showBulkDeleteConfirmation: Bool = false
+    @State private var showSavedAlert: Bool = false
 
     private let columns = [
         GridItem(),
         GridItem()
     ]
+    private let cellWidth: CGFloat = 153
 
     var body: some View {
         Group {
@@ -32,7 +40,7 @@ struct MySpacesView: View {
             } else {
                 ScrollView {
                     VStack(spacing: 20) {
-                        if !legacySpaces.isEmpty {
+                        if !legacySpaces.isEmpty && !isSelecting {
                             legacyLink
                         }
 
@@ -50,9 +58,23 @@ struct MySpacesView: View {
                 .padding(.top)
             }
         }
-        .customNavigationBar(title: "보관함")
+        .customNavigationBar(title: "보관함", showsBackButton: false) {
+            selectButton
+        }
+        .toolbar(isSelecting ? .hidden : .visible, for: .tabBar)
+        .toolbar {
+            if isSelecting {
+                selectionToolbar
+            }
+        }
         .sheet(item: $selectedRecord) { record in
             SpaceRecordDetailView(record: record)
+        }
+        .fullScreenCover(item: $viewerRecord) { record in
+            RoomModelViewerView(record: record)
+        }
+        .fullScreenCover(item: $editingRecord) { record in
+            SpaceRecordEditorView(record: record)
         }
         .alert("공간 삭제", isPresented: $showDeleteConfirmation, actions: {
             Button(role: .cancel) {
@@ -70,9 +92,31 @@ struct MySpacesView: View {
         }, message: {
             Text("이 공간을 삭제하시겠습니까?")
         })
+        .alert("공간 삭제", isPresented: $showBulkDeleteConfirmation, actions: {
+            Button(role: .cancel) {
+            } label: {
+                Text("취소")
+            }
+
+            Button(role: .destructive) {
+                modelContext.deleteRecords(records.filter { selectedIDs.contains($0.id) })
+                endSelecting()
+            } label: {
+                Text("삭제")
+            }
+        }, message: {
+            Text("선택한 \(selectedIDs.count)개의 공간을 삭제하시겠습니까?")
+        })
+        .alert("이미지가 저장되었습니다.", isPresented: $showSavedAlert) {
+            Button {
+            } label: {
+                Text("확인")
+            }
+        }
     }
 }
 
+// MARK: - Views
 private extension MySpacesView {
     var emptyView: some View {
         VStack {
@@ -115,20 +159,140 @@ private extension MySpacesView {
     var recordGrid: some View {
         LazyVGrid(columns: columns, spacing: 30) {
             ForEach(records) { record in
-                StoryCardView(record: record, width: 153)
-                    .overlay {
-                        RoundedRectangle(cornerRadius: 20 * 153 / StoryLayout.referenceWidth)
-                            .stroke(Color.gray, lineWidth: 2)
-                    }
-                    .onTapGesture {
-                        selectedRecord = record
-                    }
-                    .onLongPressGesture(minimumDuration: 0.3, perform: {
-                        recordToDelete = record
-                        showDeleteConfirmation = true
-                    })
+                recordCell(record)
             }
         }
+    }
+
+    func recordCell(_ record: SpaceRecord) -> some View {
+        let cornerRadius = StoryLayout.cornerRadius
+
+        return StoryCardView(record: record, width: cellWidth)
+            .overlay {
+                RoundedRectangle(cornerRadius: cornerRadius)
+                    .stroke(Color.gray, lineWidth: 2)
+            }
+            .overlay {
+                if isSelecting {
+                    CardSelectionOverlay(isSelected: selectedIDs.contains(record.id), cornerRadius: cornerRadius)
+                }
+            }
+            .contentShape(RoundedRectangle(cornerRadius: cornerRadius))
+            .onTapGesture {
+                if isSelecting {
+                    toggleSelection(record.id)
+                } else {
+                    selectedRecord = record
+                }
+            }
+            .contextMenu {
+                if !isSelecting {
+                    menu(for: record)
+                }
+            }
+    }
+
+    //카드를 길게 눌렀을 때 나오는 메뉴
+    @ViewBuilder
+    func menu(for record: SpaceRecord) -> some View {
+        Button {
+            viewerRecord = record
+        } label: {
+            Label("3D로 보기", systemImage: "rotate.3d")
+        }
+
+        Button {
+            editingRecord = record
+        } label: {
+            Label("수정하기", systemImage: "pencil")
+        }
+
+        Button {
+            if let image = record.renderCardImage() {
+                UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil)
+                showSavedAlert = true
+            }
+        } label: {
+            Label("이미지 저장", systemImage: "photo.badge.arrow.down")
+        }
+
+        ShareLink(item: SpaceCardShareItem { record.renderCardImage() }, preview: SharePreview("공간 카드 공유")) {
+            Label("공유", systemImage: "square.and.arrow.up")
+        }
+
+        Button(role: .destructive) {
+            recordToDelete = record
+            showDeleteConfirmation = true
+        } label: {
+            Label("삭제", systemImage: "trash")
+        }
+    }
+
+    var selectButton: some View {
+        Button {
+            if isSelecting {
+                endSelecting()
+            } else {
+                isSelecting = true
+            }
+        } label: {
+            if isSelecting {
+                Text("완료")
+                    .bold()
+            } else {
+                Text("선택")
+            }
+        }
+        .disabled(records.isEmpty)
+    }
+
+    //선택 모드에서 하단에 표시되는 전체 선택, 삭제 버튼
+    @ToolbarContentBuilder
+    var selectionToolbar: some ToolbarContent {
+        ToolbarItem(placement: .bottomBar) {
+            Button {
+                if selectedIDs.count == records.count {
+                    selectedIDs.removeAll()
+                } else {
+                    selectedIDs = Set(records.map(\.id))
+                }
+            } label: {
+                if selectedIDs.count == records.count {
+                    Text("선택 해제")
+                } else {
+                    Text("전체 선택")
+                }
+            }
+        }
+
+        ToolbarItem(placement: .bottomBar) {
+            Spacer()
+        }
+
+        ToolbarItem(placement: .bottomBar) {
+            Button(role: .destructive) {
+                showBulkDeleteConfirmation = true
+            } label: {
+                Image(systemName: "trash")
+            }
+            .disabled(selectedIDs.isEmpty)
+        }
+    }
+}
+
+// MARK: - Selection
+private extension MySpacesView {
+    func toggleSelection(_ id: UUID) {
+        if selectedIDs.contains(id) {
+            selectedIDs.remove(id)
+        } else {
+            selectedIDs.insert(id)
+        }
+    }
+
+    func endSelecting() {
+        isSelecting = false
+        selectedIDs.removeAll()
     }
 }
 
