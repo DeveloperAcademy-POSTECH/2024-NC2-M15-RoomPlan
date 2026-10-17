@@ -9,9 +9,8 @@ import SwiftUI
 
 //저장된 공간의 상세 정보를 확인하고 이미지 저장 및 공유가 가능한 뷰
 struct MySpaceDetailView: View {
-    @Environment(\.dismiss) var dismiss
-    @Environment(\.colorScheme) var colorScheme
-    
+    @Environment(\.colorScheme) private var colorScheme
+
     let space: SpaceData
     
     @State private var card: UIImage = UIImage()
@@ -21,29 +20,7 @@ struct MySpaceDetailView: View {
     
     var body: some View {
         VStack {
-            HStack {
-                Picker(selection: $cardFlipped) {
-                    Label(" 카드", systemImage: "square.2.layers.3d.top.filled").tag(false)
-                    Label(" 지도", systemImage: "square.2.layers.3d.bottom.filled").tag(true)
-                } label: {
-                    Text("Card View")
-                }
-                .pickerStyle(.menu)
-                .padding()
-                
-                Spacer()
-                
-                Button {
-                    dismiss()
-                } label: {
-                    Image(systemName: "x.circle")
-                        .resizable()
-                        .frame(width: 28, height: 28)
-                        .foregroundStyle(colorScheme == .dark ? .white : .black)
-                        .bold()
-                }
-                .padding()
-            }
+            SpaceCardSheetHeader(cardFlipped: $cardFlipped)
             
             MySpaceCardView(space: space, cardFlipped: $cardFlipped)
                 .onAppear(perform: {
@@ -59,7 +36,7 @@ struct MySpaceDetailView: View {
             Spacer()
             
             HStack(spacing: 16) {
-                LabelButtonRoundedRectangle(text: "이미지 저장", image: "photo.badge.arrow.down") {
+                LabelButtonRoundedRectangle(text: "이미지 저장", image: "photo.badge.arrow.down", color: .adaptive(colorScheme)) {
                     UIImageWriteToSavedPhotosAlbum(card, nil, nil, nil)
                     showSavedAlert = true
                 }
@@ -72,8 +49,9 @@ struct MySpaceDetailView: View {
                 }
                 
                 ShareLink(item: Image(uiImage: card), preview: SharePreview("공간 카드 공유", icon: "AppIcon")) {
-                    RoundedRectangleButtonLabel(text: "공유", systemImage: "square.and.arrow.up", height: 40, cornerRadius: 8)
+                    RoundedRectangleButtonLabel(text: "공유", systemImage: "square.and.arrow.up", height: 40, cornerRadius: 8, color: .adaptive(colorScheme))
                 }
+                .hapticOnTap()
                 .frame(width: 150)
             }
             .padding(.horizontal, 30)

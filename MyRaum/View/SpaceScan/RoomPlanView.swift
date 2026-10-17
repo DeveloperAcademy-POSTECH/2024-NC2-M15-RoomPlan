@@ -72,6 +72,7 @@ private extension RoomPlanView {
     //전체 화면으로 열리므로 스캔 중에 나갈 수 있는 닫기 버튼
     var closeButton: some View {
         Button {
+            HapticManager.tap()
             dismiss()
         } label: {
             Image(systemName: "xmark")
@@ -159,9 +160,11 @@ private extension RoomPlanView {
         Task {
             do {
                 let room = try await ScannedRoom.make(from: capturedRoom)
+                HapticManager.notify(.success)
                 phase = .editing(room)
             } catch {
                 print("Failed to export room: \(error.localizedDescription)")
+                HapticManager.notify(.error)
                 showScanFailedAlert = true
             }
         }

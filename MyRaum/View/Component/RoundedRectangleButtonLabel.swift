@@ -14,15 +14,16 @@ struct RoundedRectangleButtonLabel: View {
     var systemImage: String? = nil
     var height: CGFloat = 60
     var cornerRadius: CGFloat = 16
+    var color: ButtonColor = .gray
 
     var body: some View {
         RoundedRectangle(cornerRadius: cornerRadius)
             .stroke(style: StrokeStyle(lineWidth: 1))
-            .foregroundStyle(Color.grayButtonStroke)
+            .foregroundStyle(color.strokeColor)
             .frame(height: height)
             .overlay {
                 RoundedRectangle(cornerRadius: cornerRadius)
-                    .foregroundStyle(Color.grayButton)
+                    .foregroundStyle(color.color())
 
                 Group {
                     if let systemImage {
@@ -32,8 +33,10 @@ struct RoundedRectangleButtonLabel: View {
                     }
                 }
                 .font(.system(size: 18))
-                .foregroundStyle(Color.white)
+                .foregroundStyle(color.textColor)
             }
+            //배경이 투명한 버튼도 전체 영역을 탭할 수 있도록 함
+            .contentShape(RoundedRectangle(cornerRadius: cornerRadius))
     }
 }
 

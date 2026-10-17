@@ -56,6 +56,7 @@ struct LegacySpacesView: View {
             }
 
             Button(role: .destructive) {
+                HapticManager.notify(.success)
                 if let space = spaceToDelete {
                     modelContext.deleteSpace(space: space)
                 }
@@ -72,6 +73,7 @@ struct LegacySpacesView: View {
             }
 
             Button(role: .destructive) {
+                HapticManager.notify(.success)
                 modelContext.deleteSpaces(spaceData.filter { selectedIDs.contains($0.id) })
                 endSelecting()
             } label: {
@@ -118,8 +120,10 @@ private extension LegacySpacesView {
                         .contentShape(RoundedRectangle(cornerRadius: 19))
                         .onTapGesture {
                             if isSelecting {
+                                HapticManager.selection()
                                 toggleSelection(space.id)
                             } else {
+                                HapticManager.tap()
                                 selectedSpace = space
                             }
                         }
@@ -141,6 +145,7 @@ private extension LegacySpacesView {
     func menu(for space: SpaceData) -> some View {
         Button {
             UIImageWriteToSavedPhotosAlbum(space.renderCardImage(), nil, nil, nil)
+            HapticManager.notify(.success)
             showSavedAlert = true
         } label: {
             Label("이미지 저장", systemImage: "photo.badge.arrow.down")
@@ -160,6 +165,7 @@ private extension LegacySpacesView {
 
     var selectButton: some View {
         Button {
+            HapticManager.tap()
             if isSelecting {
                 endSelecting()
             } else {
@@ -181,6 +187,7 @@ private extension LegacySpacesView {
     var selectionToolbar: some ToolbarContent {
         ToolbarItem(placement: .bottomBar) {
             Button {
+                HapticManager.selection()
                 if selectedIDs.count == spaceData.count {
                     selectedIDs.removeAll()
                 } else {
@@ -201,6 +208,7 @@ private extension LegacySpacesView {
 
         ToolbarItem(placement: .bottomBar) {
             Button(role: .destructive) {
+                HapticManager.tap()
                 showBulkDeleteConfirmation = true
             } label: {
                 Image(systemName: "trash")

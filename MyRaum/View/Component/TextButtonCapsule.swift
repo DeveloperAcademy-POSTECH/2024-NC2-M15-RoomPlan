@@ -14,16 +14,22 @@ struct TextButtonCapsule: View {
     
     var body: some View {
         Button {
+            HapticManager.tap()
             action()
         } label: {
             RoundedRectangle(cornerRadius: 20)
                 .foregroundStyle(color.color())
                 .frame(width: 145, height: 40)
                 .overlay {
+                    RoundedRectangle(cornerRadius: 20)
+                        .stroke(color.strokeColor, lineWidth: 1)
+
                     Text(text)
                         .font(.system(size: 18))
-                        .foregroundStyle(color.color() == .white ? Color.black : Color.white)
+                        .foregroundStyle(color.textColor)
                 }
+                //배경이 투명한 버튼도 전체 영역을 탭할 수 있도록 함
+                .contentShape(RoundedRectangle(cornerRadius: 20))
         }
     }
 }

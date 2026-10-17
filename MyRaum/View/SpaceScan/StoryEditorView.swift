@@ -82,6 +82,12 @@ struct StoryEditorView: View {
                 showHint = false
             }
         }
+        //요소를 휴지통 위로 가져가면 놓았을 때 삭제된다는 것을 햅틱으로 알려줌
+        .onChange(of: isOverTrash) {
+            if isOverTrash {
+                HapticManager.tap()
+            }
+        }
         .onChange(of: selectedPhoto) {
             guard let item = selectedPhoto else { return }
             Task {
@@ -236,7 +242,10 @@ private extension StoryEditorView {
     }
 
     func toolButton(_ systemImage: String, label: LocalizedStringKey, isOn: Bool = false, action: @escaping () -> Void) -> some View {
-        Button(action: action) {
+        Button {
+            HapticManager.tap()
+            action()
+        } label: {
             toolIcon(systemImage, isOn: isOn)
         }
         .accessibilityLabel(Text(label))
@@ -290,6 +299,7 @@ private extension StoryEditorView {
             }
             .onEnded { _ in
                 if isOverTrash {
+                    HapticManager.notify(.success)
                     draft.remove(id: element.id)
                 }
                 dragStartPosition = nil
@@ -336,6 +346,7 @@ private extension StoryEditorView {
                     Spacer()
 
                     Button {
+                        HapticManager.tap()
                         finishEditing()
                     } label: {
                         Text("완료")
@@ -439,8 +450,10 @@ private extension StoryEditorView {
         }
         
         if isSaved {
+            HapticManager.notify(.success)
             showSavedAlert = true
         } else {
+            HapticManager.notify(.error)
             showSaveFailedAlert = true
         }
     }

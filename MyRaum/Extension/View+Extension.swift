@@ -56,6 +56,7 @@ private struct CustomNavigationBarModifier<Trailing: View>: ViewModifier {
                 if showsBackButton {
                     ToolbarItem(placement: .topBarLeading) {
                         Button {
+                            HapticManager.tap()
                             dismiss()
                         } label: {
                             Image(systemName: "chevron.left")

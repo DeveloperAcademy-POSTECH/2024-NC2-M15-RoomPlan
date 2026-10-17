@@ -25,6 +25,8 @@ struct InfoView: View {
             Text(" Apple Developer Academy @ POSTECH")
                 .foregroundStyle(Color.gray)
                 .font(.caption)
+                //탭바에 너무 붙지 않도록 여백
+                .padding(.bottom, 16)
         }
         .customNavigationBar(title: "My Raum을 만든 사람들")
     }

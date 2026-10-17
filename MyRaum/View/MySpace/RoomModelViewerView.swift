@@ -60,6 +60,7 @@ private extension RoomModelViewerView {
     var topBar: some View {
         HStack {
             Button {
+                HapticManager.tap()
                 dismiss()
             } label: {
                 Image(systemName: "xmark")
@@ -91,6 +92,7 @@ private extension RoomModelViewerView {
                         .frame(width: 40, height: 40)
                         .background(Circle().fill(Color.black.opacity(0.06)))
                 }
+                .hapticOnTap()
             } else {
                 Color.clear
                     .frame(width: 40, height: 40)

@@ -26,6 +26,7 @@ struct SpaceMapView: View {
                 Annotation(pin.title, coordinate: pin.coordinate, anchor: .bottom) {
                     MapPinView(pin: pin)
                         .onTapGesture {
+                            HapticManager.tap()
                             selectedPin = pin
                         }
                 }
@@ -136,26 +137,14 @@ private struct MapPinView: View {
         }
     }
 
+    //신규 카드와 이전 카드 모두 배경 위에 모델만 표시
     @ViewBuilder
     var thumbnail: some View {
         switch pin.card {
         case .record(let record):
-            StoryCardView(record: record, width: width, cornerRadius: 0)
+            SpaceThumbnailView(record: record, width: width, showsTitle: false, cornerRadius: 0)
         case .legacy(let space):
-            ZStack {
-                if let background = space.backgroundImage {
-                    Image(uiImage: background)
-                        .resizable()
-                        .scaledToFill()
-                        .overlay(Color.black.opacity(0.4))
-                }
-                if let model = space.modelImage {
-                    Image(uiImage: model)
-                        .resizable()
-                        .scaledToFit()
-                }
-            }
-            .background(Color.gray)
+            SpaceThumbnailView(space: space, width: width, showsTitle: false, cornerRadius: 0)
         }
     }
 }

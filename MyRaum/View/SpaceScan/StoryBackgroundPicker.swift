@@ -24,6 +24,7 @@ struct StoryBackgroundPicker: View {
                 Spacer()
 
                 Button {
+                    HapticManager.tap()
                     dismiss()
                 } label: {
                     Text("완료")
@@ -36,6 +37,7 @@ struct StoryBackgroundPicker: View {
                     photoOption
                 }
                 .buttonStyle(.plain)
+                .hapticOnTap()
             }
 
             section(title: "색상") {
@@ -121,6 +123,7 @@ private extension StoryBackgroundPicker {
             .padding(5)
             .contentShape(Circle())
             .onTapGesture {
+                HapticManager.selection()
                 draft.setBackgroundPreset(index)
             }
     }

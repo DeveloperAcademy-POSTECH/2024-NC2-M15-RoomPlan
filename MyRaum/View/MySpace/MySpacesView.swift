@@ -83,6 +83,7 @@ struct MySpacesView: View {
             }
 
             Button(role: .destructive) {
+                HapticManager.notify(.success)
                 if let record = recordToDelete {
                     modelContext.deleteRecord(record)
                 }
@@ -99,6 +100,7 @@ struct MySpacesView: View {
             }
 
             Button(role: .destructive) {
+                HapticManager.notify(.success)
                 modelContext.deleteRecords(records.filter { selectedIDs.contains($0.id) })
                 endSelecting()
             } label: {
@@ -154,6 +156,7 @@ private extension MySpacesView {
                     .stroke(Color.gray.opacity(0.5), lineWidth: 1)
             }
         }
+        .hapticOnTap()
     }
 
     var recordGrid: some View {
@@ -167,7 +170,8 @@ private extension MySpacesView {
     func recordCell(_ record: SpaceRecord) -> some View {
         let cornerRadius = StoryLayout.cornerRadius
 
-        return StoryCardView(record: record, width: cellWidth)
+        //이전 카드와 같은 썸네일 형식으로 표시
+        return SpaceThumbnailView(record: record, width: cellWidth)
             .overlay {
                 RoundedRectangle(cornerRadius: cornerRadius)
                     .stroke(Color.gray, lineWidth: 2)
@@ -180,8 +184,10 @@ private extension MySpacesView {
             .contentShape(RoundedRectangle(cornerRadius: cornerRadius))
             .onTapGesture {
                 if isSelecting {
+                    HapticManager.selection()
                     toggleSelection(record.id)
                 } else {
+                    HapticManager.tap()
                     selectedRecord = record
                 }
             }
@@ -210,6 +216,7 @@ private extension MySpacesView {
         Button {
             if let image = record.renderCardImage() {
                 UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil)
+                HapticManager.notify(.success)
                 showSavedAlert = true
             }
         } label: {
@@ -230,6 +237,7 @@ private extension MySpacesView {
 
     var selectButton: some View {
         Button {
+            HapticManager.tap()
             if isSelecting {
                 endSelecting()
             } else {
@@ -251,6 +259,7 @@ private extension MySpacesView {
     var selectionToolbar: some ToolbarContent {
         ToolbarItem(placement: .bottomBar) {
             Button {
+                HapticManager.selection()
                 if selectedIDs.count == records.count {
                     selectedIDs.removeAll()
                 } else {
@@ -271,6 +280,7 @@ private extension MySpacesView {
 
         ToolbarItem(placement: .bottomBar) {
             Button(role: .destructive) {
+                HapticManager.tap()
                 showBulkDeleteConfirmation = true
             } label: {
                 Image(systemName: "trash")

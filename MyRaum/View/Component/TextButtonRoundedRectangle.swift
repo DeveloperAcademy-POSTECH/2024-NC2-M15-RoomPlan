@@ -13,6 +13,7 @@ struct TextButtonRoundedRectangle: View {
 
     var body: some View {
         Button {
+            HapticManager.tap()
             action()
         } label: {
             RoundedRectangleButtonLabel(text: text)

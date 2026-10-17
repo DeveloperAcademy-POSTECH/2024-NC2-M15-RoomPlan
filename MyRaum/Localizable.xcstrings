@@ -1350,6 +1350,22 @@
         }
       }
     },
+    "위치 정보가 없습니다." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No location information."
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "위치 정보가 없습니다."
+          }
+        }
+      }
+    },
     "위치 정보가 있는 공간 카드가 없습니다." : {
       "localizations" : {
         "en" : {

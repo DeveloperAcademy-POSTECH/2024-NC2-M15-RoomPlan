@@ -31,6 +31,7 @@ struct LanguageSettingView: View {
                     .padding(.vertical, 16)
                     .contentShape(Rectangle())
                     .onTapGesture {
+                        HapticManager.selection()
                         selectedLanguage = lang
                     }
                     
@@ -43,6 +44,7 @@ struct LanguageSettingView: View {
         .padding(.horizontal, 16)
         .customNavigationBar(title: "언어 설정") {
             Button {
+                HapticManager.tap()
                 appSettingsManager.language = selectedLanguage
                 dismiss()
             } label: {

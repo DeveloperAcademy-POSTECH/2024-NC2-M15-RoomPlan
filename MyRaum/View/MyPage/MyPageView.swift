@@ -31,6 +31,8 @@ struct MyPageView: View {
             Text("[Version \(AppEnvironment.version)]")
                 .foregroundStyle(Color.gray)
                 .font(.caption)
+                //탭바에 너무 붙지 않도록 여백
+                .padding(.bottom, 16)
         }
         .padding(.horizontal, 16)
         .customNavigationBar(title: "내 정보", showsBackButton: false)
@@ -64,6 +66,7 @@ private extension MyPageView {
             }
             .bold()
         }
+        .hapticOnTap()
     }
 }
 
