@@ -76,3 +76,10 @@ private struct CustomNavigationBarModifier<Trailing: View>: ViewModifier {
             }
     }
 }
+
+//언어 설정, 화면 모드, 내 정보 화면의 셀 높이를 통일
+extension View {
+    func settingCellHeight() -> some View {
+        frame(maxWidth: .infinity, minHeight: 70, maxHeight: 70)
+    }
+}

@@ -16,10 +16,16 @@ struct MyRaumApp: App {
     var body: some Scene {
         WindowGroup {
             //RoomPlan을 지원하는 기기일 경우 메인화면을 보여주고, 지원하지 않는 기기일 경우 기기 미지원 화면 보여줌
-            if RoomCaptureSession.isSupported {
-                MainTabView()
-            } else {
-                UnsupportedDeviceView()
+            Group {
+                if RoomCaptureSession.isSupported {
+                    MainTabView()
+                } else {
+                    UnsupportedDeviceView()
+                }
+            }
+            //앱 설정의 화면 모드를 적용
+            .onChange(of: appSettingsManager.appearance, initial: true) {
+                appSettingsManager.appearance.apply()
             }
         }
         .modelContainer(for: [SpaceRecord.self, SpaceData.self])

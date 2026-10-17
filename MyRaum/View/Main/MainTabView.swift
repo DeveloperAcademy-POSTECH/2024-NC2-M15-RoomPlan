@@ -60,7 +60,9 @@ struct MainTabView: View {
         //라이트/다크 모드에 따라 흰색 또는 검은색으로 표시
         .tint(Color.primary)
         //탭을 바꿀 때 햅틱 피드백
-        .sensoryFeedback(.selection, trigger: selectedTab)
+        .onChange(of: selectedTab) {
+            HapticManager.selection()
+        }
         .fullScreenCover(isPresented: $showSpaceScan) {
             RoomPlanView()
         }

@@ -30,6 +30,7 @@
 		0156E2592E0FC9C90040C06F /* Extension */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Extension; sourceTree = "<group>"; };
 		019638222E50581900ABECCC /* Enum */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Enum; sourceTree = "<group>"; };
 		01B1E91B2E0FC78B00479464 /* Manager */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Manager; sourceTree = "<group>"; };
+		01D4A1B22EA1F00000C0FFEE /* Resources */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Resources; sourceTree = "<group>"; };
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -72,6 +73,7 @@
 				0156E2582E0FC9C50040C06F /* View */,
 				01B1E91B2E0FC78B00479464 /* Manager */,
 				0156E2572E0FC9990040C06F /* Model */,
+				01D4A1B22EA1F00000C0FFEE /* Resources */,
 				0190627B2C1AE0A600D89653 /* Preview Content */,
 			);
 			path = MyRaum;
@@ -106,6 +108,7 @@
 				0156E2592E0FC9C90040C06F /* Extension */,
 				019638222E50581900ABECCC /* Enum */,
 				01B1E91B2E0FC78B00479464 /* Manager */,
+				01D4A1B22EA1F00000C0FFEE /* Resources */,
 			);
 			name = MyRaum;
 			productName = MyRaum;

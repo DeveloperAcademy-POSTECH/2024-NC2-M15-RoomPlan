@@ -14,9 +14,9 @@ struct LanguageSettingView: View {
     @State private var selectedLanguage: AppLanguage = .system
     
     var body: some View {
-        VStack(alignment: .leading) {
+        VStack(alignment: .leading, spacing: 0) {
             ForEach(AppLanguage.allCases) { lang in
-                VStack {
+                VStack(spacing: 0) {
                     HStack {
                         Text(LocalizedStringKey(lang.displayName))
                         
@@ -28,7 +28,7 @@ struct LanguageSettingView: View {
                         }
                     }
                     .bold()
-                    .padding(.vertical, 16)
+                    .settingCellHeight()
                     .contentShape(Rectangle())
                     .onTapGesture {
                         HapticManager.selection()

@@ -19,6 +19,7 @@ struct RoomPlanView: View {
     }
 
     @Environment(\.dismiss) private var dismiss
+    @Environment(AppSettingsManager.self) private var appSettingsManager
 
     @State private var roomPlanManager = RoomPlanManager()
     @State private var locationManager = LocationManager()
@@ -33,7 +34,8 @@ struct RoomPlanView: View {
             case .editing(let room):
                 StoryEditorView(
                     room: room,
-                    locationManager: locationManager,
+                    //앱 설정에서 위치 정보 저장을 끄면 위치 없이 저장
+                    locationManager: appSettingsManager.savesLocation ? locationManager : nil,
                     onRescan: {
                         //편집 화면이 사라지고 스캔 화면이 다시 나타나면 onAppear에서 스캔이 시작됨
                         phase = .scanning
@@ -100,8 +102,10 @@ private extension RoomPlanView {
                 .onAppear(perform: {
                     roomPlanManager.startSession()
 
-                    //캡쳐를 시작할 때 위치 정보 권한을 승인할 것인지 확인
-                    locationManager.checkLocationAuthorization()
+                    //캡쳐를 시작할 때 위치 정보 권한을 승인할 것인지 확인 (위치 정보 저장을 켰을 때만)
+                    if appSettingsManager.savesLocation {
+                        locationManager.checkLocationAuthorization()
+                    }
                 })
 
             VStack {
@@ -174,4 +178,5 @@ private extension RoomPlanView {
 #Preview {
     RoomPlanView()
         .modelContainer(for: SpaceRecord.self, inMemory: true)
+        .environment(AppSettingsManager())
 }

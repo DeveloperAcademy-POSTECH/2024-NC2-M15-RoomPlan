@@ -41,7 +41,9 @@ struct SpaceCardSheetHeader: View {
             }
             .padding()
         }
-        .sensoryFeedback(.selection, trigger: cardFlipped)
+        .onChange(of: cardFlipped) {
+            HapticManager.selection()
+        }
     }
 }
 
