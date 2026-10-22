@@ -63,4 +63,4 @@ For questions about privacy, please contact us at:
 
 ---
 
-Effective date: October 17, 2026
+Effective date: October 26, 2026

@@ -31,6 +31,8 @@ struct StoryEditorView: View {
     @State private var pinchStartScale: CGFloat?
     @State private var isDragging: Bool = false
     @State private var isOverTrash: Bool = false
+    @State private var elementSizes: [UUID: CGSize] = [:]
+    @State private var alignmentGuides: Set<StoryAlignmentGuide> = []
     @State private var showHint: Bool = true
     @State private var showBackgroundPicker: Bool = false
     @State private var showExitDialog: Bool = false
@@ -86,6 +88,12 @@ struct StoryEditorView: View {
         .onChange(of: isOverTrash) {
             if isOverTrash {
                 HapticManager.tap()
+            }
+        }
+        //요소가 새 기준선에 맞춰지면 햅틱으로 알려줌
+        .onChange(of: alignmentGuides) { oldGuides, newGuides in
+            if !newGuides.subtracting(oldGuides).isEmpty {
+                HapticManager.selection()
             }
         }
         .onChange(of: selectedPhoto) {
@@ -153,6 +161,10 @@ private extension StoryEditorView {
                 elementView(element, canvasSize: size, unit: unit)
             }
 
+            if isDragging && !isOverTrash {
+                StoryAlignmentGuideOverlay(guides: alignmentGuides, canvasSize: size)
+            }
+
             if isDragging {
                 trashView(unit: unit)
                     .position(trashCenter(in: size, unit: unit))
@@ -167,6 +179,10 @@ private extension StoryEditorView {
 
     func elementView(_ element: StoryElement, canvasSize: CGSize, unit: CGFloat) -> some View {
         StoryElementView(element: element, furniture: room.furniture, unit: unit)
+            //기준선에 맞출 때 요소의 가장자리 위치를 알기 위해 크기를 저장
+            .onGeometryChange(for: CGSize.self) { $0.size } action: { size in
+                elementSizes[element.id] = size
+            }
             .scaleEffect(element.scale)
             .opacity(elementOpacity(element))
             .contentShape(Rectangle())
@@ -287,10 +303,20 @@ private extension StoryEditorView {
                 }
                 guard let start = dragStartPosition else { return }
 
+                //가운데나 여백 기준선 가까이 오면 기준선에 맞춤
+                let center = CGPoint(
+                    x: start.x * canvasSize.width + value.translation.width,
+                    y: start.y * canvasSize.height + value.translation.height
+                )
+                let baseSize = elementSizes[element.id] ?? .zero
+                let elementSize = CGSize(width: baseSize.width * element.scale, height: baseSize.height * element.scale)
+                let snapped = StoryAlignmentSnapper.snap(center: center, elementSize: elementSize, canvasSize: canvasSize, unit: unit)
+                alignmentGuides = snapped.guides
+
                 draft.update(id: element.id) {
                     $0.position = CGPoint(
-                        x: min(max(start.x + value.translation.width / canvasSize.width, 0), 1),
-                        y: min(max(start.y + value.translation.height / canvasSize.height, 0), 1)
+                        x: min(max(snapped.center.x / canvasSize.width, 0), 1),
+                        y: min(max(snapped.center.y / canvasSize.height, 0), 1)
                     )
                 }
 
@@ -301,10 +327,12 @@ private extension StoryEditorView {
                 if isOverTrash {
                     HapticManager.notify(.success)
                     draft.remove(id: element.id)
+                    elementSizes[element.id] = nil
                 }
                 dragStartPosition = nil
                 isDragging = false
                 isOverTrash = false
+                alignmentGuides = []
             }
     }
 

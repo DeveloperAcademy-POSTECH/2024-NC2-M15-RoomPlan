@@ -49,7 +49,7 @@ final class AppSettingsManager {
     }
 
     init() {
-        self.appearance = UserDefaults.standard.string(forKey: Key.appearance).flatMap(AppAppearance.init(rawValue:)) ?? .system
+        self.appearance = UserDefaults.standard.string(forKey: Key.appearance).flatMap(AppAppearance.init(rawValue:)) ?? .dark
         self.hapticsEnabled = UserDefaults.standard.object(forKey: Key.haptics) as? Bool ?? true
         self.savesLocation = UserDefaults.standard.object(forKey: Key.savesLocation) as? Bool ?? true
         if let savedLanguage = UserDefaults.standard.string(forKey: Key.language), !savedLanguage.isEmpty {
