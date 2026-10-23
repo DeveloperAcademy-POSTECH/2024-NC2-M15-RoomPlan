@@ -33,18 +33,18 @@
         }
       }
     },
-    "[Version %@]" : {
+    "3D 공간 스캔" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "[Version %@]"
+            "value" : "3D space scanning"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "[Version %@]"
+            "value" : "3D 공간 스캔"
           }
         }
       }
@@ -129,18 +129,18 @@
         }
       }
     },
-    "iOS Developer" : {
+    "My Raum은 라이다(LiDAR) 센서로 공간을 3D로 스캔합니다. 이 기기에는 라이다 센서가 없어 앱을 사용할 수 없습니다." : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "iOS Developer"
+            "value" : "My Raum scans spaces in 3D using the LiDAR sensor. This device doesn't have a LiDAR sensor, so the app can't be used."
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "iOS Developer"
+            "value" : "My Raum은 라이다(LiDAR) 센서로 공간을 3D로 스캔합니다. 이 기기에는 라이다 센서가 없어 앱을 사용할 수 없습니다."
           }
         }
       }
@@ -206,6 +206,76 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "UX/UI Designer"
+          }
+        }
+      }
+    },
+    "[Version %@]" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "[Version %@]"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "[Version %@]"
+          }
+        }
+      }
+    },
+    "iOS Developer" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "iOS Developer"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "iOS Developer"
+          }
+        }
+      }
+    },
+    "iPad" : {
+      "shouldTranslate" : false
+    },
+    "iPad Pro 11형(2세대), iPad Pro 12.9형(4세대) 및 이후 출시된 iPad Pro 모델" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "iPad Pro 11-inch (2nd generation), iPad Pro 12.9-inch (4th generation), and later iPad Pro models"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "iPad Pro 11형(2세대), iPad Pro 12.9형(4세대) 및 이후 출시된 iPad Pro 모델"
+          }
+        }
+      }
+    },
+    "iPhone" : {
+      "shouldTranslate" : false
+    },
+    "iPhone 12 Pro, iPhone 12 Pro Max 및 이후 출시된 Pro, Pro Max 모델" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "iPhone 12 Pro, iPhone 12 Pro Max, and later Pro and Pro Max models"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "iPhone 12 Pro, iPhone 12 Pro Max 및 이후 출시된 Pro, Pro Max 모델"
           }
         }
       }
@@ -318,6 +388,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "공유"
+          }
+        }
+      }
+    },
+    "기기 뒷면 카메라 옆에 작고 검은 원 모양의 센서가 있다면 라이다를 지원하는 기기입니다." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "If there is a small black circular sensor next to the rear cameras, your device supports LiDAR."
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "기기 뒷면 카메라 옆에 작고 검은 원 모양의 센서가 있다면 라이다를 지원하는 기기입니다."
           }
         }
       }
@@ -496,6 +582,38 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "드래그해서 공간을 돌려보세요."
+          }
+        }
+      }
+    },
+    "라이다 센서가 빛을 쏘아 벽, 문, 창문, 가구까지의 거리를 측정하고, 이를 바탕으로 공간의 3D 모델을 만듭니다." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The LiDAR sensor emits light to measure the distance to walls, doors, windows, and furniture, then builds a 3D model of the space."
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "라이다 센서가 빛을 쏘아 벽, 문, 창문, 가구까지의 거리를 측정하고, 이를 바탕으로 공간의 3D 모델을 만듭니다."
+          }
+        }
+      }
+    },
+    "라이다가 필요한 이유" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Why LiDAR is needed"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "라이다가 필요한 이유"
           }
         }
       }
@@ -1126,22 +1244,6 @@
         }
       }
     },
-    "이 기기는 라이다(LiDAR)를 지원하지 않습니다." : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "This device does not support LiDAR."
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "이 기기는 라이다(LiDAR)를 지원하지 않습니다."
-          }
-        }
-      }
-    },
     "이미지 저장" : {
       "localizations" : {
         "en" : {
@@ -1367,6 +1469,22 @@
         }
       }
     },
+    "지원하는 기기" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Supported devices"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "지원하는 기기"
+          }
+        }
+      }
+    },
     "지원하지 않는 기기입니다." : {
       "localizations" : {
         "en" : {
@@ -1571,6 +1689,38 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "확인"
+          }
+        }
+      }
+    },
+    "확인 방법" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "How to check"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "확인 방법"
+          }
+        }
+      }
+    },
+    "후면 카메라 확인" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Check the rear camera"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "후면 카메라 확인"
           }
         }
       }
