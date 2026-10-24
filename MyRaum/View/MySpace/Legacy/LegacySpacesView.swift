@@ -134,10 +134,10 @@ private extension LegacySpacesView {
                         }
                 }
             }
-            .padding(.top, 4)
+            //스크롤된 카드가 상단 툴바 아래로 지나가도록 여백을 스크롤 영역 안쪽에 둠
+            .padding(.top, 20)
             .padding(.horizontal, 20)
         }
-        .padding(.top)
     }
 
     //카드를 길게 눌렀을 때 나오는 메뉴

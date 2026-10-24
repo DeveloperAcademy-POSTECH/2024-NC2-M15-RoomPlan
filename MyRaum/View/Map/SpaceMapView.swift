@@ -56,6 +56,11 @@ struct SpaceMapView: View {
                 emptyView
             }
         }
+        //지도는 스크롤 뷰가 아니라 scrollEdgeEffectStyle이 적용되지 않으므로
+        //다른 탭 화면처럼 상단 툴바 아래가 서서히 불투명해지도록 그라데이션을 직접 덮음
+        .overlay(alignment: .top) {
+            TopEdgeGradient()
+        }
         .customNavigationBar(title: "지도", showsBackButton: false)
         .sheet(item: $selectedPin) { pin in
             switch pin.card {
@@ -245,4 +250,45 @@ private struct MapPinView: View {
         SpaceMapView()
     }
     .modelContainer(for: [SpaceRecord.self, SpaceData.self], inMemory: true)
+}
+
+//화면 맨 위에서 상단 툴바 아래까지 서서히 투명해지는 그라데이션
+//불투명하게 유지하는 구간 없이 투명도가 코사인 곡선을 따라 변하도록 해서 어디에도 경계선이 보이지 않음
+private struct TopEdgeGradient: View {
+    //툴바 아래로 그라데이션이 이어지는 길이
+    private let fadeHeight: CGFloat = 60
+
+    //화면 맨 위의 불투명도 (지도가 비쳐 보이도록 완전히 덮지 않음)
+    private let maxOpacity: Double = 0.7
+
+    //곡선을 표현하는 색 지점의 개수
+    private let stopCount = 16
+
+    var body: some View {
+        GeometryReader { proxy in
+            //화면 맨 위에서 툴바 아래까지의 거리
+            let barHeight = proxy.frame(in: .global).minY + proxy.safeAreaInsets.top
+            let totalHeight = barHeight + fadeHeight
+
+            LinearGradient(
+                stops: stops,
+                startPoint: .top,
+                endPoint: .bottom
+            )
+            .frame(height: totalHeight)
+            .offset(y: -barHeight)
+        }
+        .allowsHitTesting(false)
+    }
+
+    //화면 맨 위부터 끝까지 코사인 곡선으로 투명해짐
+    private var stops: [Gradient.Stop] {
+        let background = Color(.systemBackground)
+
+        return (0...stopCount).map { index in
+            let progress = Double(index) / Double(stopCount)
+            let opacity = maxOpacity * (1 + cos(.pi * progress)) / 2
+            return .init(color: background.opacity(opacity), location: progress)
+        }
+    }
 }

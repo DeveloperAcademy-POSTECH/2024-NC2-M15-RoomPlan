@@ -65,15 +65,52 @@ private struct CustomNavigationBarModifier<Trailing: View>: ViewModifier {
                     }
                 }
 
-                ToolbarItem(placement: .principal) {
-                    Text(title)
-                        .bold()
+                //탭의 첫 화면은 타이틀을 왼쪽에 크게, 그 외 화면은 가운데에 표시
+                if showsBackButton {
+                    ToolbarItem(placement: .principal) {
+                        Text(title)
+                            .bold()
+                    }
+                } else {
+                    ToolbarItem(placement: .topBarLeading) {
+                        Text(title)
+                            .font(.title2)
+                            .bold()
+                            .fixedSize()
+                    }
+                    .hiddenSharedBackground()
                 }
 
                 ToolbarItem(placement: .topBarTrailing) {
                     trailing
                 }
             }
+            //스크롤된 내용이 상단 툴바 아래로 지나갈 때 배경이 그라데이션처럼 서서히 불투명해지도록 함
+            .softTopScrollEdge()
+    }
+}
+
+private extension ToolbarContent {
+    //iOS 26부터 툴바 항목에 기본으로 생기는 유리 배경을 숨겨 타이틀이 글자만 보이도록 함
+    @ToolbarContentBuilder
+    func hiddenSharedBackground() -> some ToolbarContent {
+        if #available(iOS 26.0, *) {
+            sharedBackgroundVisibility(.hidden)
+        } else {
+            self
+        }
+    }
+}
+
+private extension View {
+    //scrollEdgeEffectStyle은 iOS 26부터 지원하므로 이전 버전에서는 기존 모습을 유지
+    @ViewBuilder
+    func softTopScrollEdge() -> some View {
+        if #available(iOS 26.0, *) {
+            scrollEdgeEffectStyle(.soft, for: .top)
+        } else {
+            self
+        }
     }
 }
 
