@@ -130,6 +130,9 @@ struct UnsupportedDeviceView: View {
                 Text("지원하지 않는 기기입니다.")
                     .font(isCompact ? .title3 : .title2)
                     .bold()
+                    //영어처럼 문구가 긴 언어에서도 잘리지 않고 줄바꿈되도록 함
+                    .fixedSize(horizontal: false, vertical: true)
+                    .layoutPriority(1)
                     .padding(.bottom, isCompact ? 4 : 8)
                 
                 Spacer()

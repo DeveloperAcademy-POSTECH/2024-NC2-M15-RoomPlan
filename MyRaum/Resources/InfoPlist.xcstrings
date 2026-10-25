@@ -1,0 +1,57 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "NSCameraUsageDescription" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "My Raum uses the camera to scan your space. The camera is only used while you are scanning."
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "앱에서 공간을 스캔하기 위해 카메라에 접근합니다. 카메라는 사용자가 공간을 스캔할 때만 사용됩니다."
+          }
+        }
+      }
+    },
+    "NSLocationWhenInUseUsageDescription" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "My Raum uses your location to save where each space was scanned. Only you can see this location data."
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "앱에서 스캔한 공간의 위치 정보를 함께 저장하기 위해 사용자의 위치 데이터를 필요로 합니다. 위치 데이터는 사용자만이 볼 수 있습니다."
+          }
+        }
+      }
+    },
+    "NSPhotoLibraryAddUsageDescription" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "My Raum accesses your photo library to load background images saved with your scanned spaces. Only you can see these images, unless you share a space card."
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "앱에서 스캔한 공간 모델과 함께 저장할 배경 이미지를 불러오기 위해 사용자의 앨범에 접근합니다. 이미지는 사용자만이 볼 수 있으며 공간 카드를 공유할 경우에만 타인이 이미지를 볼 수 있습니다."
+          }
+        }
+      }
+    }
+  },
+  "version" : "1.0"
+}
