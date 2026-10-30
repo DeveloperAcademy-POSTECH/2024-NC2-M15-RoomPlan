@@ -15,6 +15,7 @@ struct RoomSceneView: UIViewRepresentable {
     let roomScene: RoomScene
     var snapshotter: RoomSceneSnapshotter? = nil
     var furnitureEditor: FurnitureEditor? = nil
+    var camera: RoomSceneCamera? = nil
 
     func makeCoordinator() -> Coordinator {
         Coordinator()
@@ -31,7 +32,7 @@ struct RoomSceneView: UIViewRepresentable {
         view.allowsCameraControl = false
 
         snapshotter?.view = view
-        context.coordinator.attach(to: view, roomScene: roomScene, editor: furnitureEditor)
+        context.coordinator.attach(to: view, roomScene: roomScene, editor: furnitureEditor, camera: camera)
         return view
     }
 
@@ -57,6 +58,20 @@ final class RoomSceneSnapshotter {
     //사용자가 돌려놓은 현재 카메라 위치
     func cameraPose() -> CameraPose? {
         view?.pointOfView.map(CameraPose.init(node:))
+    }
+}
+
+//공간이 화면 가운데에서 벗어났는지 알려주고 다시 가운데로 가져오는 클래스
+@MainActor
+@Observable
+final class RoomSceneCamera {
+    //두 손가락으로 옮기거나 크게 확대/축소해서 공간이 화면 가운데에서 벗어났는지 - 가운데로 버튼을 보여줄 때 사용
+    fileprivate(set) var isOffCenter: Bool = false
+    @ObservationIgnored fileprivate weak var coordinator: RoomSceneView.Coordinator?
+
+    //지금 각도는 그대로 두고 공간 전체가 화면 가운데에 들어오도록 카메라를 옮김
+    func recenter() {
+        coordinator?.recenter()
     }
 }
 
@@ -103,6 +118,7 @@ extension RoomSceneView {
     final class Coordinator: NSObject, UIGestureRecognizerDelegate {
         private weak var view: SCNView?
         private var editor: FurnitureEditor?
+        private var camera: RoomSceneCamera?
         private var cameraNode: SCNNode?
         private var center: SIMD3<Float> = .zero
         private var radius: Float = 1
@@ -128,12 +144,16 @@ extension RoomSceneView {
         private var displayLink: CADisplayLink?
         private var inertiaVelocity: SIMD2<Float> = .zero
 
-        func attach(to view: SCNView, roomScene: RoomScene, editor: FurnitureEditor?) {
+        func attach(to view: SCNView, roomScene: RoomScene, editor: FurnitureEditor?, camera: RoomSceneCamera?) {
             self.view = view
             self.editor = editor
+            self.camera = camera
             cameraNode = roomScene.cameraNode
             center = SIMD3<Float>(roomScene.target)
             radius = roomScene.radius
+            camera?.coordinator = self
+            //저장된 각도로 연 카드는 처음부터 가운데에서 벗어나 있을 수 있음
+            updateOffCenter(RoomCameraOrbit(cameraNode: roomScene.cameraNode, center: center))
 
             tapGesture.addTarget(self, action: #selector(handleTap(_:)))
             panGesture.addTarget(self, action: #selector(handlePan(_:)))
@@ -147,6 +167,11 @@ extension RoomSceneView {
             for gesture in [tapGesture, panGesture, twoFingerPanGesture, pinchGesture, rotationGesture] as [UIGestureRecognizer] {
                 gesture.delegate = self
                 view.addGestureRecognizer(gesture)
+            }
+
+            //가구를 추가할 때 화면 가운데에 놓을 수 있도록 알려줌
+            editor?.screenCenter = { [weak self] in
+                self?.screenCenter()
             }
         }
 
@@ -288,6 +313,19 @@ extension RoomSceneView {
             displayLink = nil
             inertiaVelocity = .zero
         }
+
+        //회전 중심을 공간 중심으로, 거리를 처음 공간 전체가 보이던 거리로 되돌림 - 보는 각도는 유지
+        func recenter() {
+            stopInertia()
+            guard var orbit = currentOrbit() else { return }
+            orbit.target = center
+            orbit.distance = fittingDistance
+            SCNTransaction.begin()
+            SCNTransaction.animationDuration = 0.35
+            SCNTransaction.animationTimingFunction = CAMediaTimingFunction(name: .easeInEaseOut)
+            update(orbit)
+            SCNTransaction.commit()
+        }
     }
 }
 
@@ -322,6 +360,23 @@ private extension RoomSceneView.Coordinator {
         self.orbit = orbit
         if let cameraNode {
             orbit.apply(to: cameraNode)
+        }
+        updateOffCenter(orbit)
+    }
+
+    //RoomSceneLoader.makeCamera와 같이 공간 전체가 화면에 들어오는 거리
+    var fittingDistance: Float {
+        let fieldOfView = Float(cameraNode?.camera?.fieldOfView ?? 30) * .pi / 180
+        return radius / sin(fieldOfView / 2)
+    }
+
+    //회전 중심이 공간 중심에서 벗어났거나 처음보다 1.5배 넘게 확대/축소되었으면 가운데에서 벗어난 것으로 봄
+    func updateOffCenter(_ orbit: RoomCameraOrbit) {
+        guard let camera else { return }
+        let isShifted = simd_length(orbit.target - center) > radius * 0.15
+        let isZoomed = abs(log(orbit.distance / fittingDistance)) > log(1.5)
+        if camera.isOffCenter != (isShifted || isZoomed) {
+            camera.isOffCenter = isShifted || isZoomed
         }
     }
 
@@ -409,6 +464,12 @@ private extension RoomSceneView.Coordinator {
             }
         }
         return nil
+    }
+
+    func screenCenter() -> FurnitureEditor.ScreenCenter? {
+        guard let view, let cameraNode else { return nil }
+        let center = CGPoint(x: view.bounds.midX, y: view.bounds.midY)
+        return FurnitureEditor.ScreenCenter(floorPoint: floorPoint(at: center), cameraPosition: cameraNode.simdWorldPosition)
     }
 
     //화면의 위치를 바닥 높이의 수평면에 투영한 점

@@ -29,6 +29,20 @@ enum FurnitureModelBuilder {
 
         return node
     }
+
+    //가구 목록에서 추가한 가구 - 벽을 기준으로 방향을 계산하지 않고 기준 방향(뒤쪽이 -z) 그대로 만듦
+    //위치와 방향은 노드의 transform으로 정함
+    static func makeNode(for source: FurnitureSource, size: SIMD3<Float>) -> SCNNode {
+        let node = SCNNode()
+        let content = SCNNode()
+        switch source {
+        case .catalog(let category):
+            node.name = category.rawValue
+            build(category, attributes: FurnitureCatalog.defaultAttributes(of: category), size: size, into: content)
+        }
+        node.addChildNode(content)
+        return node
+    }
 }
 
 //가구가 작게 인식되면 계산된 범위의 아래, 위가 뒤집힐 수 있으므로

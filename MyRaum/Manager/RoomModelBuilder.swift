@@ -78,10 +78,13 @@ enum RoomModelBuilder {
 
         let (minimum, maximum) = movableArea(of: layout, footprint: footprint)
         let furniture = FurnitureLayer(
+            container: root,
             nodes: furnitureNodes,
             originalTransforms: Dictionary(layout.objects.map { ($0.id, $0.transform) }, uniquingKeysWith: { first, _ in first }),
             dimensions: Dictionary(layout.objects.map { ($0.id, $0.dimensions) }, uniquingKeysWith: { first, _ in first }),
+            categories: Dictionary(layout.objects.map { ($0.id, $0.category) }, uniquingKeysWith: { first, _ in first }),
             floorY: floorY,
+            floor: footprint.count >= 3 ? footprint : [],
             minimum: minimum,
             maximum: maximum,
             walls: layout.walls.compactMap { WallFootprint($0, thickness: wallThickness) }

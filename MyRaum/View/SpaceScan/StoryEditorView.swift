@@ -25,6 +25,7 @@ struct StoryEditorView: View {
     //가구 배치 편집 - USDZ 파일로 연 카드처럼 가구를 구분할 수 없으면 nil
     @State private var furnitureEditor: FurnitureEditor?
     @State private var snapshotter = RoomSceneSnapshotter()
+    @State private var camera = RoomSceneCamera()
     @State private var selectedPhoto: PhotosPickerItem?
     @State private var editingElementID: UUID?
     @State private var editingText: String = ""
@@ -37,6 +38,7 @@ struct StoryEditorView: View {
     @State private var alignmentGuides: Set<StoryAlignmentGuide> = []
     @State private var showHint: Bool = true
     @State private var showBackgroundPicker: Bool = false
+    @State private var showFurnitureCatalog: Bool = false
     @State private var showExitDialog: Bool = false
     @State private var showSavedAlert: Bool = false
     @State private var showSaveFailedAlert: Bool = false
@@ -120,8 +122,19 @@ struct StoryEditorView: View {
                 selectedPhoto = nil
             }
         }
+        //가구를 모두 지우면 빈 가구 요소가 남지 않도록 함께 지움
+        .onChange(of: furniture.isEmpty) {
+            if furniture.isEmpty, let element = draft.element(of: .furniture) {
+                draft.remove(id: element.id)
+            }
+        }
         .sheet(isPresented: $showBackgroundPicker) {
             StoryBackgroundPicker(draft: draft, selectedPhoto: $selectedPhoto)
+        }
+        .sheet(isPresented: $showFurnitureCatalog) {
+            FurnitureCatalogSheet { source in
+                furnitureEditor?.add(source)
+            }
         }
         .confirmationDialog("편집을 그만두시겠습니까?", isPresented: $showExitDialog, titleVisibility: .visible) {
             if let onRescan {
@@ -167,7 +180,7 @@ private extension StoryEditorView {
         return ZStack {
             StoryBackgroundView(image: draft.background, preset: draft.backgroundPreset)
 
-            RoomSceneView(roomScene: room.roomScene, snapshotter: snapshotter, furnitureEditor: furnitureEditor)
+            RoomSceneView(roomScene: room.roomScene, snapshotter: snapshotter, furnitureEditor: furnitureEditor, camera: camera)
 
             ForEach(draft.elements) { element in
                 elementView(element, canvasSize: size, unit: unit)
@@ -190,7 +203,7 @@ private extension StoryEditorView {
     }
 
     func elementView(_ element: StoryElement, canvasSize: CGSize, unit: CGFloat) -> some View {
-        StoryElementView(element: element, furniture: room.furniture, unit: unit)
+        StoryElementView(element: element, furniture: furniture, unit: unit)
             //기준선에 맞출 때 요소의 가장자리 위치를 알기 위해 크기를 저장
             .onGeometryChange(for: CGSize.self) { $0.size } action: { size in
                 elementSizes[element.id] = size
@@ -211,6 +224,11 @@ private extension StoryEditorView {
 
     var isArranging: Bool {
         furnitureEditor?.isEditing == true
+    }
+
+    //가구를 추가하거나 지운 결과까지 반영한 가구 목록
+    var furniture: [FurnitureCategory] {
+        room.furniture(applying: draft.arrangement)
     }
 
     func elementOpacity(_ element: StoryElement) -> Double {
@@ -253,8 +271,8 @@ private extension StoryEditorView {
                         toolButton("sofa", label: "가구", isOn: draft.element(of: .furniture) != nil) {
                             toggle(.furniture)
                         }
-                        .disabled(room.furniture.isEmpty)
-                        .opacity(room.furniture.isEmpty ? 0.4 : 1)
+                        .disabled(furniture.isEmpty)
+                        .opacity(furniture.isEmpty ? 0.4 : 1)
 
                         toolButton("photo.on.rectangle", label: "배경 설정") {
                             showBackgroundPicker = true
@@ -262,12 +280,26 @@ private extension StoryEditorView {
                     }
 
                     //RoomPlan 원본 데이터가 없어서 USDZ 파일로 연 카드는 가구를 구분할 수 없으므로 비활성화
-                    let canArrange = furnitureEditor?.canEdit == true
+                    let canArrange = furnitureEditor != nil
                     toolButton("move.3d", label: "가구 배치", isOn: isArranging) {
                         toggleArranging()
                     }
                     .disabled(!canArrange)
                     .opacity(canArrange ? 1 : 0.4)
+
+                    if isArranging {
+                        toolButton("plus", label: "가구 추가") {
+                            showFurnitureCatalog = true
+                        }
+                    }
+
+                    //공간을 옮기거나 확대/축소해서 화면 가운데에서 벗어나면 다시 가운데로 가져오는 버튼
+                    if camera.isOffCenter {
+                        toolButton("scope", label: "가운데로") {
+                            camera.recenter()
+                        }
+                        .transition(.opacity)
+                    }
                 }
             }
 
@@ -282,7 +314,7 @@ private extension StoryEditorView {
         .padding(12)
     }
 
-    //가구 배치 편집 중에 보여주는 안내 문구와 선택된 가구의 회전, 되돌리기 버튼
+    //가구 배치 편집 중에 보여주는 안내 문구와 선택된 가구의 회전, 되돌리기, 삭제 버튼
     var arrangingControls: some View {
         VStack(spacing: 10) {
             if let furnitureEditor, furnitureEditor.selectedID != nil {
@@ -291,14 +323,23 @@ private extension StoryEditorView {
                         furnitureEditor.rotateSelectedQuarter()
                     }
 
-                    arrangingButton("arrow.uturn.backward", label: "원래 위치로") {
-                        furnitureEditor.resetSelected()
+                    //가구 목록에서 추가한 가구는 되돌아갈 원래 위치가 없음
+                    if !furnitureEditor.isSelectedAdded {
+                        arrangingButton("arrow.uturn.backward", label: "원래 위치로") {
+                            furnitureEditor.resetSelected()
+                        }
+                        .disabled(!furnitureEditor.isSelectedMoved)
+                        .opacity(furnitureEditor.isSelectedMoved ? 1 : 0.4)
                     }
-                    .disabled(!furnitureEditor.isSelectedMoved)
-                    .opacity(furnitureEditor.isSelectedMoved ? 1 : 0.4)
+
+                    arrangingButton("trash", label: "삭제") {
+                        furnitureEditor.removeSelected()
+                    }
                 }
 
                 hintLabel("두 손가락으로 돌려서 방향을 바꿔보세요.")
+            } else if furnitureEditor?.layer.nodes.isEmpty == true {
+                hintLabel("오른쪽의 + 버튼으로 가구를 추가해보세요.")
             } else {
                 hintLabel("가구를 탭해서 선택하고 드래그해서 옮겨보세요.")
             }

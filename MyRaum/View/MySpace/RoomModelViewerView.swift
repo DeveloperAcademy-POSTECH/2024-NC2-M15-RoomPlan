@@ -14,6 +14,7 @@ struct RoomModelViewerView: View {
     let record: SpaceRecord
 
     @State private var roomScene: RoomScene?
+    @State private var camera = RoomSceneCamera()
     @State private var modelURL: URL?
     @State private var loadFailed: Bool = false
 
@@ -24,7 +25,7 @@ struct RoomModelViewerView: View {
                 .ignoresSafeArea()
 
             if let roomScene {
-                RoomSceneView(roomScene: roomScene)
+                RoomSceneView(roomScene: roomScene, camera: camera)
                     .ignoresSafeArea()
             } else if loadFailed {
                 Text("3D 모델을 불러오지 못했습니다.")
@@ -39,10 +40,15 @@ struct RoomModelViewerView: View {
                 Spacer()
 
                 if roomScene != nil {
-                    Text("드래그해서 공간을 돌려보세요.")
-                        .font(.footnote)
-                        .foregroundStyle(Color.gray)
-                        .allowsHitTesting(false)
+                    //공간을 옮기거나 확대/축소해서 화면 가운데에서 벗어나면 안내 문구 대신 가운데로 버튼을 보여줌
+                    if camera.isOffCenter {
+                        recenterButton
+                    } else {
+                        Text("드래그해서 공간을 돌려보세요.")
+                            .font(.footnote)
+                            .foregroundStyle(Color.gray)
+                            .allowsHitTesting(false)
+                    }
                 }
 
                 furnitureList
@@ -99,6 +105,20 @@ private extension RoomModelViewerView {
             }
         }
         .foregroundStyle(Color.black)
+    }
+
+    var recenterButton: some View {
+        Button {
+            HapticManager.tap()
+            camera.recenter()
+        } label: {
+            Label("가운데로", systemImage: "scope")
+                .font(.subheadline.weight(.semibold))
+                .foregroundStyle(Color.black)
+                .padding(.horizontal, 14)
+                .padding(.vertical, 8)
+                .background(Capsule().fill(Color.white))
+        }
     }
 
     //RoomPlan이 인식한 가구 목록

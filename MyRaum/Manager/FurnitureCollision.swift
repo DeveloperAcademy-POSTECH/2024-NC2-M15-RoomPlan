@@ -40,8 +40,8 @@ struct FurnitureFootprint {
     var halfZ: Float
 }
 
-//가구가 벽을 통과하지 못하게 하는 간단한 충돌 검사
-//문, 창문 자리도 벽으로 보고, 가구끼리의 충돌은 검사하지 않음
+//가구가 벽이나 다른 가구를 통과하지 못하게 하는 간단한 충돌 검사
+//문, 창문 자리도 벽으로 봄
 enum FurnitureCollision {
     //가구가 벽에 겹친 정도
     struct Penetration {
@@ -80,6 +80,22 @@ enum FurnitureCollision {
             return Penetration(depth: normalDepth, direction: wall.normal * normalSide, side: normalSide)
         }
         return Penetration(depth: axisDepth, direction: wall.axis * (axisDistance >= 0 ? 1 : -1), side: nil)
+    }
+
+    //두 가구의 바닥면이 겹치면 가장 적게 밀어내는 방향과 깊이를 구함 (분리축 검사)
+    static func penetration(of furniture: FurnitureFootprint, into other: FurnitureFootprint) -> Penetration? {
+        let offset = furniture.center - other.center
+        var best: Penetration?
+        for axis in [furniture.axisX, furniture.axisZ, other.axisX, other.axisZ] {
+            let distance = simd_dot(offset, axis)
+            let depth = radius(of: furniture, along: axis) + radius(of: other, along: axis) - abs(distance)
+            //한 축에서라도 떨어져 있으면 겹치지 않음
+            guard depth > 0 else { return nil }
+            if depth < (best?.depth ?? .infinity) {
+                best = Penetration(depth: depth, direction: axis * (distance >= 0 ? 1 : -1), side: nil)
+            }
+        }
+        return best
     }
 
     static func radius(of furniture: FurnitureFootprint, along axis: SIMD2<Float>) -> Float {

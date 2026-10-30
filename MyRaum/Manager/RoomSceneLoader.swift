@@ -21,14 +21,20 @@ struct RoomScene {
 
 //가구 배치를 편집할 때 사용하는 가구 노드와 바닥 정보
 struct FurnitureLayer {
-    //가구 ID → FurnitureModelBuilder.makeNode가 만든 가구 노드
-    let nodes: [UUID: SCNNode]
-    //RoomPlan이 인식한 원래 위치 - 원래 위치로 되돌릴 때 사용
+    //가구 노드를 붙이는 공간의 루트 노드 - 가구 목록에서 추가한 가구도 여기에 붙임
+    let container: SCNNode
+    //가구 ID → 가구 노드 (스캔 가구는 FurnitureModelBuilder.makeNode(for:in:), 추가한 가구는 makeNode(for:size:)가 만든 노드)
+    private(set) var nodes: [UUID: SCNNode]
+    //RoomPlan이 인식한 원래 위치 - 원래 위치로 되돌릴 때 사용 (추가한 가구는 없음)
     let originalTransforms: [UUID: simd_float4x4]
     //가구 노드의 로컬 좌표 기준 크기 (가로, 높이, 깊이)
-    let dimensions: [UUID: SIMD3<Float>]
+    private(set) var dimensions: [UUID: SIMD3<Float>]
+    //가구 종류 - 의자와 테이블처럼 서로 겹쳐도 되는 가구를 구분할 때 사용 (종류가 없는 가구는 nil)
+    private(set) var categories: [UUID: FurnitureCategory]
     //가구를 옮길 때 손가락 위치를 투영하는 바닥 높이
     let floorY: Float
+    //위에서 내려다본 바닥 다각형 (x, z) - 바닥 정보가 없으면 빈 배열
+    let floor: [SIMD2<Float>]
     //가구 중심을 옮길 수 있는 x, z 범위
     let minimum: SIMD2<Float>
     let maximum: SIMD2<Float>
@@ -38,12 +44,40 @@ struct FurnitureLayer {
 
 extension FurnitureLayer {
     //저장된 배치를 가구 노드에 덮어씀 - 원본에 없는 가구 ID는 무시
-    func apply(_ arrangement: FurnitureArrangement) {
+    //지운 스캔 가구는 장면에서 빼고, 추가한 가구는 새로 만들어서 붙임
+    mutating func apply(_ arrangement: FurnitureArrangement) {
         for placement in arrangement.placements {
             guard let node = nodes[placement.id],
                   let transform = simd_float4x4(floats: placement.transform) else { continue }
             node.simdTransform = transform
         }
+        for id in arrangement.removedIDs ?? [] {
+            removeNode(id)
+        }
+        for addition in arrangement.additions ?? [] {
+            addNode(for: addition)
+        }
+    }
+
+    //추가한 가구의 노드를 만들어서 공간에 붙임 - 크기나 transform이 잘못된 항목은 무시
+    @discardableResult
+    mutating func addNode(for addition: FurnitureArrangement.Addition) -> SCNNode? {
+        guard nodes[addition.id] == nil,
+              let size = addition.dimensions,
+              let transform = simd_float4x4(floats: addition.transform) else { return nil }
+        let node = FurnitureModelBuilder.makeNode(for: addition.source, size: size)
+        node.simdTransform = transform
+        container.addChildNode(node)
+        nodes[addition.id] = node
+        dimensions[addition.id] = size
+        categories[addition.id] = addition.source.category
+        return node
+    }
+
+    mutating func removeNode(_ id: UUID) {
+        nodes.removeValue(forKey: id)?.removeFromParentNode()
+        dimensions[id] = nil
+        categories[id] = nil
     }
 
     //hitTest는 가구의 부품 노드를 돌려주므로 부모를 따라 올라가며 가구 노드를 찾음
@@ -56,6 +90,53 @@ extension FurnitureLayer {
             current = candidate.parent
         }
         return nil
+    }
+
+    //점이 바닥 위에 있는지 - 바닥 정보가 없으면 옮길 수 있는 범위로 판단
+    func isOnFloor(_ point: SIMD2<Float>) -> Bool {
+        guard floor.count >= 3 else {
+            return all(point .>= minimum) && all(point .<= maximum)
+        }
+        //점에서 +x 방향으로 그은 선이 바닥 테두리와 만나는 횟수가 홀수이면 안쪽
+        var isInside = false
+        var previous = floor[floor.count - 1]
+        for current in floor {
+            if (current.y > point.y) != (previous.y > point.y) {
+                let x = previous.x + (point.y - previous.y) / (current.y - previous.y) * (current.x - previous.x)
+                if point.x < x {
+                    isInside.toggle()
+                }
+            }
+            previous = current
+        }
+        return isInside
+    }
+
+    //바닥의 무게 중심 - ㄱ자 바닥처럼 무게 중심이 바닥 밖이면 옮길 수 있는 범위의 가운데
+    var floorCenter: SIMD2<Float> {
+        let fallback = (minimum + maximum) / 2
+        guard floor.count >= 3 else { return fallback }
+        var area: Float = 0
+        var sum = SIMD2<Float>.zero
+        var previous = floor[floor.count - 1]
+        for current in floor {
+            let cross = previous.x * current.y - current.x * previous.y
+            area += cross
+            sum += (previous + current) * cross
+            previous = current
+        }
+        guard abs(area) > 1e-4 else { return fallback }
+        let center = sum / (3 * area)
+        return isOnFloor(center) ? center : fallback
+    }
+}
+
+extension FurnitureArrangement.Addition {
+    //저장된 크기 - 값이 3개가 아니거나 0 이하이면 nil
+    var dimensions: SIMD3<Float>? {
+        guard size.count == 3 else { return nil }
+        let dimensions = SIMD3(size[0], size[1], size[2])
+        return dimensions.min() > 0 ? dimensions : nil
     }
 }
 
@@ -87,6 +168,7 @@ struct ScannedRoom {
     //modelURL과 화면의 모델에 적용된 가구 배치
     let arrangement: FurnitureArrangement
     let roomScene: RoomScene
+    //arrangement를 적용한 가구 목록 - 편집 중의 가구 목록은 furniture(applying:)로 구함
     let furniture: [FurnitureCategory]
 
     static func make(from capturedRoom: CapturedRoom) async throws -> ScannedRoom {
@@ -120,8 +202,9 @@ struct ScannedRoom {
         let roomScene = try await Task.detached(priority: .userInitiated) {
             try ScannedRoom.writeModel(of: layout, arrangement: arrangement, to: url)
             let model = RoomModelBuilder.makeModel(from: layout)
-            model.furniture.apply(arrangement)
-            return RoomSceneLoader.prepare(model.scene, furniture: model.furniture)
+            var furniture = model.furniture
+            furniture.apply(arrangement)
+            return RoomSceneLoader.prepare(model.scene, furniture: furniture)
         }.value
 
         return ScannedRoom(
@@ -130,8 +213,15 @@ struct ScannedRoom {
             modelURL: url,
             arrangement: arrangement,
             roomScene: roomScene,
-            furniture: layout.objects.map(\.category)
+            furniture: furniture(of: layout, applying: arrangement)
         )
+    }
+
+    //가구 배치를 적용한 가구 목록 - 지운 스캔 가구는 빼고 추가한 가구를 더함
+    //USDZ 파일로 연 경우에는 배치를 편집할 수 없으므로 저장된 가구 목록을 그대로 사용
+    func furniture(applying arrangement: FurnitureArrangement) -> [FurnitureCategory] {
+        guard let layout else { return furniture }
+        return Self.furniture(of: layout, applying: arrangement)
     }
 
     //저장할 USDZ 파일 - 가구 배치가 바뀌었으면 바뀐 배치로 파일을 새로 만들고, 그대로이면 기존 파일을 사용
@@ -152,11 +242,18 @@ private extension ScannedRoom {
             .appendingPathExtension("usdz")
     }
 
+    static func furniture(of layout: RoomLayout, applying arrangement: FurnitureArrangement) -> [FurnitureCategory] {
+        let scanned = layout.objects.filter { !arrangement.isRemoved($0.id) }.map(\.category)
+        let added = (arrangement.additions ?? []).compactMap(\.source.category)
+        return scanned + added
+    }
+
     //원본으로 장면을 만든 뒤 가구 노드만 저장된 배치로 옮김
     //RoomLayout을 고쳐서 다시 만들면 가구의 앞뒤 방향이 다시 계산되어 가구가 뒤돌아설 수 있음
     static func writeModel(of layout: RoomLayout, arrangement: FurnitureArrangement, to url: URL) throws {
         let model = RoomModelBuilder.makeModel(from: layout)
-        model.furniture.apply(arrangement)
+        var furniture = model.furniture
+        furniture.apply(arrangement)
         //모서리가 둥근 SCNBox는 USDZ로 내보내면 형태가 깨지므로 파일용 모델은 둥근 모서리 없이 따로 만듦
         RoomModelBuilder.removeRoundedEdges(in: model.scene)
         //카메라와 조명을 추가하기 전의 모델만 파일로 저장

@@ -328,6 +328,22 @@
         }
       }
     },
+    "가구 추가" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add Furniture"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "가구 추가"
+          }
+        }
+      }
+    },
     "가구를 탭해서 선택하고 드래그해서 옮겨보세요." : {
       "localizations" : {
         "en" : {
@@ -356,6 +372,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "가스레인지"
+          }
+        }
+      }
+    },
+    "가운데로" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Recenter"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "가운데로"
           }
         }
       }
@@ -452,6 +484,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "기기 뒷면 카메라 옆에 작고 검은 원 모양의 센서가 있다면 라이다를 지원하는 기기입니다."
+          }
+        }
+      }
+    },
+    "기본 가구" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Basic Furniture"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "기본 가구"
           }
         }
       }
@@ -1144,6 +1192,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "언어 설정"
+          }
+        }
+      }
+    },
+    "오른쪽의 + 버튼으로 가구를 추가해보세요." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tap the + button on the right to add furniture."
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "오른쪽의 + 버튼으로 가구를 추가해보세요."
           }
         }
       }

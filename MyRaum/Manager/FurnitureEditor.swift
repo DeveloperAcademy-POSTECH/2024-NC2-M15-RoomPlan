@@ -8,7 +8,7 @@
 import SceneKit
 import simd
 
-//꾸미기 화면에서 스캔된 가구를 옮기고 돌리는 편집 상태
+//꾸미기 화면에서 가구를 옮기고 돌리고, 가구 목록에서 추가하거나 지우는 편집 상태
 //RoomSceneView의 제스처가 이 클래스로 가구 노드를 움직이고, 움직임이 끝나면 StoryDraft에 최종 위치를 저장함
 @MainActor
 @Observable
@@ -18,8 +18,11 @@ final class FurnitureEditor {
     //선택된 가구가 원래 위치에서 바뀌었는지 - 원래 위치로 버튼을 활성화할 때 사용
     private(set) var isSelectedMoved: Bool = false
 
-    let layer: FurnitureLayer
+    private(set) var layer: FurnitureLayer
     private let draft: StoryDraft
+
+    //가구를 추가할 때 놓을 위치를 정하기 위해 RoomSceneView가 화면 가운데의 정보를 알려줌
+    @ObservationIgnored var screenCenter: (@MainActor () -> ScreenCenter?)?
 
     @ObservationIgnored private var highlightNode: SCNNode?
     //드래그를 시작할 때 가구 중심과 손가락이 가리킨 바닥 위치의 차이 (x, z)
@@ -29,6 +32,8 @@ final class FurnitureEditor {
     @ObservationIgnored private var rotationStep: Int = 0
     //벽마다 옮기기 시작할 때 이미 겹쳐 있던 정도 - 스캔할 때부터 벽에 살짝 묻혀 있던 가구가 튀지 않게 함
     @ObservationIgnored private var wallContacts: [WallContact] = []
+    //옮기는 가구와 부딪힐 수 있는 다른 가구 - 움직이는 동안 다른 가구는 그대로이므로 시작할 때 계산해둠
+    @ObservationIgnored private var furnitureContacts: [FurnitureContact] = []
 
     //두 손가락으로 돌릴 때 맞추는 각도 단위
     static let snapAngle: Float = 15 * .pi / 180
@@ -40,8 +45,15 @@ final class FurnitureEditor {
         self.draft = draft
     }
 
-    var canEdit: Bool {
-        !layer.nodes.isEmpty
+    //화면 가운데를 바닥 평면에 투영한 점과 카메라 위치
+    struct ScreenCenter {
+        var floorPoint: SIMD3<Float>?
+        var cameraPosition: SIMD3<Float>
+    }
+
+    //선택된 가구가 가구 목록에서 추가한 가구인지 - 추가한 가구는 되돌아갈 원래 위치가 없음
+    var isSelectedAdded: Bool {
+        selectedID.map { draft.arrangement.isAdded($0) } ?? false
     }
 
     func setEditing(_ isOn: Bool) {
@@ -79,7 +91,7 @@ extension FurnitureEditor {
         select(id)
         guard let node = layer.nodes[id] else { return }
         dragOffset = SIMD2(node.simdPosition.x - point.x, node.simdPosition.z - point.z)
-        wallContacts = currentWallContacts(of: id, node: node)
+        prepareContacts(of: id, node: node)
     }
 
     //높이는 그대로 두고 x, z만 옮김 - 바닥 밖으로 너무 멀리 나가지 않도록 범위를 제한
@@ -109,7 +121,7 @@ extension FurnitureEditor {
         rotationStart = node.simdOrientation
         rotationStartPosition = flatPosition(of: node)
         rotationStep = 0
-        wallContacts = currentWallContacts(of: id, node: node)
+        prepareContacts(of: id, node: node)
         return true
     }
 
@@ -143,7 +155,7 @@ extension FurnitureEditor {
     //위에서 내려다볼 때 시계 방향으로 90도 회전
     func rotateSelectedQuarter() {
         guard let id = selectedID, let node = layer.nodes[id] else { return }
-        wallContacts = currentWallContacts(of: id, node: node)
+        prepareContacts(of: id, node: node)
         node.simdOrientation = simd_quatf(angle: -.pi / 2, axis: [0, 1, 0]) * node.simdOrientation
         let position = resolvedPosition(flatPosition(of: node), of: id, node: node)
         node.simdPosition = SIMD3(position.x, node.simdPosition.y, position.y)
@@ -158,6 +170,45 @@ extension FurnitureEditor {
     }
 }
 
+// MARK: - Add & Remove
+extension FurnitureEditor {
+    //화면 가운데의 바닥에 가구를 추가하고 선택 - 화면 가운데가 바닥 밖이면 바닥 가운데에 놓음
+    func add(_ source: FurnitureSource) {
+        let size = Self.defaultSize(of: source)
+        let hint = screenCenter?()
+
+        var center = layer.floorCenter
+        if let point = hint?.floorPoint, layer.isOnFloor(SIMD2(point.x, point.z)) {
+            center = SIMD2(point.x, point.z)
+        }
+        center = simd_clamp(center, layer.minimum, layer.maximum)
+
+        //가구 밑면을 바닥 높이에 맞춤
+        var transform = simd_float4x4(simd_quatf(angle: facingAngle(at: center, toward: hint?.cameraPosition), axis: [0, 1, 0]))
+        transform.columns.3 = SIMD4(center.x, layer.floorY + size.y / 2, center.y, 1)
+
+        var addition = FurnitureArrangement.Addition(id: UUID(), source: source, size: [size.x, size.y, size.z], transform: transform.floats)
+        guard let node = layer.addNode(for: addition) else { return }
+
+        //벽이나 다른 가구에 겹치게 놓이면 밀어냄
+        prepareContacts(of: addition.id, node: node, allowsOverlap: false)
+        let position = resolvedPosition(center, of: addition.id, node: node)
+        node.simdPosition = SIMD3(position.x, node.simdPosition.y, position.y)
+
+        addition.transform = node.simdTransform.floats
+        draft.addFurniture(addition)
+        select(addition.id)
+    }
+
+    //선택된 가구를 지움 - 스캔 가구도 지울 수 있음
+    func removeSelected() {
+        guard let id = selectedID else { return }
+        select(nil)
+        layer.removeNode(id)
+        draft.removeFurniture(id: id)
+    }
+}
+
 // MARK: - Collision
 private extension FurnitureEditor {
     struct WallContact {
@@ -165,6 +216,45 @@ private extension FurnitureEditor {
         var allowedDepth: Float
         //처음부터 겹쳐 있던 벽은 그때 가구가 있던 쪽으로만 밀어냄
         var side: Float?
+    }
+
+    struct FurnitureContact {
+        var footprint: FurnitureFootprint
+        //벽과 같이 처음부터 겹쳐 있던 깊이까지는 밀어내지 않음
+        var allowedDepth: Float
+    }
+
+    //의자는 테이블 밑으로 넣을 수 있도록 서로 겹쳐도 됨
+    static func canOverlap(_ first: FurnitureCategory?, _ second: FurnitureCategory?) -> Bool {
+        let pair: Set<FurnitureCategory?> = [first, second]
+        return pair == [.chair, .table]
+    }
+
+    //가구 노드가 차지하는 높이 범위
+    func verticalRange(of id: UUID, node: SCNNode) -> ClosedRange<Float> {
+        let half = (layer.dimensions[id]?.y ?? 0) / 2
+        let y = node.simdPosition.y
+        return (y - half)...(y + half)
+    }
+
+    //옮기기 시작할 때 벽, 다른 가구와 겹쳐 있는 정도를 계산
+    //allowsOverlap: 새로 추가한 가구처럼 처음부터 겹친 것을 허용하지 않을 때 false
+    func prepareContacts(of id: UUID, node: SCNNode, allowsOverlap: Bool = true) {
+        wallContacts = allowsOverlap
+            ? currentWallContacts(of: id, node: node)
+            : layer.walls.map { _ in WallContact(allowedDepth: 0, side: nil) }
+
+        let furniture = footprint(of: id, node: node, at: flatPosition(of: node))
+        let range = verticalRange(of: id, node: node)
+        furnitureContacts = layer.nodes.compactMap { otherID, other in
+            guard otherID != id, !Self.canOverlap(layer.categories[id], layer.categories[otherID]) else { return nil }
+            //수납장 위의 TV처럼 높이가 겹치지 않으면 부딪히지 않음 (스캔 오차를 고려해 조금 여유를 둠)
+            let otherRange = verticalRange(of: otherID, node: other)
+            guard min(range.upperBound, otherRange.upperBound) - max(range.lowerBound, otherRange.lowerBound) > 0.03 else { return nil }
+            let obstacle = footprint(of: otherID, node: other, at: flatPosition(of: other))
+            let depth = allowsOverlap ? (FurnitureCollision.penetration(of: furniture, into: obstacle)?.depth ?? 0) : 0
+            return FurnitureContact(footprint: obstacle, allowedDepth: depth)
+        }
     }
 
     func flatPosition(of node: SCNNode) -> SIMD2<Float> {
@@ -207,15 +297,24 @@ private extension FurnitureEditor {
         }
     }
 
-    //벽에 겹친 만큼 벽 밖으로 밀어낸 위치
-    //tightensContacts: 옮기는 중에는 벽에서 멀어진 만큼 허용 깊이를 줄임 (돌리는 중에는 처음 위치를 기준으로 계속 계산하므로 줄이지 않음)
+    //벽, 다른 가구에 겹친 만큼 밖으로 밀어낸 위치
+    //tightensContacts: 옮기는 중에는 멀어진 만큼 허용 깊이를 줄임 (돌리는 중에는 처음 위치를 기준으로 계속 계산하므로 줄이지 않음)
     func resolvedPosition(_ position: SIMD2<Float>, of id: UUID, node: SCNNode, tightensContacts: Bool = true) -> SIMD2<Float> {
         guard wallContacts.count == layer.walls.count else { return position }
         var position = position
 
-        //벽 모서리처럼 두 벽에 함께 닿으면 한 번에 다 밀어내지 못하므로 몇 번 반복
-        for _ in 0..<3 {
+        //벽 모서리처럼 여러 곳에 함께 닿으면 한 번에 다 밀어내지 못하므로 몇 번 반복
+        //가구에 밀려서 벽을 통과하지 않도록 다른 가구를 먼저, 벽을 나중에 밀어냄
+        for _ in 0..<4 {
             var isPushed = false
+            for contact in furnitureContacts {
+                guard let penetration = FurnitureCollision.penetration(of: footprint(of: id, node: node, at: position), into: contact.footprint) else { continue }
+                let excess = penetration.depth - contact.allowedDepth
+                if excess > 1e-4 {
+                    position += penetration.direction * excess
+                    isPushed = true
+                }
+            }
             for (index, wall) in layer.walls.enumerated() {
                 let contact = wallContacts[index]
                 guard let penetration = FurnitureCollision.penetration(of: footprint(of: id, node: node, at: position), into: wall, side: contact.side) else { continue }
@@ -228,9 +327,13 @@ private extension FurnitureEditor {
             if !isPushed { break }
         }
 
-        //벽에서 멀어진 만큼 허용하는 깊이를 줄여서 다시 벽 안으로 들어가지 못하게 함
+        //멀어진 만큼 허용하는 깊이를 줄여서 다시 벽이나 다른 가구 안으로 들어가지 못하게 함
         guard tightensContacts else { return position }
         let furniture = footprint(of: id, node: node, at: position)
+        for index in furnitureContacts.indices {
+            let depth = FurnitureCollision.penetration(of: furniture, into: furnitureContacts[index].footprint)?.depth ?? 0
+            furnitureContacts[index].allowedDepth = min(furnitureContacts[index].allowedDepth, depth)
+        }
         for (index, wall) in layer.walls.enumerated() {
             let depth = FurnitureCollision.penetration(of: furniture, into: wall, side: wallContacts[index].side)?.depth ?? 0
             wallContacts[index].allowedDepth = min(wallContacts[index].allowedDepth, max(depth, 0))
@@ -244,14 +347,39 @@ private extension FurnitureEditor {
 
 // MARK: - Helpers
 private extension FurnitureEditor {
+    static func defaultSize(of source: FurnitureSource) -> SIMD3<Float> {
+        switch source {
+        case .catalog(let category): FurnitureCatalog.defaultSize(of: category)
+        }
+    }
+
+    //가구의 앞쪽(+z)이 카메라를 보도록 돌리는 y축 회전 각도
+    //가장 긴 벽과 나란하도록 90도 단위로 맞춤
+    func facingAngle(at center: SIMD2<Float>, toward cameraPosition: SIMD3<Float>?) -> Float {
+        guard let cameraPosition else { return 0 }
+        let direction = SIMD2(cameraPosition.x, cameraPosition.z) - center
+        guard simd_length(direction) > 1e-4 else { return 0 }
+        //y축으로 angle만큼 돌리면 +z는 (sin(angle), cos(angle)) 방향이 됨
+        let angle = atan2(direction.x, direction.y)
+        guard let wall = layer.walls.max(by: { $0.halfLength < $1.halfLength }) else { return angle }
+        let reference = atan2(wall.axis.x, wall.axis.y)
+        let quarter = Float.pi / 2
+        return reference + ((angle - reference) / quarter).rounded() * quarter
+    }
+
     func isMoved(_ id: UUID) -> Bool {
         guard let node = layer.nodes[id], let original = layer.originalTransforms[id] else { return false }
         return node.simdTransform.floats != original.floats
     }
 
-    //움직임이 끝나면 최종 위치를 저장 - 원래 위치와 같으면 저장된 값을 지움
+    //움직임이 끝나면 최종 위치를 저장 - 스캔 가구가 원래 위치와 같으면 저장된 값을 지움
     func commit() {
         guard let id = selectedID, let node = layer.nodes[id] else { return }
+        if draft.arrangement.isAdded(id) {
+            draft.setFurnitureTransform(node.simdTransform, for: id)
+            isSelectedMoved = false
+            return
+        }
         let moved = isMoved(id)
         draft.setFurnitureTransform(moved ? node.simdTransform : nil, for: id)
         isSelectedMoved = moved
