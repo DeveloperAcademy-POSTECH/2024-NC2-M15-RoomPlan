@@ -13,23 +13,65 @@ struct RoomScene {
     let scene: SCNScene
     let cameraNode: SCNNode
     let target: SCNVector3
+    //공간 전체를 감싸는 구의 반지름 - 카메라를 확대/축소, 이동할 수 있는 범위에 사용
+    let radius: Float
+    //가구 배치 편집 정보 - 저장된 USDZ 파일로 연 경우에는 가구를 구분할 수 없으므로 nil
+    let furniture: FurnitureLayer?
+}
+
+//가구 배치를 편집할 때 사용하는 가구 노드와 바닥 정보
+struct FurnitureLayer {
+    //가구 ID → FurnitureModelBuilder.makeNode가 만든 가구 노드
+    let nodes: [UUID: SCNNode]
+    //RoomPlan이 인식한 원래 위치 - 원래 위치로 되돌릴 때 사용
+    let originalTransforms: [UUID: simd_float4x4]
+    //가구 노드의 로컬 좌표 기준 크기 (가로, 높이, 깊이)
+    let dimensions: [UUID: SIMD3<Float>]
+    //가구를 옮길 때 손가락 위치를 투영하는 바닥 높이
+    let floorY: Float
+    //가구 중심을 옮길 수 있는 x, z 범위
+    let minimum: SIMD2<Float>
+    let maximum: SIMD2<Float>
+    //가구가 통과하지 못하는 벽
+    let walls: [WallFootprint]
+}
+
+extension FurnitureLayer {
+    //저장된 배치를 가구 노드에 덮어씀 - 원본에 없는 가구 ID는 무시
+    func apply(_ arrangement: FurnitureArrangement) {
+        for placement in arrangement.placements {
+            guard let node = nodes[placement.id],
+                  let transform = simd_float4x4(floats: placement.transform) else { continue }
+            node.simdTransform = transform
+        }
+    }
+
+    //hitTest는 가구의 부품 노드를 돌려주므로 부모를 따라 올라가며 가구 노드를 찾음
+    func furnitureID(containing node: SCNNode) -> UUID? {
+        var current: SCNNode? = node
+        while let candidate = current {
+            if let id = nodes.first(where: { $0.value === candidate })?.key {
+                return id
+            }
+            current = candidate.parent
+        }
+        return nil
+    }
 }
 
 //3D 모델을 바라보는 카메라의 위치와 시야각
 struct CameraPose: Codable {
     var transform: [Float]
     var fieldOfView: Double
-    
+
     init(node: SCNNode) {
-        let matrix = node.simdTransform
-        transform = [matrix.columns.0, matrix.columns.1, matrix.columns.2, matrix.columns.3].flatMap { [$0.x, $0.y, $0.z, $0.w] }
+        transform = node.simdTransform.floats
         fieldOfView = Double(node.camera?.fieldOfView ?? 30)
     }
-    
+
     func apply(to node: SCNNode) {
-        guard transform.count == 16 else { return }
-        let column = { (index: Int) in SIMD4<Float>(transform[index * 4], transform[index * 4 + 1], transform[index * 4 + 2], transform[index * 4 + 3]) }
-        node.simdTransform = simd_float4x4(column(0), column(1), column(2), column(3))
+        guard let matrix = simd_float4x4(floats: transform) else { return }
+        node.simdTransform = matrix
         node.camera?.fieldOfView = CGFloat(fieldOfView)
     }
 }
@@ -38,57 +80,89 @@ struct CameraPose: Codable {
 struct ScannedRoom {
     //CapturedRoom을 JSON으로 인코딩한 원본 데이터
     let roomData: Data?
+    //RoomPlan 원본에서 뽑아낸 데이터 - 가구 배치를 바꾸면 공유용 USDZ 파일을 다시 만들 때 사용 (USDZ 파일로 연 경우 nil)
+    let layout: RoomLayout?
     //공유용으로 내보낸 USDZ 파일
     let modelURL: URL
+    //modelURL과 화면의 모델에 적용된 가구 배치
+    let arrangement: FurnitureArrangement
     let roomScene: RoomScene
     let furniture: [FurnitureCategory]
 
     static func make(from capturedRoom: CapturedRoom) async throws -> ScannedRoom {
-        try await make(layout: RoomLayout(capturedRoom), roomData: try? JSONEncoder().encode(capturedRoom))
+        try await make(layout: RoomLayout(capturedRoom), roomData: try? JSONEncoder().encode(capturedRoom), arrangement: FurnitureArrangement())
     }
 
-    //저장된 공간 카드를 다시 열 때 사용 - 저장할 때의 카메라 각도를 복원함
+    //저장된 공간 카드를 다시 열 때 사용 - 저장할 때의 카메라 각도와 가구 배치를 복원함
     //RoomPlan 원본 데이터가 있으면 모델과 USDZ 파일을 새로 만들고, 없으면 저장된 USDZ 파일을 사용
     @MainActor
     static func load(from record: SpaceRecord) async throws -> ScannedRoom {
         let room: ScannedRoom
+        let arrangement = record.arrangement ?? FurnitureArrangement()
         if let roomData = record.roomData,
            let capturedRoom = try? JSONDecoder().decode(CapturedRoom.self, from: roomData) {
-            room = try await make(layout: RoomLayout(capturedRoom), roomData: roomData)
+            room = try await make(layout: RoomLayout(capturedRoom), roomData: roomData, arrangement: arrangement)
         } else {
             let url = try record.writeModelFile()
             let roomScene = try await Task.detached(priority: .userInitiated) {
                 try RoomSceneLoader.load(modelURL: url)
             }.value
-            room = ScannedRoom(roomData: nil, modelURL: url, roomScene: roomScene, furniture: record.furniture)
+            room = ScannedRoom(roomData: nil, layout: nil, modelURL: url, arrangement: arrangement, roomScene: roomScene, furniture: record.furniture)
         }
-        
+
         record.cameraPose?.apply(to: room.roomScene.cameraNode)
         return room
     }
-    
-    static func make(layout: RoomLayout, roomData: Data?) async throws -> ScannedRoom {
-        let url = FileManager.default.temporaryDirectory
-            .appendingPathComponent(UUID().uuidString)
-            .appendingPathExtension("usdz")
-        
+
+    static func make(layout: RoomLayout, roomData: Data?, arrangement: FurnitureArrangement) async throws -> ScannedRoom {
+        let url = temporaryModelURL()
+
         let roomScene = try await Task.detached(priority: .userInitiated) {
-            //모서리가 둥근 SCNBox는 USDZ로 내보내면 형태가 깨지므로 파일용 모델은 둥근 모서리 없이 따로 만듦
-            let exportScene = RoomModelBuilder.makeScene(from: layout)
-            RoomModelBuilder.removeRoundedEdges(in: exportScene)
-            //카메라와 조명을 추가하기 전의 모델만 파일로 저장
-            guard exportScene.write(to: url, options: nil, delegate: nil, progressHandler: nil) else {
-                throw RoomSceneError.exportFailed
-            }
-            return RoomSceneLoader.prepare(RoomModelBuilder.makeScene(from: layout))
+            try ScannedRoom.writeModel(of: layout, arrangement: arrangement, to: url)
+            let model = RoomModelBuilder.makeModel(from: layout)
+            model.furniture.apply(arrangement)
+            return RoomSceneLoader.prepare(model.scene, furniture: model.furniture)
         }.value
-        
+
         return ScannedRoom(
             roomData: roomData,
+            layout: layout,
             modelURL: url,
+            arrangement: arrangement,
             roomScene: roomScene,
             furniture: layout.objects.map(\.category)
         )
+    }
+
+    //저장할 USDZ 파일 - 가구 배치가 바뀌었으면 바뀐 배치로 파일을 새로 만들고, 그대로이면 기존 파일을 사용
+    func modelURL(applying arrangement: FurnitureArrangement) async throws -> URL {
+        guard let layout, arrangement != self.arrangement else { return modelURL }
+        let url = Self.temporaryModelURL()
+        try await Task.detached(priority: .userInitiated) {
+            try ScannedRoom.writeModel(of: layout, arrangement: arrangement, to: url)
+        }.value
+        return url
+    }
+}
+
+private extension ScannedRoom {
+    static func temporaryModelURL() -> URL {
+        FileManager.default.temporaryDirectory
+            .appendingPathComponent(UUID().uuidString)
+            .appendingPathExtension("usdz")
+    }
+
+    //원본으로 장면을 만든 뒤 가구 노드만 저장된 배치로 옮김
+    //RoomLayout을 고쳐서 다시 만들면 가구의 앞뒤 방향이 다시 계산되어 가구가 뒤돌아설 수 있음
+    static func writeModel(of layout: RoomLayout, arrangement: FurnitureArrangement, to url: URL) throws {
+        let model = RoomModelBuilder.makeModel(from: layout)
+        model.furniture.apply(arrangement)
+        //모서리가 둥근 SCNBox는 USDZ로 내보내면 형태가 깨지므로 파일용 모델은 둥근 모서리 없이 따로 만듦
+        RoomModelBuilder.removeRoundedEdges(in: model.scene)
+        //카메라와 조명을 추가하기 전의 모델만 파일로 저장
+        guard model.scene.write(to: url, options: nil, delegate: nil, progressHandler: nil) else {
+            throw RoomSceneError.exportFailed
+        }
     }
 }
 
@@ -105,7 +179,7 @@ enum RoomSceneLoader {
         return prepare(scene)
     }
     
-    static func prepare(_ scene: SCNScene) -> RoomScene {
+    static func prepare(_ scene: SCNScene, furniture: FurnitureLayer? = nil) -> RoomScene {
         scene.background.contents = UIColor.clear
 
         let (minimum, maximum) = worldBounds(of: scene.rootNode)
@@ -120,7 +194,7 @@ enum RoomSceneLoader {
         //나중에 메인 스레드에서 바꾼 카메라 위치를 덮어쓸 수 있으므로 바로 커밋함
         SCNTransaction.flush()
 
-        return RoomScene(scene: scene, cameraNode: cameraNode, target: SCNVector3(center))
+        return RoomScene(scene: scene, cameraNode: cameraNode, target: SCNVector3(center), radius: radius, furniture: furniture)
     }
 }
 

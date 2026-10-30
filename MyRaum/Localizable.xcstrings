@@ -113,6 +113,22 @@
         }
       }
     },
+    "90° 회전" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rotate 90°"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "90° 회전"
+          }
+        }
+      }
+    },
     "Card View" : {
       "localizations" : {
         "en" : {
@@ -292,6 +308,38 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "가구"
+          }
+        }
+      }
+    },
+    "가구 배치" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Arrange Furniture"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "가구 배치"
+          }
+        }
+      }
+    },
+    "가구를 탭해서 선택하고 드래그해서 옮겨보세요." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tap a piece of furniture to select it, then drag to move it."
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "가구를 탭해서 선택하고 드래그해서 옮겨보세요."
           }
         }
       }
@@ -566,6 +614,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "닫기"
+          }
+        }
+      }
+    },
+    "두 손가락으로 돌려서 방향을 바꿔보세요." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Twist with two fingers to rotate it."
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "두 손가락으로 돌려서 방향을 바꿔보세요."
           }
         }
       }
@@ -1128,6 +1192,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "욕조"
+          }
+        }
+      }
+    },
+    "원래 위치로" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reset Position"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "원래 위치로"
           }
         }
       }

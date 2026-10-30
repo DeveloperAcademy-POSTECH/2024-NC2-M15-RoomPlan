@@ -22,6 +22,8 @@ struct StoryEditorView: View {
     @Environment(\.modelContext) private var modelContext
 
     @State private var draft: StoryDraft
+    //가구 배치 편집 - USDZ 파일로 연 카드처럼 가구를 구분할 수 없으면 nil
+    @State private var furnitureEditor: FurnitureEditor?
     @State private var snapshotter = RoomSceneSnapshotter()
     @State private var selectedPhoto: PhotosPickerItem?
     @State private var editingElementID: UUID?
@@ -38,6 +40,7 @@ struct StoryEditorView: View {
     @State private var showExitDialog: Bool = false
     @State private var showSavedAlert: Bool = false
     @State private var showSaveFailedAlert: Bool = false
+    @State private var isSaving: Bool = false
 
     @FocusState private var isTextFieldFocused: Bool
 
@@ -53,7 +56,9 @@ struct StoryEditorView: View {
         self.locationManager = locationManager
         self.onRescan = onRescan
         self.onExit = onExit
-        _draft = State(initialValue: record.map(StoryDraft.init(record:)) ?? StoryDraft())
+        let draft = record.map(StoryDraft.init(record:)) ?? StoryDraft()
+        _draft = State(initialValue: draft)
+        _furnitureEditor = State(initialValue: room.roomScene.furniture.map { FurnitureEditor(layer: $0, draft: draft) })
     }
 
     var body: some View {
@@ -66,6 +71,7 @@ struct StoryEditorView: View {
             TextButtonRoundedRectangle(text: "저장") {
                 save()
             }
+            .disabled(isSaving)
             .padding(.horizontal, 16)
         }
         .padding(.top, 8)
@@ -76,6 +82,12 @@ struct StoryEditorView: View {
         .overlay {
             if editingElementID != nil {
                 textInputOverlay
+            } else if isSaving {
+                //가구 배치를 바꾼 경우 USDZ 파일을 다시 만드는 동안 기다림
+                ProgressView()
+                    .tint(Color.white)
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .background(Color.black.opacity(0.3).ignoresSafeArea())
             }
         }
         .task {
@@ -155,7 +167,7 @@ private extension StoryEditorView {
         return ZStack {
             StoryBackgroundView(image: draft.background, preset: draft.backgroundPreset)
 
-            RoomSceneView(roomScene: room.roomScene, snapshotter: snapshotter)
+            RoomSceneView(roomScene: room.roomScene, snapshotter: snapshotter, furnitureEditor: furnitureEditor)
 
             ForEach(draft.elements) { element in
                 elementView(element, canvasSize: size, unit: unit)
@@ -193,9 +205,18 @@ private extension StoryEditorView {
             .simultaneousGesture(pinchGesture(for: element))
             .zIndex(element.id == activeElementID ? 1 : 0)
             .position(x: element.position.x * canvasSize.width, y: element.position.y * canvasSize.height)
+            //가구 배치를 편집하는 동안에는 가구를 터치할 수 있도록 요소의 터치를 막음
+            .allowsHitTesting(!isArranging)
+    }
+
+    var isArranging: Bool {
+        furnitureEditor?.isEditing == true
     }
 
     func elementOpacity(_ element: StoryElement) -> Double {
+        if isArranging {
+            return 0.25
+        }
         if element.id == editingElementID {
             return 0
         }
@@ -216,45 +237,99 @@ private extension StoryEditorView {
                 Spacer()
 
                 VStack(spacing: 12) {
-                    toolButton("textformat", label: "텍스트") {
-                        beginEditing(draft.add(.text))
+                    if !isArranging {
+                        toolButton("textformat", label: "텍스트") {
+                            beginEditing(draft.add(.text))
+                        }
+
+                        toolButton("mappin.and.ellipse", label: "장소", isOn: draft.element(of: .location) != nil) {
+                            beginEditing(draft.element(of: .location) ?? draft.add(.location))
+                        }
+
+                        toolButton("calendar", label: "날짜", isOn: draft.element(of: .date) != nil) {
+                            toggle(.date, text: Date.now.cardDateString)
+                        }
+
+                        toolButton("sofa", label: "가구", isOn: draft.element(of: .furniture) != nil) {
+                            toggle(.furniture)
+                        }
+                        .disabled(room.furniture.isEmpty)
+                        .opacity(room.furniture.isEmpty ? 0.4 : 1)
+
+                        toolButton("photo.on.rectangle", label: "배경 설정") {
+                            showBackgroundPicker = true
+                        }
                     }
 
-                    toolButton("mappin.and.ellipse", label: "장소", isOn: draft.element(of: .location) != nil) {
-                        beginEditing(draft.element(of: .location) ?? draft.add(.location))
+                    //RoomPlan 원본 데이터가 없어서 USDZ 파일로 연 카드는 가구를 구분할 수 없으므로 비활성화
+                    let canArrange = furnitureEditor?.canEdit == true
+                    toolButton("move.3d", label: "가구 배치", isOn: isArranging) {
+                        toggleArranging()
                     }
-
-                    toolButton("calendar", label: "날짜", isOn: draft.element(of: .date) != nil) {
-                        toggle(.date, text: Date.now.cardDateString)
-                    }
-
-                    toolButton("sofa", label: "가구", isOn: draft.element(of: .furniture) != nil) {
-                        toggle(.furniture)
-                    }
-                    .disabled(room.furniture.isEmpty)
-                    .opacity(room.furniture.isEmpty ? 0.4 : 1)
-
-                    toolButton("photo.on.rectangle", label: "배경 설정") {
-                        showBackgroundPicker = true
-                    }
+                    .disabled(!canArrange)
+                    .opacity(canArrange ? 1 : 0.4)
                 }
             }
 
             Spacer()
 
-            if showHint {
-                Text("모델을 돌려 각도를 맞추고, 오른쪽에서 요소를 추가해보세요.")
-                    .font(.footnote)
-                    .foregroundStyle(Color.white)
-                    .multilineTextAlignment(.center)
-                    .padding(.horizontal, 14)
-                    .padding(.vertical, 8)
-                    .background(Capsule().fill(Color.black.opacity(0.5)))
-                    .transition(.opacity)
-                    .allowsHitTesting(false)
+            if isArranging {
+                arrangingControls
+            } else if showHint {
+                hintLabel("모델을 돌려 각도를 맞추고, 오른쪽에서 요소를 추가해보세요.")
             }
         }
         .padding(12)
+    }
+
+    //가구 배치 편집 중에 보여주는 안내 문구와 선택된 가구의 회전, 되돌리기 버튼
+    var arrangingControls: some View {
+        VStack(spacing: 10) {
+            if let furnitureEditor, furnitureEditor.selectedID != nil {
+                HStack(spacing: 8) {
+                    arrangingButton("rotate.right", label: "90° 회전") {
+                        furnitureEditor.rotateSelectedQuarter()
+                    }
+
+                    arrangingButton("arrow.uturn.backward", label: "원래 위치로") {
+                        furnitureEditor.resetSelected()
+                    }
+                    .disabled(!furnitureEditor.isSelectedMoved)
+                    .opacity(furnitureEditor.isSelectedMoved ? 1 : 0.4)
+                }
+
+                hintLabel("두 손가락으로 돌려서 방향을 바꿔보세요.")
+            } else {
+                hintLabel("가구를 탭해서 선택하고 드래그해서 옮겨보세요.")
+            }
+        }
+        .transition(.opacity)
+    }
+
+    func hintLabel(_ text: LocalizedStringKey) -> some View {
+        Text(text)
+            .font(.footnote)
+            .foregroundStyle(Color.white)
+            .multilineTextAlignment(.center)
+            .padding(.horizontal, 14)
+            .padding(.vertical, 8)
+            .background(Capsule().fill(Color.black.opacity(0.5)))
+            .transition(.opacity)
+            .allowsHitTesting(false)
+    }
+
+    func arrangingButton(_ systemImage: String, label: LocalizedStringKey, action: @escaping () -> Void) -> some View {
+        Button {
+            HapticManager.tap()
+            action()
+        } label: {
+            Label(label, systemImage: systemImage)
+                .font(.subheadline.weight(.semibold))
+                .foregroundStyle(Color.white)
+                .padding(.horizontal, 14)
+                .padding(.vertical, 10)
+                .background(Capsule().fill(Color.black.opacity(0.5)))
+        }
     }
 
     func toolButton(_ systemImage: String, label: LocalizedStringKey, isOn: Bool = false, action: @escaping () -> Void) -> some View {
@@ -445,6 +520,15 @@ private extension StoryEditorView {
         editingElementID = nil
     }
 
+    //가구 배치 편집을 켜거나 끔 - 끄면 가구 선택도 해제됨
+    func toggleArranging() {
+        guard let furnitureEditor else { return }
+        withAnimation(.easeOut(duration: 0.2)) {
+            furnitureEditor.setEditing(!furnitureEditor.isEditing)
+            showHint = false
+        }
+    }
+
     //날짜, 가구처럼 하나만 있는 요소는 버튼으로 추가하거나 제거
     func toggle(_ kind: StoryElement.Kind, text: String = "") {
         if let element = draft.element(of: kind) {
@@ -458,31 +542,39 @@ private extension StoryEditorView {
 // MARK: - Save
 private extension StoryEditorView {
     func save() {
+        guard !isSaving else { return }
+        //선택된 가구의 하이라이트가 썸네일에 찍히지 않도록 편집을 끝냄
+        furnitureEditor?.setEditing(false)
         guard let thumbnail = snapshotter.snapshot() else {
             showSaveFailedAlert = true
             return
         }
         let cameraPose = snapshotter.cameraPose()
         
-        let isSaved: Bool
-        if let record {
-            isSaved = draft.apply(to: record, room: room, thumbnail: thumbnail, cameraPose: cameraPose) && modelContext.saveChanges()
-            if !isSaved {
-                //저장에 실패하면 카드에 반영한 내용을 되돌림
-                modelContext.rollback()
+        isSaving = true
+        Task { @MainActor in
+            let isSaved: Bool
+            if let record {
+                let isApplied = await draft.apply(to: record, room: room, thumbnail: thumbnail, cameraPose: cameraPose)
+                isSaved = isApplied && modelContext.saveChanges()
+                if !isSaved {
+                    //저장에 실패하면 카드에 반영한 내용을 되돌림
+                    modelContext.rollback()
+                }
+            } else if let newRecord = await draft.makeRecord(room: room, thumbnail: thumbnail, cameraPose: cameraPose, coordinate: locationManager?.lastKnownLocation) {
+                isSaved = modelContext.addRecord(newRecord)
+            } else {
+                isSaved = false
             }
-        } else if let newRecord = draft.makeRecord(room: room, thumbnail: thumbnail, cameraPose: cameraPose, coordinate: locationManager?.lastKnownLocation) {
-            isSaved = modelContext.addRecord(newRecord)
-        } else {
-            isSaved = false
-        }
-        
-        if isSaved {
-            HapticManager.notify(.success)
-            showSavedAlert = true
-        } else {
-            HapticManager.notify(.error)
-            showSaveFailedAlert = true
+            isSaving = false
+            
+            if isSaved {
+                HapticManager.notify(.success)
+                showSavedAlert = true
+            } else {
+                HapticManager.notify(.error)
+                showSaveFailedAlert = true
+            }
         }
     }
 }

@@ -39,11 +39,17 @@ enum RoomPalette {
     }
 }
 
+//RoomLayout으로 만든 3D 공간과 가구 배치 편집에 필요한 정보
+struct RoomModel {
+    let scene: SCNScene
+    let furniture: FurnitureLayer
+}
+
 //RoomLayout으로 벽, 바닥, 가구가 있는 3D 공간을 만드는 클래스
 enum RoomModelBuilder {
     static let wallThickness: Float = 0.12
 
-    static func makeScene(from layout: RoomLayout) -> SCNScene {
+    static func makeModel(from layout: RoomLayout) -> RoomModel {
         let scene = SCNScene()
         let root = SCNNode()
         root.name = "Room"
@@ -62,11 +68,26 @@ enum RoomModelBuilder {
             root.addChildNode(wallNode(wall, openings: openings(of: wall, in: layout)))
         }
 
+        //USDZ로 내보내면 노드 이름이 바뀔 수 있으므로 이름 대신 가구 ID로 노드를 찾을 수 있게 보관
+        var furnitureNodes: [UUID: SCNNode] = [:]
         for object in layout.objects {
-            root.addChildNode(FurnitureModelBuilder.makeNode(for: object, in: layout))
+            let node = FurnitureModelBuilder.makeNode(for: object, in: layout)
+            root.addChildNode(node)
+            furnitureNodes[object.id] = node
         }
 
-        return scene
+        let (minimum, maximum) = movableArea(of: layout, footprint: footprint)
+        let furniture = FurnitureLayer(
+            nodes: furnitureNodes,
+            originalTransforms: Dictionary(layout.objects.map { ($0.id, $0.transform) }, uniquingKeysWith: { first, _ in first }),
+            dimensions: Dictionary(layout.objects.map { ($0.id, $0.dimensions) }, uniquingKeysWith: { first, _ in first }),
+            floorY: floorY,
+            minimum: minimum,
+            maximum: maximum,
+            walls: layout.walls.compactMap { WallFootprint($0, thickness: wallThickness) }
+        )
+
+        return RoomModel(scene: scene, furniture: furniture)
     }
 }
 
@@ -168,6 +189,19 @@ private extension RoomModelBuilder {
             upper.append(point)
         }
         return Array(lower.dropLast() + upper.dropLast())
+    }
+
+    //가구를 바닥 밖으로 너무 멀리 옮기지 않도록 제한하는 x, z 범위
+    //원래 가구 위치도 범위에 넣어서 드래그를 시작할 때 가구가 튀지 않게 함
+    static func movableArea(of layout: RoomLayout, footprint: [SIMD2<Float>]) -> (SIMD2<Float>, SIMD2<Float>) {
+        let points = footprint + layout.objects.map { SIMD2($0.transform.position.x, $0.transform.position.z) }
+        guard let first = points.first else {
+            return (SIMD2(repeating: -1), SIMD2(repeating: 1))
+        }
+        let margin: Float = 0.3
+        let minimum = points.reduce(first) { simd_min($0, $1) }
+        let maximum = points.reduce(first) { simd_max($0, $1) }
+        return (minimum - margin, maximum + margin)
     }
 
     static func slabNode(_ polygon: [SIMD2<Float>], top: Float, thickness: Float, material: SCNMaterial) -> SCNNode {

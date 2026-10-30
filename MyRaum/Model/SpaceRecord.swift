@@ -33,6 +33,8 @@ final class SpaceRecord {
     var longitude: Double?
     //썸네일을 만들 때의 카메라 위치 - 카드를 수정할 때 같은 각도로 복원하기 위해 사용
     var cameraData: Data?
+    //사용자가 옮기거나 돌린 가구 배치 (FurnitureArrangement를 JSON으로 인코딩) - 배치를 바꾸지 않은 카드는 nil
+    @Attribute(.externalStorage) var arrangementData: Data?
 
     init(
         id: UUID = UUID(),
@@ -46,7 +48,8 @@ final class SpaceRecord {
         elements: [StoryElement],
         furniture: [FurnitureCategory],
         coordinate: CLLocationCoordinate2D?,
-        cameraPose: CameraPose?
+        cameraPose: CameraPose?,
+        arrangement: FurnitureArrangement? = nil
     ) {
         self.id = id
         self.createdAt = createdAt
@@ -61,6 +64,7 @@ final class SpaceRecord {
         self.latitude = coordinate?.latitude
         self.longitude = coordinate?.longitude
         self.cameraData = cameraPose.flatMap { try? JSONEncoder().encode($0) }
+        self.arrangementData = arrangement.flatMap { try? JSONEncoder().encode($0) }
     }
 }
 
@@ -73,6 +77,11 @@ extension SpaceRecord {
     var cameraPose: CameraPose? {
         get { cameraData.flatMap { try? JSONDecoder().decode(CameraPose.self, from: $0) } }
         set { cameraData = newValue.flatMap { try? JSONEncoder().encode($0) } }
+    }
+
+    var arrangement: FurnitureArrangement? {
+        get { arrangementData.flatMap { try? JSONDecoder().decode(FurnitureArrangement.self, from: $0) } }
+        set { arrangementData = newValue.flatMap { try? JSONEncoder().encode($0) } }
     }
 
     var furniture: [FurnitureCategory] {
