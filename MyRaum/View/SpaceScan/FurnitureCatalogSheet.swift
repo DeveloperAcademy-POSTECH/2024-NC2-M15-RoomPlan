@@ -8,7 +8,8 @@
 import SwiftUI
 
 //가구 배치 편집 중에 추가할 가구를 고르는 시트
-//고른 가구의 source만 넘겨주므로 3단계에서 "내 가구"(Object Capture로 스캔한 가구) 섹션을 같은 방식으로 붙일 수 있음
+//오브젝트 탭과 같은 FurnitureLibrary의 목록을 보여주고 고른 가구의 source만 넘겨주므로
+//"내 가구"(Object Capture로 스캔한 가구) 섹션도 FurnitureLibrary에 추가하면 여기에 함께 보임
 struct FurnitureCatalogSheet: View {
     @Environment(\.dismiss) private var dismiss
 
@@ -35,11 +36,13 @@ struct FurnitureCatalogSheet: View {
 
             ScrollView {
                 VStack(alignment: .leading, spacing: 20) {
-                    section(title: "기본 가구") {
-                        LazyVGrid(columns: columns, spacing: 10) {
-                            ForEach(FurnitureCatalog.categories, id: \.self) { category in
-                                option(category.symbol, name: category.name) {
-                                    select(.catalog(category))
+                    ForEach(FurnitureLibrary.sections) { section in
+                        self.section(title: section.title) {
+                            LazyVGrid(columns: columns, spacing: 10) {
+                                ForEach(section.objects) { object in
+                                    option(object) {
+                                        select(object.source)
+                                    }
                                 }
                             }
                         }
@@ -64,23 +67,23 @@ private extension FurnitureCatalogSheet {
         }
     }
 
-    func option(_ systemImage: String, name: LocalizedStringKey, action: @escaping () -> Void) -> some View {
+    func option(_ object: FurnitureObject, action: @escaping () -> Void) -> some View {
         Button {
             HapticManager.tap()
             action()
         } label: {
-            VStack(spacing: 8) {
-                Image(systemName: systemImage)
-                    .font(.system(size: 22, weight: .semibold))
-                    .frame(height: 28)
+            VStack(spacing: 4) {
+                FurnitureObjectThumbnail(object: object, size: 52)
 
-                Text(name)
+                Text(object.name)
                     .font(.caption.weight(.semibold))
                     .lineLimit(1)
                     .minimumScaleFactor(0.8)
             }
             .frame(maxWidth: .infinity)
-            .padding(.vertical, 14)
+            .padding(.top, 6)
+            .padding(.bottom, 10)
+            .padding(.horizontal, 4)
             .background(RoundedRectangle(cornerRadius: 12).fill(Color.gray.opacity(0.12)))
             .contentShape(Rectangle())
         }

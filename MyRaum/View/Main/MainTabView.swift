@@ -7,13 +7,14 @@
 
 import SwiftUI
 
-//하단 탭바 - 홈, 보관함, 지도, 내 정보
+//하단 탭바 - 홈, 보관함, 오브젝트, 지도, 내 정보
 //각 탭은 자신만의 NavigationStack을 가짐
 //스캔 화면은 탭바가 숨겨졌다가 다시 나타나면서 화면이 흔들리지 않도록 전체 화면으로 띄움
 struct MainTabView: View {
     private enum Tab {
         case home
         case archive
+        case objects
         case map
         case myPage
     }
@@ -40,6 +41,14 @@ struct MainTabView: View {
                 Label("보관함", systemImage: "square.stack")
             }
             .tag(Tab.archive)
+
+            tabStack {
+                FurnitureObjectsView()
+            }
+            .tabItem {
+                Label("오브젝트", systemImage: "cube")
+            }
+            .tag(Tab.objects)
 
             tabStack {
                 SpaceMapView()
@@ -82,6 +91,14 @@ private extension MainTabView {
         switch route {
         case .legacySpaces:
             LegacySpacesView()
+        case .furnitureObject(let source):
+            if let object = FurnitureLibrary.object(for: source) {
+                FurnitureObjectDetailView(object: object)
+            } else {
+                Text("가구를 찾을 수 없습니다.")
+                    .foregroundStyle(Color.gray)
+                    .customNavigationBar(title: "오브젝트")
+            }
         }
     }
 }

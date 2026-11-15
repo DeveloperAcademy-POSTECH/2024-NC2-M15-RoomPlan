@@ -276,7 +276,8 @@ enum RoomSceneLoader {
         return prepare(scene)
     }
     
-    static func prepare(_ scene: SCNScene, furniture: FurnitureLayer? = nil) -> RoomScene {
+    //elevation: 카메라가 내려다보는 각도(도 단위) - 공간은 벽에 가려지지 않도록 높게, 가구 하나는 옆모습이 잘 보이도록 낮게
+    static func prepare(_ scene: SCNScene, furniture: FurnitureLayer? = nil, elevation: Float = 50) -> RoomScene {
         scene.background.contents = UIColor.clear
 
         let (minimum, maximum) = worldBounds(of: scene.rootNode)
@@ -284,7 +285,7 @@ enum RoomSceneLoader {
         let radius = max(simd_length(maximum - minimum) / 2, 0.5)
 
         addLights(to: scene, center: center, radius: radius)
-        let cameraNode = makeCamera(center: center, radius: radius)
+        let cameraNode = makeCamera(center: center, radius: radius, elevation: elevation * .pi / 180)
         scene.rootNode.addChildNode(cameraNode)
         
         //백그라운드 스레드에서 만든 씬은 암묵적 트랜잭션이 커밋되지 않아서
@@ -352,7 +353,7 @@ private extension RoomSceneLoader {
 
     //공간 전체가 화면에 들어오도록 위에서 비스듬히 내려다보는 카메라
     //시야각을 좁게 해서 모형을 내려다보는 듯한 아이소메트릭 느낌을 줌
-    static func makeCamera(center: SIMD3<Float>, radius: Float) -> SCNNode {
+    static func makeCamera(center: SIMD3<Float>, radius: Float, elevation: Float) -> SCNNode {
         let camera = SCNCamera()
         camera.projectionDirection = .horizontal
         camera.fieldOfView = 30
@@ -360,8 +361,6 @@ private extension RoomSceneLoader {
 
         let halfFieldOfView = Float(camera.fieldOfView / 2) * .pi / 180
         let distance = radius / sin(halfFieldOfView)
-        //가까운 벽에 가려지지 않고 내부가 잘 보이도록 높은 곳에서 내려다봄
-        let elevation: Float = 50 * .pi / 180
         let azimuth: Float = 35 * .pi / 180
         let direction = SIMD3<Float>(
             sin(azimuth) * cos(elevation),

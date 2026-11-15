@@ -33,6 +33,38 @@
         }
       }
     },
+    "[Version %@]" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "[Version %@]"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "[Version %@]"
+          }
+        }
+      }
+    },
+    "1인 소파" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Single Sofa"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1인 소파"
+          }
+        }
+      }
+    },
     "3D 공간 스캔" : {
       "localizations" : {
         "en" : {
@@ -145,6 +177,92 @@
         }
       }
     },
+    "iOS Developer" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "iOS Developer"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "iOS Developer"
+          }
+        }
+      }
+    },
+    "iPad" : {
+      "shouldTranslate" : false
+    },
+    "iPad Pro 11형(2세대), iPad Pro 12.9형(4세대) 및 이후 출시된 iPad Pro 모델" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "iPad Pro 11-inch (2nd generation), iPad Pro 12.9-inch (4th generation), and later iPad Pro models"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "iPad Pro 11형(2세대), iPad Pro 12.9형(4세대) 및 이후 출시된 iPad Pro 모델"
+          }
+        }
+      }
+    },
+    "iPhone" : {
+      "shouldTranslate" : false
+    },
+    "iPhone 12 Pro, iPhone 12 Pro Max 및 이후 출시된 Pro, Pro Max 모델" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "iPhone 12 Pro, iPhone 12 Pro Max, and later Pro and Pro Max models"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "iPhone 12 Pro, iPhone 12 Pro Max 및 이후 출시된 Pro, Pro Max 모델"
+          }
+        }
+      }
+    },
+    "L자형 소파" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "L-Shaped Sofa"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "L자형 소파"
+          }
+        }
+      }
+    },
+    "L자형 책상" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "L-Shaped Desk"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "L자형 책상"
+          }
+        }
+      }
+    },
     "My Raum은 라이다(LiDAR) 센서로 공간을 3D로 스캔합니다. 이 기기에는 라이다 센서가 없어 앱을 사용할 수 없습니다." : {
       "localizations" : {
         "en" : {
@@ -210,6 +328,22 @@
         }
       }
     },
+    "TV 거실장" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "TV Stand"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "TV 거실장"
+          }
+        }
+      }
+    },
     "UX/UI Designer" : {
       "localizations" : {
         "en" : {
@@ -222,76 +356,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "UX/UI Designer"
-          }
-        }
-      }
-    },
-    "[Version %@]" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "[Version %@]"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "[Version %@]"
-          }
-        }
-      }
-    },
-    "iOS Developer" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "iOS Developer"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "iOS Developer"
-          }
-        }
-      }
-    },
-    "iPad" : {
-      "shouldTranslate" : false
-    },
-    "iPad Pro 11형(2세대), iPad Pro 12.9형(4세대) 및 이후 출시된 iPad Pro 모델" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "iPad Pro 11-inch (2nd generation), iPad Pro 12.9-inch (4th generation), and later iPad Pro models"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "iPad Pro 11형(2세대), iPad Pro 12.9형(4세대) 및 이후 출시된 iPad Pro 모델"
-          }
-        }
-      }
-    },
-    "iPhone" : {
-      "shouldTranslate" : false
-    },
-    "iPhone 12 Pro, iPhone 12 Pro Max 및 이후 출시된 Pro, Pro Max 모델" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "iPhone 12 Pro, iPhone 12 Pro Max, and later Pro and Pro Max models"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "iPhone 12 Pro, iPhone 12 Pro Max 및 이후 출시된 Pro, Pro Max 모델"
           }
         }
       }
@@ -344,6 +408,22 @@
         }
       }
     },
+    "가구를 찾을 수 없습니다." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Furniture not found."
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "가구를 찾을 수 없습니다."
+          }
+        }
+      }
+    },
     "가구를 탭해서 선택하고 드래그해서 옮겨보세요." : {
       "localizations" : {
         "en" : {
@@ -356,6 +436,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "가구를 탭해서 선택하고 드래그해서 옮겨보세요."
+          }
+        }
+      }
+    },
+    "가로" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Width"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "가로"
           }
         }
       }
@@ -408,6 +504,22 @@
         }
       }
     },
+    "거실" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Living Room"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "거실"
+          }
+        }
+      }
+    },
     "계단" : {
       "localizations" : {
         "en" : {
@@ -456,6 +568,38 @@
         }
       }
     },
+    "공간 편집에서 이 크기로 추가됩니다." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "It will be added at this size when editing a space."
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "공간 편집에서 이 크기로 추가됩니다."
+          }
+        }
+      }
+    },
+    "공간 편집에서 추가할 수 있는 가구입니다.\n가구를 눌러 3D로 살펴보세요." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Furniture you can add while editing a space.\nTap an item to view it in 3D."
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "공간 편집에서 추가할 수 있는 가구입니다.\n가구를 눌러 3D로 살펴보세요."
+          }
+        }
+      }
+    },
     "공유" : {
       "localizations" : {
         "en" : {
@@ -468,6 +612,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "공유"
+          }
+        }
+      }
+    },
+    "구조물" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Structure"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "구조물"
           }
         }
       }
@@ -489,6 +649,7 @@
       }
     },
     "기본 가구" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -517,6 +678,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "김민정"
+          }
+        }
+      }
+    },
+    "깊이" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Depth"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "깊이"
           }
         }
       }
@@ -618,6 +795,22 @@
         }
       }
     },
+    "높이" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Height"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "높이"
+          }
+        }
+      }
+    },
     "다시 스캔하기" : {
       "localizations" : {
         "en" : {
@@ -666,6 +859,38 @@
         }
       }
     },
+    "대형 TV" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Large TV"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "대형 TV"
+          }
+        }
+      }
+    },
+    "더블 침대" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Double Bed"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "더블 침대"
+          }
+        }
+      }
+    },
     "두 손가락으로 돌려서 방향을 바꿔보세요." : {
       "localizations" : {
         "en" : {
@@ -678,6 +903,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "두 손가락으로 돌려서 방향을 바꿔보세요."
+          }
+        }
+      }
+    },
+    "드래그해서 가구를 돌려보세요." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Drag to rotate the furniture."
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "드래그해서 가구를 돌려보세요."
           }
         }
       }
@@ -758,6 +999,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "모델을 돌려 각도를 맞추고, 오른쪽에서 요소를 추가해보세요."
+          }
+        }
+      }
+    },
+    "바 스툴" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bar Stool"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "바 스툴"
           }
         }
       }
@@ -859,6 +1116,22 @@
         }
       }
     },
+    "사무용 의자" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Office Chair"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "사무용 의자"
+          }
+        }
+      }
+    },
     "사진" : {
       "localizations" : {
         "en" : {
@@ -935,6 +1208,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "색상"
+          }
+        }
+      }
+    },
+    "선반" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Shelf"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "선반"
           }
         }
       }
@@ -1035,6 +1324,22 @@
         }
       }
     },
+    "수납" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Storage"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "수납"
+          }
+        }
+      }
+    },
     "수납장" : {
       "localizations" : {
         "en" : {
@@ -1116,6 +1421,22 @@
         }
       }
     },
+    "스툴" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Stool"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "스툴"
+          }
+        }
+      }
+    },
     "시스템 설정" : {
       "localizations" : {
         "en" : {
@@ -1144,6 +1465,54 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "식기세척기"
+          }
+        }
+      }
+    },
+    "식탁" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dining Table"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "식탁"
+          }
+        }
+      }
+    },
+    "식탁 의자" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dining Chair"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "식탁 의자"
+          }
+        }
+      }
+    },
+    "싱글 침대" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Single Bed"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "싱글 침대"
           }
         }
       }
@@ -1212,6 +1581,22 @@
         }
       }
     },
+    "오브젝트" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Objects"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "오브젝트"
+          }
+        }
+      }
+    },
     "오븐" : {
       "localizations" : {
         "en" : {
@@ -1228,6 +1613,22 @@
         }
       }
     },
+    "옷장" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wardrobe"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "옷장"
+          }
+        }
+      }
+    },
     "완료" : {
       "localizations" : {
         "en" : {
@@ -1240,6 +1641,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "완료"
+          }
+        }
+      }
+    },
+    "욕실·세탁" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bathroom & Laundry"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "욕실·세탁"
           }
         }
       }
@@ -1272,6 +1689,38 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "원래 위치로"
+          }
+        }
+      }
+    },
+    "원형 식탁" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Round Dining Table"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "원형 식탁"
+          }
+        }
+      }
+    },
+    "원형 커피 테이블" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Round Coffee Table"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "원형 커피 테이블"
           }
         }
       }
@@ -1468,6 +1917,22 @@
         }
       }
     },
+    "일자형 소파" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sofa"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "일자형 소파"
+          }
+        }
+      }
+    },
     "장소" : {
       "localizations" : {
         "en" : {
@@ -1597,6 +2062,22 @@
         }
       }
     },
+    "주방" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kitchen"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "주방"
+          }
+        }
+      }
+    },
     "지도" : {
       "localizations" : {
         "en" : {
@@ -1641,6 +2122,38 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "지원하지 않는 기기입니다."
+          }
+        }
+      }
+    },
+    "책상" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Desk"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "책상"
+          }
+        }
+      }
+    },
+    "책장" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bookshelf"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "책장"
           }
         }
       }
@@ -1693,6 +2206,38 @@
         }
       }
     },
+    "카우치 소파" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Chaise Sofa"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "카우치 소파"
+          }
+        }
+      }
+    },
+    "커피 테이블" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Coffee Table"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "커피 테이블"
+          }
+        }
+      }
+    },
     "켬" : {
       "localizations" : {
         "en" : {
@@ -1705,6 +2250,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "켬"
+          }
+        }
+      }
+    },
+    "킹 침대" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "King Bed"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "킹 침대"
           }
         }
       }
@@ -1753,6 +2314,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "텍스트를 입력하세요."
+          }
+        }
+      }
+    },
+    "팔걸이 의자" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Armchair"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "팔걸이 의자"
           }
         }
       }

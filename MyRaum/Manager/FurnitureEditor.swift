@@ -348,9 +348,7 @@ private extension FurnitureEditor {
 // MARK: - Helpers
 private extension FurnitureEditor {
     static func defaultSize(of source: FurnitureSource) -> SIMD3<Float> {
-        switch source {
-        case .catalog(let category): FurnitureCatalog.defaultSize(of: category)
-        }
+        FurnitureLibrary.object(for: source)?.size ?? [0.5, 0.5, 0.5]
     }
 
     //가구의 앞쪽(+z)이 카메라를 보도록 돌리는 y축 회전 각도

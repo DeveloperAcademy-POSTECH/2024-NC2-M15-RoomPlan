@@ -36,9 +36,10 @@ enum FurnitureModelBuilder {
         let node = SCNNode()
         let content = SCNNode()
         switch source {
-        case .catalog(let category):
-            node.name = category.rawValue
-            build(category, attributes: FurnitureCatalog.defaultAttributes(of: category), size: size, into: content)
+        case .catalog(let id):
+            guard let item = FurnitureCatalog.item(id) else { break }
+            node.name = item.category.rawValue
+            build(item.category, attributes: item.attributes, size: size, into: content)
         }
         node.addChildNode(content)
         return node
