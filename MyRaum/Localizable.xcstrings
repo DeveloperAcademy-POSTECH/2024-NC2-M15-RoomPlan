@@ -33,22 +33,6 @@
         }
       }
     },
-    "[Version %@]" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "[Version %@]"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "[Version %@]"
-          }
-        }
-      }
-    },
     "1인 소파" : {
       "localizations" : {
         "en" : {
@@ -173,60 +157,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Card View"
-          }
-        }
-      }
-    },
-    "iOS Developer" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "iOS Developer"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "iOS Developer"
-          }
-        }
-      }
-    },
-    "iPad" : {
-      "shouldTranslate" : false
-    },
-    "iPad Pro 11형(2세대), iPad Pro 12.9형(4세대) 및 이후 출시된 iPad Pro 모델" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "iPad Pro 11-inch (2nd generation), iPad Pro 12.9-inch (4th generation), and later iPad Pro models"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "iPad Pro 11형(2세대), iPad Pro 12.9형(4세대) 및 이후 출시된 iPad Pro 모델"
-          }
-        }
-      }
-    },
-    "iPhone" : {
-      "shouldTranslate" : false
-    },
-    "iPhone 12 Pro, iPhone 12 Pro Max 및 이후 출시된 Pro, Pro Max 모델" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "iPhone 12 Pro, iPhone 12 Pro Max, and later Pro and Pro Max models"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "iPhone 12 Pro, iPhone 12 Pro Max 및 이후 출시된 Pro, Pro Max 모델"
           }
         }
       }
@@ -356,6 +286,76 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "UX/UI Designer"
+          }
+        }
+      }
+    },
+    "[Version %@]" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "[Version %@]"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "[Version %@]"
+          }
+        }
+      }
+    },
+    "iOS Developer" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "iOS Developer"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "iOS Developer"
+          }
+        }
+      }
+    },
+    "iPad" : {
+      "shouldTranslate" : false
+    },
+    "iPad Pro 11형(2세대), iPad Pro 12.9형(4세대) 및 이후 출시된 iPad Pro 모델" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "iPad Pro 11-inch (2nd generation), iPad Pro 12.9-inch (4th generation), and later iPad Pro models"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "iPad Pro 11형(2세대), iPad Pro 12.9형(4세대) 및 이후 출시된 iPad Pro 모델"
+          }
+        }
+      }
+    },
+    "iPhone" : {
+      "shouldTranslate" : false
+    },
+    "iPhone 12 Pro, iPhone 12 Pro Max 및 이후 출시된 Pro, Pro Max 모델" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "iPhone 12 Pro, iPhone 12 Pro Max, and later Pro and Pro Max models"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "iPhone 12 Pro, iPhone 12 Pro Max 및 이후 출시된 Pro, Pro Max 모델"
           }
         }
       }
@@ -827,22 +827,6 @@
         }
       }
     },
-    "다크 모드" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Dark"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "다크 모드"
-          }
-        }
-      }
-    },
     "닫기" : {
       "localizations" : {
         "en" : {
@@ -967,22 +951,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "라이다가 필요한 이유"
-          }
-        }
-      }
-    },
-    "라이트 모드" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Light"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "라이트 모드"
           }
         }
       }
@@ -1433,22 +1401,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "스툴"
-          }
-        }
-      }
-    },
-    "시스템 설정" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "System Default"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "시스템 설정"
           }
         }
       }
@@ -2378,22 +2330,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "홈"
-          }
-        }
-      }
-    },
-    "화면 모드" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Appearance"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "화면 모드"
           }
         }
       }

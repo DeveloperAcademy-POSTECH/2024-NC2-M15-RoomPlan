@@ -20,10 +20,6 @@ struct MyPageView: View {
                         LanguageSettingView()
                     }
 
-                    navigationCell(title: "화면 모드", value: appSettingsManager.appearance.displayName) {
-                        AppearanceSettingView()
-                    }
-
                     toggleCell(title: "햅틱 피드백", isOn: $appSettingsManager.hapticsEnabled)
 
                     toggleCell(

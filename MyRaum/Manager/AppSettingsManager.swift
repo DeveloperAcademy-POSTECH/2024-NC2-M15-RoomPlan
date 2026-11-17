@@ -13,7 +13,8 @@ import SwiftUI
 final class AppSettingsManager {
     enum Key {
         static let language = "selectedLanguage"
-        static let appearance = "appearance"
+        //1.1.2까지 사용한 화면 모드 설정 - 앱이 다크 모드로 고정되면서 사용하지 않음 (남아 있는 값을 지울 때만 사용)
+        static let legacyAppearance = "appearance"
         static let haptics = "hapticsEnabled"
         static let savesLocation = "savesLocation"
     }
@@ -28,12 +29,6 @@ final class AppSettingsManager {
         }
     }
     
-    var appearance: AppAppearance {
-        didSet {
-            UserDefaults.standard.set(appearance.rawValue, forKey: Key.appearance)
-        }
-    }
-
     //버튼, 탭 등을 누를 때 햅틱 피드백을 줄지 여부
     var hapticsEnabled: Bool {
         didSet {
@@ -49,7 +44,6 @@ final class AppSettingsManager {
     }
 
     init() {
-        self.appearance = UserDefaults.standard.string(forKey: Key.appearance).flatMap(AppAppearance.init(rawValue:)) ?? .dark
         self.hapticsEnabled = UserDefaults.standard.object(forKey: Key.haptics) as? Bool ?? true
         self.savesLocation = UserDefaults.standard.object(forKey: Key.savesLocation) as? Bool ?? true
         if let savedLanguage = UserDefaults.standard.string(forKey: Key.language), !savedLanguage.isEmpty {
@@ -57,6 +51,7 @@ final class AppSettingsManager {
         } else {
             self.language = .system
         }
+        UserDefaults.standard.removeObject(forKey: Key.legacyAppearance)
     }
     
     var effectiveLocale: Locale {

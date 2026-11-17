@@ -23,10 +23,6 @@ struct MyRaumApp: App {
                     UnsupportedDeviceView()
                 }
             }
-            //앱 설정의 화면 모드를 적용
-            .onChange(of: appSettingsManager.appearance, initial: true) {
-                appSettingsManager.appearance.apply()
-            }
         }
         .modelContainer(for: [SpaceRecord.self, SpaceData.self])
         .environment(appSettingsManager)
